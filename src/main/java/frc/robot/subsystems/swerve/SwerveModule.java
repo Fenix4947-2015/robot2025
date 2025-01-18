@@ -4,8 +4,12 @@
 
 package frc.robot.subsystems.swerve;
 
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -48,7 +52,7 @@ public class SwerveModule {
 
   // Gains are for example purposes only - must be determined for your own robot!
   private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(0, 1);
-  private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(0.3, 0);
+  private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(0.1, 0);
 
   /**
    * Constructs a SwerveModule with a drive motor, turning motor, drive encoder and turning encoder.
@@ -74,7 +78,16 @@ public class SwerveModule {
     //  .positionConversionFactor(2 * Math.PI * K_WHEEL_RADIUS / K_SPEED_GEAR_RATIO);
 
     m_driveMotor = new TalonFX(swerveModuleSettings.driveMotorChannel(), "CANivore");
+    MotorOutputConfigs driveMotorOutputConfigs = new MotorOutputConfigs();
+    driveMotorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
+    driveMotorOutputConfigs.Inverted = InvertedValue.CounterClockwise_Positive;
+    m_driveMotor.getConfigurator().apply(driveMotorOutputConfigs);
+    
     m_turningMotor = new TalonFX(swerveModuleSettings.turningMotorChannel(), "CANivore");
+    MotorOutputConfigs turningMotorOutputConfigs = new MotorOutputConfigs();
+    turningMotorOutputConfigs.NeutralMode = NeutralModeValue.Coast;
+    turningMotorOutputConfigs.Inverted = InvertedValue.Clockwise_Positive;
+    m_turningMotor.getConfigurator().apply(turningMotorOutputConfigs);    
 
     // m_driveMotor = new SparkMax(swerveModuleSettings.driveMotorChannel(), MotorType.kBrushless);
     // m_driveMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -88,7 +101,7 @@ public class SwerveModule {
     // to be continuous.
     m_turningPIDController.enableContinuousInput(-Math.PI / 2, Math.PI / 2);
     m_turningPIDController.setTolerance(Math.PI * 2 / 360 * 15);
-    reversed = isReversed ? 1.0 : -1.0;
+    reversed = isReversed ? -1.0 : 1.0;
   }
 
   /**

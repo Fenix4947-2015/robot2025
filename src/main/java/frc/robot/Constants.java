@@ -41,10 +41,10 @@ public final class Constants {
         //public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsFR = new Drivetrain.SwerveModuleSettings(2, 54, 53, 61);
         //public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsBL = new Drivetrain.SwerveModuleSettings(3, 58, 57, 59);
         //public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsBR = new Drivetrain.SwerveModuleSettings(4, 52, 51, 62);
-        public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsFL = new Drivetrain.SwerveModuleSettings(1, 41, 42, 43);
-        public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsFR = new Drivetrain.SwerveModuleSettings(2, 11, 12, 13);
-        public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsBL = new Drivetrain.SwerveModuleSettings(3, 31, 32, 33);
-        public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsBR = new Drivetrain.SwerveModuleSettings(4, 21, 22, 23);
+        public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsFL = new Drivetrain.SwerveModuleSettings(1, 11, 12, 13);
+        public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsFR = new Drivetrain.SwerveModuleSettings(2, 21, 22, 23);
+        public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsBR = new Drivetrain.SwerveModuleSettings(3, 31, 32, 33);
+        public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsBL = new Drivetrain.SwerveModuleSettings(4, 41, 42, 43);
         public static final int kPigeon2Channel = 3;
     }
 
