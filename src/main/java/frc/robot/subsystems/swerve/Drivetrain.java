@@ -8,7 +8,6 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -25,7 +24,7 @@ public class Drivetrain extends SubsystemBase {
   
   private static final double SWERVE_TRANSLATION_X = 0.654 / 2; // Front-to-rear
   private static final double SWERVE_TRANSLATION_Y = 0.577 / 2; // SIDE-TO-SIDE
-  public static final double K_MAX_SPEED = 15.5 / (12 * 25.4 / 1000); // 3 meters per second
+  public static final double K_MAX_SPEED = 15.5 * 1.14 / (12 * 25.4 / 1000); // 3 meters per second
   private static final double K_TURN_RADIUS = Math.sqrt(Math.pow(SWERVE_TRANSLATION_X, 2) + Math.pow(SWERVE_TRANSLATION_Y, 2));
   public static final double K_MAX_ANGULAR_SPEED = K_MAX_SPEED / K_TURN_RADIUS; // 1/2 rotation per second
 
@@ -39,8 +38,6 @@ public class Drivetrain extends SubsystemBase {
   private final Translation2d m_backLeftLocation = new Translation2d(-SWERVE_TRANSLATION_X, SWERVE_TRANSLATION_Y);
   private final Translation2d m_backRightLocation = new Translation2d(-SWERVE_TRANSLATION_X, -SWERVE_TRANSLATION_Y);
 
-  private static final Transform2d offset180 = new Transform2d(0, 0, Rotation2d.fromDegrees(180));
-
   public record SwerveModuleSettings(int id, int driveMotorChannel, int turningMotorChannel, int turningEncoderId) {}
 
   private final SwerveModule m_frontLeft = new SwerveModule(kSwerveModuleSettingsFL, 0, false);
@@ -49,9 +46,6 @@ public class Drivetrain extends SubsystemBase {
   private final SwerveModule m_backRight = new SwerveModule(kSwerveModuleSettingsBR, 0, false);
 
   private double speedRatio;
-  //private final AnalogGyro m_gyro = null;//new AnalogGyro(0);
-  //private final WPI_TalonSRX m_spareTalon = new WPI_TalonSRX(9);
-  //private final WPI_PigeonIMU m_gyro = new WPI_PigeonIMU(m_spareTalon);
   private final Pigeon2 m_gyro = new Pigeon2(kPigeon2Channel, "rio");
 
   private SwerveDriveKinematics m_kinematics;
@@ -151,7 +145,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public Pose2d getOdometry() {
-    Pose2d currentPose = m_odometry.getPoseMeters().plus(offset180);
+    Pose2d currentPose = m_odometry.getPoseMeters();
 
     SmartDashboardWrapper.putNumber("currentPoseX", currentPose.getX());
     SmartDashboardWrapper.putNumber("currentPoseY", currentPose.getY());
@@ -180,7 +174,7 @@ public class Drivetrain extends SubsystemBase {
           m_backLeft.getPosition(),
           m_backRight.getPosition()
         },
-        pose.plus(offset180));
+        pose);
   }
 
   public void resetGyro(Pose2d pose) {

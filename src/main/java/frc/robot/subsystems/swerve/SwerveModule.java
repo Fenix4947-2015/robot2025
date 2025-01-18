@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import frc.robot.SmartDashboardWrapper;
 
 public class SwerveModule {
   private static final double K_SPEED_GEAR_RATIO = 6.75 / 1.14;
@@ -50,6 +51,8 @@ public class SwerveModule {
   private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(0, 1);
   private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(0.1, 0);
 
+  private Drivetrain.SwerveModuleSettings swerveModuleSettings;
+
   /**
    * Constructs a SwerveModule with a drive motor, turning motor, drive encoder and turning encoder.
    *
@@ -66,6 +69,8 @@ public class SwerveModule {
       boolean isReversed
     ) {
 
+    this.swerveModuleSettings = swerveModuleSettings;
+
     m_driveMotor = new TalonFX(swerveModuleSettings.driveMotorChannel(), "CANivore");
     MotorOutputConfigs driveMotorOutputConfigs = new MotorOutputConfigs();
     driveMotorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
@@ -77,7 +82,8 @@ public class SwerveModule {
     turningMotorOutputConfigs.NeutralMode = NeutralModeValue.Coast;
     turningMotorOutputConfigs.Inverted = InvertedValue.Clockwise_Positive;
     m_turningMotor.getConfigurator().apply(turningMotorOutputConfigs);
-    m_turningEncoder = new CANcoder(swerveModuleSettings.turningEncoderId(), "CANivore");//new Encoder(turningEncoderChannelA, turningEncoderChannelB);
+
+    m_turningEncoder = new CANcoder(swerveModuleSettings.turningEncoderId(), "CANivore");
 
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
@@ -98,6 +104,7 @@ public class SwerveModule {
   }
 
   private double getDriveVelocityMeterPerSecond() {
+    // I suspect an error here
     return m_driveMotor.getVelocity().getValueAsDouble() * K_VELOCITY_CONVERSION_FACTOR;
   }
 
@@ -151,8 +158,10 @@ public class SwerveModule {
     final double driveFeedforward = m_driveFeedforward.calculate(targetSpeedNormalized);
 
     double motorSetPoint = (driveOutput + driveFeedforward) * reversed; 
+    double capSetpoint = capMotorSetPoint(motorSetPoint, speed);
+    SmartDashboardWrapper.putNumberImportant("setPointMotor" + this.swerveModuleSettings.id(), capSetpoint);
     
-    m_driveMotor.set(capMotorSetPoint(motorSetPoint, speed));
+    m_driveMotor.set(capSetpoint);
     m_turningMotor.set(turnOutput + turnFeedforward);
   }
 
