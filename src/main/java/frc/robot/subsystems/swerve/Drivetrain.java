@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems.swerve;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -25,9 +23,9 @@ import static frc.robot.Constants.ElectricConstants.*;
 /** Represents a swerve drive style drivetrain. */
 public class Drivetrain extends SubsystemBase {
   
-  private static final double SWERVE_TRANSLATION_X = 0.311;
-  private static final double SWERVE_TRANSLATION_Y = 0.273;
-  public static final double K_MAX_SPEED = 15.1 / (12 * 25.4 / 1000); // 3 meters per second
+  private static final double SWERVE_TRANSLATION_X = 0.654 / 2; // Front-to-rear
+  private static final double SWERVE_TRANSLATION_Y = 0.577 / 2; // SIDE-TO-SIDE
+  public static final double K_MAX_SPEED = 15.5 / (12 * 25.4 / 1000); // 3 meters per second
   private static final double K_TURN_RADIUS = Math.sqrt(Math.pow(SWERVE_TRANSLATION_X, 2) + Math.pow(SWERVE_TRANSLATION_Y, 2));
   public static final double K_MAX_ANGULAR_SPEED = K_MAX_SPEED / K_TURN_RADIUS; // 1/2 rotation per second
 

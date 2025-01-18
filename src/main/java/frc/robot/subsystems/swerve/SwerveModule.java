@@ -18,10 +18,10 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 
 public class SwerveModule {
   private final int id;
-  private static final double K_SPEED_GEAR_RATIO = 6.75;
-  private static final double K_WHEEL_RADIUS = 0.0508;
-  private static final double K_MAX_MOTOR_RPM = 5676;
-  private static final double K_TURN_GEAR_RATIO = 21.43; // 12.8
+  private static final double K_SPEED_GEAR_RATIO = 6.75 / 1.14;
+  private static final double K_WHEEL_RADIUS = 2 * 0.0254;
+  private static final double K_MAX_MOTOR_RPM = 6000;
+  private static final double K_TURN_GEAR_RATIO = 150 / 7; // 12.8
   private static final double K_MODULE_MAX_ANGULAR_VELOCITY = K_MAX_MOTOR_RPM * 2 * Math.PI / 60 / K_TURN_GEAR_RATIO; // radians per second
   private static final double K_MODULE_MAX_ANGULAR_ACCELERATION = 2 * Math.PI * 100; // radians per second squared
   private static final double K_VELOCITY_CONVERSION_FACTOR = 2 * Math.PI * K_WHEEL_RADIUS / (60 * K_SPEED_GEAR_RATIO);
@@ -33,8 +33,6 @@ public class SwerveModule {
   //private final RelativeEncoder m_driveEncoder;
   private final CANcoder m_turningEncoder;
   private final double reversed;
-
-  private SwerveModuleState state = new SwerveModuleState();
 
   // Gains are for example purposes only - must be determined for your own robot!
   private final PIDController m_drivePIDController = new PIDController(0, 0, 0.0);
@@ -90,7 +88,7 @@ public class SwerveModule {
     // to be continuous.
     m_turningPIDController.enableContinuousInput(-Math.PI / 2, Math.PI / 2);
     m_turningPIDController.setTolerance(Math.PI * 2 / 360 * 15);
-    reversed = isReversed ? -1.0 : 1;
+    reversed = isReversed ? 1.0 : -1.0;
   }
 
   /**
@@ -128,7 +126,7 @@ public class SwerveModule {
   }
 
   public double getStateAngle() {
-    return this.state.angle.getRadians();
+    return getState().angle.getRadians();
   }
 
   /**
@@ -140,9 +138,9 @@ public class SwerveModule {
     // Optimize the reference state to avoid spinning further than 90 degrees
     // SwerveModuleState state =
     //     SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getDistance()));
-    state = SwerveModuleState.optimize(desiredState, Rotation2d.fromRadians(m_turningEncoder.getAbsolutePosition().getValueAsDouble()));
+    desiredState.optimize(Rotation2d.fromRadians(m_turningEncoder.getAbsolutePosition().getValueAsDouble()));
     double wheelAngle = getWheelAngle();
-    double targetWheelAngle = state.angle.getRadians();
+    double targetWheelAngle = desiredState.angle.getRadians();
 
     // Calculate the turning motor output from the turning PID controller.
     // final double turnOutput =
@@ -157,7 +155,7 @@ public class SwerveModule {
     // final double driveOutput =
     //     m_drivePIDController.calculate(m_driveEncoder.getRate(), state.speedMetersPerSecond);
     final double speed = getDriveVelocityMeterPerSecond();
-    final double targetSpeed = state.speedMetersPerSecond * changeSpeedDirection(wheelAngle, targetWheelAngle);
+    final double targetSpeed = desiredState.speedMetersPerSecond * changeSpeedDirection(wheelAngle, targetWheelAngle);
 
     final double speedNormalized = speed / Drivetrain.K_MAX_SPEED;
     final double targetSpeedNormalized = targetSpeed / Drivetrain.K_MAX_SPEED;
