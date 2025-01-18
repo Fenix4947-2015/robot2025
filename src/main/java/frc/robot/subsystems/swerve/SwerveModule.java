@@ -5,7 +5,6 @@
 package frc.robot.subsystems.swerve;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -18,10 +17,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 
 public class SwerveModule {
-  private final int id;
   private static final double K_SPEED_GEAR_RATIO = 6.75 / 1.14;
   private static final double K_WHEEL_RADIUS = 2 * 0.0254;
   private static final double K_MAX_MOTOR_RPM = 6000;
@@ -34,7 +31,6 @@ public class SwerveModule {
   private final TalonFX m_driveMotor;
   private final TalonFX m_turningMotor;
 
-  //private final RelativeEncoder m_driveEncoder;
   private final CANcoder m_turningEncoder;
   private final double reversed;
 
@@ -70,13 +66,6 @@ public class SwerveModule {
       boolean isReversed
     ) {
 
-      this.id = swerveModuleSettings.id();
-
-    //SparkMaxConfig config = new SparkMaxConfig();
-    //config.idleMode(IdleMode.kBrake)
-    //  .encoder.velocityConversionFactor(K_VELOCITY_CONVERSION_FACTOR)
-    //  .positionConversionFactor(2 * Math.PI * K_WHEEL_RADIUS / K_SPEED_GEAR_RATIO);
-
     m_driveMotor = new TalonFX(swerveModuleSettings.driveMotorChannel(), "CANivore");
     MotorOutputConfigs driveMotorOutputConfigs = new MotorOutputConfigs();
     driveMotorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
@@ -87,14 +76,7 @@ public class SwerveModule {
     MotorOutputConfigs turningMotorOutputConfigs = new MotorOutputConfigs();
     turningMotorOutputConfigs.NeutralMode = NeutralModeValue.Coast;
     turningMotorOutputConfigs.Inverted = InvertedValue.Clockwise_Positive;
-    m_turningMotor.getConfigurator().apply(turningMotorOutputConfigs);    
-
-    // m_driveMotor = new SparkMax(swerveModuleSettings.driveMotorChannel(), MotorType.kBrushless);
-    // m_driveMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    // m_turningMotor = new SparkMax(swerveModuleSettings.turningMotorChannel(), MotorType.kBrushless);
-    // m_turningMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-    // m_driveEncoder = m_driveMotor.getEncoder();//new Encoder(driveEncoderChannelA, driveEncoderChannelB);
+    m_turningMotor.getConfigurator().apply(turningMotorOutputConfigs);
     m_turningEncoder = new CANcoder(swerveModuleSettings.turningEncoderId(), "CANivore");//new Encoder(turningEncoderChannelA, turningEncoderChannelB);
 
     // Limit the PID Controller's input range between -pi and pi and set the input
@@ -110,8 +92,6 @@ public class SwerveModule {
    * @return The current state of the module.
    */
   public SwerveModuleState getState() {
-    // return new SwerveModuleState(
-    //     m_driveEncoder.getRate(), new Rotation2d(m_turningEncoder.getDistance()));
         return new SwerveModuleState(
           getDriveVelocityMeterPerSecond(), Rotation2d.fromRadians(m_turningEncoder.getAbsolutePosition().getValueAsDouble()));
   
@@ -127,8 +107,6 @@ public class SwerveModule {
    * @return The current position of the module.
    */
   public SwerveModulePosition getPosition() {
-    // return new SwerveModulePosition(
-    //     m_driveEncoder.getDistance(), new Rotation2d(m_turningEncoder.getDistance()));
         return new SwerveModulePosition(
           m_driveMotor.getPosition().getValueAsDouble(), Rotation2d.fromRadians(m_turningEncoder.getAbsolutePosition().getValueAsDouble() * 2 * Math.PI));
   
@@ -149,24 +127,18 @@ public class SwerveModule {
    */
   public void setDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
-    // SwerveModuleState state =
-    //     SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getDistance()));
     desiredState.optimize(Rotation2d.fromRadians(m_turningEncoder.getAbsolutePosition().getValueAsDouble()));
     double wheelAngle = getWheelAngle();
     double targetWheelAngle = desiredState.angle.getRadians();
 
     // Calculate the turning motor output from the turning PID controller.
-    // final double turnOutput =
-    //     m_turningPIDController.calculate(m_turningEncoder.getDistance(), state.angle.getRadians());
     final double turnOutput =
         m_turningPIDController.calculate(wheelAngle, targetWheelAngle);
 
     final double turnFeedforward =
         m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
 
-        // Calculate the drive output from the drive PID controller.
-    // final double driveOutput =
-    //     m_drivePIDController.calculate(m_driveEncoder.getRate(), state.speedMetersPerSecond);
+    // Calculate the drive output from the drive PID controller.
     final double speed = getDriveVelocityMeterPerSecond();
     final double targetSpeed = desiredState.speedMetersPerSecond * changeSpeedDirection(wheelAngle, targetWheelAngle);
 
@@ -178,9 +150,7 @@ public class SwerveModule {
 
     final double driveFeedforward = m_driveFeedforward.calculate(targetSpeedNormalized);
 
-    double atPosition = m_turningPIDController.atGoal() ? 1.0 : 1.0;
-    double motorSetPoint = (driveOutput + driveFeedforward) * reversed * atPosition; 
-    // motorSetPoint = targetSpeed / Drivetrain.K_MAX_SPEED;
+    double motorSetPoint = (driveOutput + driveFeedforward) * reversed; 
     
     m_driveMotor.set(capMotorSetPoint(motorSetPoint, speed));
     m_turningMotor.set(turnOutput + turnFeedforward);
