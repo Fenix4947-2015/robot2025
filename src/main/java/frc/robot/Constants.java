@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.subsystems.swerve.Drivetrain;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -26,8 +24,14 @@ public final class Constants {
         public static final int kIntakeDetectorChannel = 5;
         public static final int kShooterMotorTopChannel = 27;
         public static final int kShooterMotorBottomChannel = 23;
-        public static final int kArmMotorOneChannel = 31;
-        public static final int kArmMotorTwoChannel = 32;
+
+        public static final int kArmMotor1CanId = 5;
+        public static final int kArmMotor2CanId = 6;
+        public static final int kArmMotor3CanId = 7;
+        public static final int kArmMotor4CanId = 8;
+        public static final int kArmCancoderCanId = 9;
+        public static final int kArmLowLimitSwitchChannel = 8;
+
         public static final int kArmEncoderChannel1 = 7;
         public static final int kArmEncoderChannel2 = 6;
         public static final int kWinchMotorOneChannel = 24;
@@ -35,16 +39,7 @@ public final class Constants {
         public static final int kWinchEncoderChannel1 = 9;
         public static final int kWinchEncoderChannel2 = 8;
         public static final int kWinchSafetySwitchChannel = 6;
-        public static final int kArmDutyCycleChannel = 7;
 
-        //public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsFL = new Drivetrain.SwerveModuleSettings(1, 56, 55, 60);
-        //public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsFR = new Drivetrain.SwerveModuleSettings(2, 54, 53, 61);
-        //public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsBL = new Drivetrain.SwerveModuleSettings(3, 58, 57, 59);
-        //public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsBR = new Drivetrain.SwerveModuleSettings(4, 52, 51, 62);
-        public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsFL = new Drivetrain.SwerveModuleSettings(1, 11, 12, 13);
-        public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsFR = new Drivetrain.SwerveModuleSettings(2, 21, 22, 23);
-        public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsBR = new Drivetrain.SwerveModuleSettings(3, 31, 32, 33);
-        public static Drivetrain.SwerveModuleSettings kSwerveModuleSettingsBL = new Drivetrain.SwerveModuleSettings(4, 41, 42, 43);
         public static final int kPigeon2Channel = 3;
     }
 
