@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 
 public class Telemetry {
+    private static final boolean ENABLE_TELEMETRY = false;
+
     private final double MaxSpeed;
 
     /**
@@ -30,7 +32,9 @@ public class Telemetry {
      */
     public Telemetry(double maxSpeed) {
         MaxSpeed = maxSpeed;
-        SignalLogger.start();
+        if (ENABLE_TELEMETRY) {
+            SignalLogger.start();
+        }
     }
 
     /* What to publish over networktables for telemetry */

@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SmartDashboardWrapper {
 
-    public static final boolean ENABLE_DISPLAY = false;
+    public static final boolean ENABLE_DISPLAY = true;
     public static final boolean ENABLE_IMPORTANT_DISPLAY = true;
 
     public static boolean putNumber(String key, double value) {
