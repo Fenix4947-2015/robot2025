@@ -81,7 +81,7 @@ public class Arm extends SubsystemBase {
     }
 
     public double getEncoderDistance() {
-        return -m_encoder.getAbsolutePosition().getValueAsDouble();
+        return -m_encoder.getPosition().getValueAsDouble();
     }
 
     public void resetEncoder() {
@@ -97,7 +97,7 @@ public class Arm extends SubsystemBase {
     }
 
     private void moveDirect() {
-        double output = this.directOutput; //limitOutput(this.directOutput, getEncoderDistance());
+        double output = limitOutput(this.directOutput, getEncoderDistance());
         log(output);
         m_motor1.set(output);
     }
@@ -117,12 +117,12 @@ public class Arm extends SubsystemBase {
         SmartDashboardWrapper.putBoolean("Arm / Low limit switch", m_lowLimitSwitch.get());
     }
 
-    private double limitOutput(double output, double angle) {
-        if (angle > Constants.Arm.kLowestPosition) {
-            return Math.min(output, 0);
-        }
-        if (angle < Constants.Arm.kHighestPosition) {
+    private double limitOutput(double output, double position) {
+        if (position < Constants.Arm.kLowestPosition || m_lowLimitSwitch.get()) {
             return Math.max(output, 0);
+        }
+        if (position > Constants.Arm.kHighestPosition) {
+            return Math.min(output, 0);
         }
         return output;
     }

@@ -50,8 +50,8 @@ public final class Constants {
         public static final double kS = 0.06;
         public static final double kV = 0;
         public static final double kToleranceDegrees = 1.0;
-        public static final double kLowestPosition = 100.0;
-        public static final double kHighestPosition = 5.0;
+        public static final double kLowestPosition = 0.0;
+        public static final double kHighestPosition = 0.95;
         public static final double kSafePosition = 50.0;
         public static final double kDistanceShootNear = 1.5;
         public static final double kDistanceShootFar = 3.4;
