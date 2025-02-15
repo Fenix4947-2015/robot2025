@@ -118,7 +118,7 @@ public class Arm extends SubsystemBase {
     }
 
     private double limitOutput(double output, double position) {
-        if (position < Constants.Arm.kLowestPosition || m_lowLimitSwitch.get()) {
+        if (position < Constants.Arm.kLowestPosition || !m_lowLimitSwitch.get()) {
             return Math.max(output, 0);
         }
         if (position > Constants.Arm.kHighestPosition) {

@@ -7,9 +7,13 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.LimelightHelpers;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.generated.TunerConstants;
+import frc.robot.limelight.LimelightThree;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class DriveSwerveCommand extends Command {
@@ -30,11 +34,13 @@ public class DriveSwerveCommand extends Command {
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             //.withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * 0.2) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    private final LimelightThree limelightThree;
 
-    public DriveSwerveCommand(CommandSwerveDrivetrain commandSwerveDrivetrain, CommandXboxController joystick) {
+    public DriveSwerveCommand(CommandSwerveDrivetrain commandSwerveDrivetrain, CommandXboxController joystick, LimelightThree limelightThree) {
         addRequirements(commandSwerveDrivetrain);
         this.drivetrain = commandSwerveDrivetrain;
         this.joystick = joystick;
+        this.limelightThree = limelightThree;
     }
 
     @Override
@@ -51,6 +57,16 @@ public class DriveSwerveCommand extends Command {
         double leftYInvDbSq = Math.pow(leftYInvDb, 2.0) * Math.signum(leftYInvDb);
         double leftXInvDbSq = Math.pow(leftXInvDb, 2.0) * Math.signum(leftXInvDb);
         double rightInvDbSq = Math.pow(rightXInvDb, 2.0) * Math.signum(rightXInvDb);
+
+        var driveState = drivetrain.getState();
+        double headingDeg = drivetrain.getPigeon2().getYaw().getValueAsDouble();
+        double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
+
+        LimelightHelpers.SetRobotOrientation("limelight", headingDeg, 0, 0, 0, 0, 0);
+        PoseEstimate llMeasurement = limelightThree.getPoseEstimate();
+        if (llMeasurement != null && llMeasurement.tagCount > 0 && Math.abs(omegaRps) < 2.0) {
+                drivetrain.addVisionMeasurement(llMeasurement.pose, llMeasurement.timestampSeconds);
+        }
 
         this.drivetrain.applyRequest(() ->
                 drive.withVelocityX(leftYInvDbSq * MaxSpeed) // Drive forward with negative Y (forward)
