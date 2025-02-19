@@ -81,6 +81,7 @@ public class Drivetrain extends SubsystemBase {
   private void configureAutoBuilder() {
     try {
         var config = RobotConfig.fromGUISettings();
+        System.out.println("Configure AutoBuilder");
           AutoBuilder.configure(
                 () -> getOdometry(),   // Supplier of current robot pose
                 this::resetOdometry,         // Consumer for seeding pose against auto

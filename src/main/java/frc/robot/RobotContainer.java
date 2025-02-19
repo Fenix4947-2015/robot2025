@@ -24,17 +24,19 @@ public class RobotContainer {
   public final CommandXboxController m_driverController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
 
-  public final Drivetrain m_driveTrain = new Drivetrain(SPEED_RATIO);
+  public final Drivetrain m_driveTrain;
 
-  private final DriveSwerve m_driveSwerve = new DriveSwerve(m_driverController, m_driveTrain, SPEED_RATIO);
+  private final DriveSwerve m_driveSwerve;
 
 
   /* Path follower */
   private final SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
-      
-    autoChooser = AutoBuilder.buildAutoChooser("Tests");
+    m_driveTrain = new Drivetrain(SPEED_RATIO);
+    m_driveSwerve = new DriveSwerve(m_driverController, m_driveTrain, SPEED_RATIO);
+
+    autoChooser = AutoBuilder.buildAutoChooser("First_path_test");
     SmartDashboard.putData("Auto Mode", autoChooser);
 
     configureBindings();
