@@ -5,6 +5,13 @@
 package frc.robot.subsystems.swerve;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.controllers.PathFollowingController;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -14,6 +21,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SmartDashboardWrapper;
 
@@ -66,7 +75,37 @@ public class Drivetrain extends SubsystemBase {
     this.speedRatio = speedRatio;
     this.gyroOffset = 0;
     m_rotationPIDController.setSetpoint(0.0);
+    configureAutoBuilder();
   }
+  
+  private void configureAutoBuilder() {
+    try {
+        var config = RobotConfig.fromGUISettings();
+          AutoBuilder.configure(
+                () -> getOdometry(),   // Supplier of current robot pose
+                this::resetOdometry,         // Consumer for seeding pose against auto
+                () -> getVelocity(), // Supplier of current robot speeds
+                // Consumer of ChassisSpeeds and feedforwards to drive the robot
+                (speeds, feedforwards) -> drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond,speeds.omegaRadiansPerSecond,false),/*  setControl(
+                    m_pathApplyRobotSpeeds.withSpeeds(speeds)
+                        .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
+                        .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())
+                ),*/
+                new PPHolonomicDriveController(
+                    // PID constants for translation
+                    new PIDConstants(10, 0, 0),
+                    // PID constants for rotation
+                    new PIDConstants(7, 0, 0)
+                ),
+                config,
+                // Assume the path needs to be flipped for Red vs Blue, this is normally the case
+                () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
+                this // Subsystem for requirements
+            );
+        } catch (Exception ex) {
+            DriverStation.reportError("Failed to load PathPlanner config and configure AutoBuilder", ex.getStackTrace());
+        }
+    }
 
   /**
    * Method to drive the robot using joystick info.
@@ -92,6 +131,13 @@ public class Drivetrain extends SubsystemBase {
     m_ySpeed = ySpeed;
     m_rot = rot;
     m_fieldRelative = fieldRelative;
+  }
+
+  public void driveRelative(double xSpeed, double ySpeed) {
+    //System.out.println(Instant.now() + " " + getClass().getSimpleName() + ".drive()");
+
+    m_xSpeed = xSpeed;
+    m_ySpeed = ySpeed;
   }
 
   @Override

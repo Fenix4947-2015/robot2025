@@ -4,12 +4,17 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.drivetrain.DriveSwerve;
 import frc.robot.subsystems.swerve.Drivetrain;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 public class RobotContainer {
   private final double SPEED_RATIO = 1.0;
@@ -23,7 +28,15 @@ public class RobotContainer {
 
   private final DriveSwerve m_driveSwerve = new DriveSwerve(m_driverController, m_driveTrain, SPEED_RATIO);
 
+
+  /* Path follower */
+  private final SendableChooser<Command> autoChooser;
+
   public RobotContainer() {
+      
+    autoChooser = AutoBuilder.buildAutoChooser("Tests");
+    SmartDashboard.putData("Auto Mode", autoChooser);
+
     configureBindings();
     configureDefaultCommands();
   }
@@ -36,6 +49,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return autoChooser.getSelected();
   }
 }
