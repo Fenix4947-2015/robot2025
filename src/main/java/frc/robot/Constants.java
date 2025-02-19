@@ -31,6 +31,9 @@ public final class Constants {
         public static final int kArmMotor4CanId = 8;
         public static final int kArmCancoderCanId = 9;
         public static final int kArmLowLimitSwitchChannel = 8;
+        public static final int kArmExtenderChannel = 4;
+        public static final int kArmSideGripperChannel = 0;
+        public static final int kArmFrontGripperChannel = 2;
 
         public static final int kArmEncoderChannel1 = 7;
         public static final int kArmEncoderChannel2 = 6;
@@ -41,6 +44,7 @@ public final class Constants {
         public static final int kWinchSafetySwitchChannel = 6;
 
         public static final int kPigeon2Channel = 3;
+        public static final int kPneumaticHubCanId = 2;
     }
 
     public static class Arm {

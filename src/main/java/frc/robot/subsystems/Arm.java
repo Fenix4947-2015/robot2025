@@ -10,20 +10,27 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ElectricConstants;
 import frc.robot.SmartDashboardWrapper;
 
 public class Arm extends SubsystemBase {
 
-    private final SparkMax m_motor1 = new SparkMax(Constants.ElectricConstants.kArmMotor1CanId, SparkLowLevel.MotorType.kBrushless);
-    private final SparkMax m_motor2 = new SparkMax(Constants.ElectricConstants.kArmMotor2CanId, SparkLowLevel.MotorType.kBrushless);
-    private final SparkMax m_motor3 = new SparkMax(Constants.ElectricConstants.kArmMotor3CanId, SparkLowLevel.MotorType.kBrushless);
-    private final SparkMax m_motor4 = new SparkMax(Constants.ElectricConstants.kArmMotor4CanId, SparkLowLevel.MotorType.kBrushless);
+    private final SparkMax m_motor1 = new SparkMax(ElectricConstants.kArmMotor1CanId, SparkLowLevel.MotorType.kBrushless);
+    private final SparkMax m_motor2 = new SparkMax(ElectricConstants.kArmMotor2CanId, SparkLowLevel.MotorType.kBrushless);
+    private final SparkMax m_motor3 = new SparkMax(ElectricConstants.kArmMotor3CanId, SparkLowLevel.MotorType.kBrushless);
+    private final SparkMax m_motor4 = new SparkMax(ElectricConstants.kArmMotor4CanId, SparkLowLevel.MotorType.kBrushless);
 
-    private final CANcoder m_encoder = new CANcoder(Constants.ElectricConstants.kArmCancoderCanId);;
+    private final CANcoder m_encoder = new CANcoder(ElectricConstants.kArmCancoderCanId);;
 
-    private final DigitalInput m_lowLimitSwitch = new DigitalInput(Constants.ElectricConstants.kArmLowLimitSwitchChannel);
+    private final DigitalInput m_lowLimitSwitch = new DigitalInput(ElectricConstants.kArmLowLimitSwitchChannel);
+
+    private final Solenoid m_extender = new Solenoid(ElectricConstants.kPneumaticHubCanId, PneumaticsModuleType.REVPH, ElectricConstants.kArmExtenderChannel);
+    private final Solenoid m_sideGripper = new Solenoid(ElectricConstants.kPneumaticHubCanId, PneumaticsModuleType.REVPH, ElectricConstants.kArmSideGripperChannel);
+    private final Solenoid m_frontGripper = new Solenoid(ElectricConstants.kPneumaticHubCanId, PneumaticsModuleType.REVPH, ElectricConstants.kArmFrontGripperChannel);
 
     private final PIDController m_pidController = new PIDController(Constants.Arm.kP, Constants.Arm.kI, Constants.Arm.kD);
     private final SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.Arm.kS, Constants.Arm.kV);
@@ -125,5 +132,41 @@ public class Arm extends SubsystemBase {
             return Math.min(output, 0);
         }
         return output;
+    }
+
+    public void extendExtender() {
+        m_extender.set(true);
+    }
+
+    public void retractExtender() {
+        m_extender.set(false);
+    }
+
+    public void toggleExtender() {
+        m_extender.toggle();
+    }
+
+    public void openSideGripper() {
+        m_sideGripper.set(true);
+    }
+
+    public void closeSideGripper() {
+        m_sideGripper.set(false);
+    }
+
+    public void toggleSideGripper() {
+        m_sideGripper.toggle();
+    }
+
+    public void openFrontGripper() {
+        m_frontGripper.set(true);
+    }
+
+    public void closeFrontGripper() {
+        m_frontGripper.set(false);
+    }
+
+    public void toggleFrontGripper() {
+        m_frontGripper.toggle();
     }
 }

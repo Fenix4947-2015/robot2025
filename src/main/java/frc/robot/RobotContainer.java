@@ -73,8 +73,11 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
-
         m_helperController.leftStick().whileTrue(m_moveArmDirect);
+
+        m_helperController.a().onTrue(new InstantCommand(m_arm::toggleFrontGripper, m_arm));
+        m_helperController.b().onTrue(new InstantCommand(m_arm::toggleSideGripper, m_arm));
+        m_helperController.x().onTrue(new InstantCommand(m_arm::toggleExtender, m_arm));
     }
 
     public void configureDefaultCommands() {
