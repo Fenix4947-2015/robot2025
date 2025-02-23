@@ -13,7 +13,7 @@ import frc.robot.LimelightHelpers;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.generated.TunerConstants;
-import frc.robot.limelight.LimelightThree;
+import frc.robot.limelight.LimelightFour;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class DriveSwerveCommand extends Command {
@@ -34,13 +34,13 @@ public class DriveSwerveCommand extends Command {
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             //.withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * 0.2) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    private final LimelightThree limelightThree;
+    private final LimelightFour limelightFour;
 
-    public DriveSwerveCommand(CommandSwerveDrivetrain commandSwerveDrivetrain, CommandXboxController joystick, LimelightThree limelightThree) {
+    public DriveSwerveCommand(CommandSwerveDrivetrain commandSwerveDrivetrain, CommandXboxController joystick, LimelightFour limelightFour) {
         addRequirements(commandSwerveDrivetrain);
         this.drivetrain = commandSwerveDrivetrain;
         this.joystick = joystick;
-        this.limelightThree = limelightThree;
+        this.limelightFour = limelightFour;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class DriveSwerveCommand extends Command {
         double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
 
         LimelightHelpers.SetRobotOrientation("limelight", headingDeg, 0, 0, 0, 0, 0);
-        PoseEstimate llMeasurement = limelightThree.getPoseEstimate();
+        PoseEstimate llMeasurement = limelightFour.getPoseEstimate();
         if (llMeasurement != null && llMeasurement.tagCount > 0 && Math.abs(omegaRps) < 2.0) {
                 drivetrain.addVisionMeasurement(llMeasurement.pose, llMeasurement.timestampSeconds);
         }

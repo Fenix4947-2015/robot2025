@@ -25,7 +25,7 @@ import frc.robot.commands.winch.RollCageGripper;
 import frc.robot.commands.winch.RollWinchSpeed;
 import frc.robot.commands.winch.RollWinchStick;
 import frc.robot.generated.TunerConstants;
-import frc.robot.limelight.LimelightThree;
+import frc.robot.limelight.LimelightFour;
 import frc.robot.subsystems.*;
 
 public class RobotContainer {
@@ -45,9 +45,9 @@ public class RobotContainer {
     public final Balls m_balls = new Balls();
     public final Winch m_winch = new Winch();
     public final CageGripper m_cageGripper = new CageGripper();
-    public final LimelightThree limelightThree = new LimelightThree("limelight", this);
+    public final LimelightFour limelightFour = new LimelightFour("limelight", this);
 
-    private final DriveSwerveCommand driveSwerveCommand = new DriveSwerveCommand(drivetrain, m_driverController, limelightThree);
+    private final DriveSwerveCommand driveSwerveCommand = new DriveSwerveCommand(drivetrain, m_driverController, limelightFour);
     private final StopArm m_stopArm = new StopArm(m_arm);
     private final MoveArmDirect m_moveArmDirect = new MoveArmDirect(m_arm, m_helperController);
     private final RollBalls m_rollBalls = new RollBalls(m_balls, m_helperController);

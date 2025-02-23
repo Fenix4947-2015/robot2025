@@ -6,13 +6,13 @@ import frc.robot.RobotContainer;
 import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.LimelightHelpers.PoseEstimate;
 
-public class LimelightThree extends Limelight {
+public class LimelightFour extends Limelight {
 
     private LimelightHelpers.LimelightResults limelightResults;
     private final String identifier;
     private final RobotContainer m_robotContainer;
 
-  public LimelightThree(String identifier, RobotContainer robotContainer) {
+  public LimelightFour(String identifier, RobotContainer robotContainer) {
     super(identifier);
     this.identifier = identifier;
     m_robotContainer = robotContainer;
