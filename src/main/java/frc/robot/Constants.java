@@ -19,31 +19,28 @@ public final class Constants {
     }
 
     public static class ElectricConstants {
-        public static final int kIntakeMotorChannel = 35;
-        public static final int kIntakeMotorThirdlinkChannel = 28;
-        public static final int kIntakeDetectorChannel = 5;
-        public static final int kShooterMotorTopChannel = 27;
-        public static final int kShooterMotorBottomChannel = 23;
-
         public static final int kArmMotor1CanId = 5;
         public static final int kArmMotor2CanId = 6;
         public static final int kArmMotor3CanId = 7;
         public static final int kArmMotor4CanId = 8;
         public static final int kArmCancoderCanId = 9;
         public static final int kArmLowLimitSwitchChannel = 8;
+        public static final int kArmGripperProximityChannel = 9;
+        public static final int kArmSideGripperLimitSwitch = 7;
+        public static final int kArmFrontGripperLimitSwitch = 6;
         public static final int kArmExtenderChannel = 4;
         public static final int kArmSideGripperChannel = 0;
         public static final int kArmFrontGripperChannel = 2;
 
-        public static final int kArmEncoderChannel1 = 7;
-        public static final int kArmEncoderChannel2 = 6;
-        public static final int kWinchMotorOneChannel = 24;
-        public static final int kWinchMotorTwoChannel = 29;
-        public static final int kWinchEncoderChannel1 = 9;
-        public static final int kWinchEncoderChannel2 = 8;
-        public static final int kWinchSafetySwitchChannel = 6;
+        public static final int kBallsCanId = 12;
 
-        public static final int kPigeon2Channel = 3;
+        public static final int kWinchClampChannel = 15;
+        public static final int kWinchMotorOneChannel = 16;
+        public static final int kWinchMotorTwoChannel = 17;
+        public static final int kWinchEncoderChannel1 = 0;
+        public static final int kWinchEncoderChannel2 = 1;
+
+        public static final int kPigeon2CanId = 3;
         public static final int kPneumaticHubCanId = 2;
     }
 
@@ -54,13 +51,11 @@ public final class Constants {
         public static final double kS = 0.06;
         public static final double kV = 0;
         public static final double kToleranceDegrees = 1.0;
-        public static final double kLowestPosition = 0.0;
-        public static final double kHighestPosition = 0.9;
-        public static final double kSafePosition = 50.0;
-        public static final double kDistanceShootNear = 1.5;
-        public static final double kDistanceShootFar = 3.4;
-        public static final double kAngleShootNear = 100;
-        public static final double kAngleShootFar = 75;
+        public static final double kLowestPosition = 0.234;
+        public static final double kHighestPosition = 1.25;
+        public static final double kCoralHighPosition = 1.08;
+        public static final double kCoralMidPosition = 0.83;
+        public static final double kCoralLowPosition = 0.6;
     }
 
     public static class Limelight {

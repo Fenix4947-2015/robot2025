@@ -121,11 +121,15 @@ public class Arm extends SubsystemBase {
     private void log(double output) {
         SmartDashboardWrapper.putNumber("Arm / Output", output);
         SmartDashboardWrapper.putNumberImportant("Arm / Distance", getEncoderDistance());
-        SmartDashboardWrapper.putBoolean("Arm / Low limit switch", m_lowLimitSwitch.get());
+        SmartDashboardWrapper.putBoolean("Arm / Low limit switch", lowLimitSwitchPushed());
+    }
+
+    private boolean lowLimitSwitchPushed() {
+        return !m_lowLimitSwitch.get();
     }
 
     private double limitOutput(double output, double position) {
-        if (position < Constants.Arm.kLowestPosition || !m_lowLimitSwitch.get()) {
+        if (position < Constants.Arm.kLowestPosition || lowLimitSwitchPushed()) {
             return Math.max(output, 0);
         }
         if (position > Constants.Arm.kHighestPosition) {

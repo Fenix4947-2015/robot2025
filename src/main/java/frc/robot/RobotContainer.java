@@ -16,12 +16,15 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.arm.MoveArmDirect;
 import frc.robot.commands.arm.StopArm;
+import frc.robot.commands.balls.RollBalls;
 import frc.robot.commands.drivetrain.DriveSwerveCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.limelight.LimelightThree;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Balls;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class RobotContainer {
@@ -33,16 +36,18 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final CommandXboxController m_driverController = new CommandXboxController(0);
-    private final CommandXboxController m_helperController = new CommandXboxController(1);
+    private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+    private final CommandXboxController m_helperController = new CommandXboxController(OperatorConstants.kHelperControllerPort);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Arm m_arm = new Arm();
+    public final Balls m_balls = new Balls();
     public final LimelightThree limelightThree = new LimelightThree("limelight", this);
 
     private final DriveSwerveCommand driveSwerveCommand = new DriveSwerveCommand(drivetrain, m_driverController, limelightThree);
     private final StopArm m_stopArm = new StopArm(m_arm);
     private final MoveArmDirect m_moveArmDirect = new MoveArmDirect(m_arm, m_helperController);
+    private final RollBalls m_rollBalls = new RollBalls(m_balls, m_helperController);
 
     public Alliance m_alliance = Alliance.Red;
 
@@ -83,6 +88,7 @@ public class RobotContainer {
     public void configureDefaultCommands() {
         drivetrain.setDefaultCommand(driveSwerveCommand);
         m_arm.setDefaultCommand(m_stopArm);
+        m_balls.setDefaultCommand(m_rollBalls);
     }
 
     public Command getAutonomousCommand() {
