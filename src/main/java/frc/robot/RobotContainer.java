@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.arm.KeepArmInPosition;
 import frc.robot.commands.arm.MoveArmDirect;
 import frc.robot.commands.arm.StopArm;
 import frc.robot.commands.balls.RollBalls;
@@ -48,7 +49,8 @@ public class RobotContainer {
 
     private final DriveSwerveCommand driveSwerveCommand = new DriveSwerveCommand(drivetrain, m_driverController, limelightFour);
     private final StopArm m_stopArm = new StopArm(m_arm);
-    private final MoveArmDirect m_moveArmDirect = new MoveArmDirect(m_arm, m_helperController);
+    private final KeepArmInPosition m_keepArmInPosition = new KeepArmInPosition(m_arm);
+    private final MoveArmDirect m_moveArmDirect = new MoveArmDirect(m_arm, m_helperController, m_keepArmInPosition);
     private final RollBalls m_rollBalls = new RollBalls(m_balls, m_helperController);
     private final RollWinchStick m_rollWinchStick = new RollWinchStick(m_winch, m_helperController);
     private final RollWinchSpeed m_rollWinchSpeed = new RollWinchSpeed(m_winch, 0.5);
@@ -94,7 +96,7 @@ public class RobotContainer {
 
     public void configureDefaultCommands() {
         drivetrain.setDefaultCommand(driveSwerveCommand);
-        m_arm.setDefaultCommand(m_stopArm);
+        m_arm.setDefaultCommand(m_keepArmInPosition);
         m_balls.setDefaultCommand(m_rollBalls);
         m_winch.setDefaultCommand(m_rollWinchSpeed);
         m_cageGripper.setDefaultCommand(m_stopCageGripper);

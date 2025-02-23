@@ -61,13 +61,13 @@ public class Arm extends SubsystemBase {
         config4.idleMode(IdleMode.kBrake).follow(m_motor1.getDeviceId());
         m_motor4.configure(config4, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        m_pidController.setTolerance(Constants.Arm.kToleranceDegrees);
+        m_pidController.setTolerance(Constants.Arm.kToleranceDistance);
     }
 
     public void setTargetPosition(double position) {
         // Clamp the position to be within the physical limits of the arm
-        position = Math.min(position, Constants.Arm.kLowestPosition);
-        position = Math.max(position, Constants.Arm.kHighestPosition);
+        position = Math.max(position, Constants.Arm.kLowestPosition);
+        position = Math.min(position, Constants.Arm.kHighestPosition);
         m_pidController.setSetpoint(position);
     }
 
@@ -97,14 +97,16 @@ public class Arm extends SubsystemBase {
     }
 
     private void movePid() {
-        double rawOutput = m_pidController.calculate(getEncoderDistance()) + feedForward.calculate(0);
-        double output = limitOutput(rawOutput, getEncoderDistance());
+        double rawOutput = m_pidController.calculate(getEncoderDistance());
+        // disable feedforward when arm is at lowest position
+        double ffOutput = rawOutput + (armAtLowestPos() ? 0.0 : feedForward.calculate(rawOutput));
+        double output = limitOutput(ffOutput);
         log(output);
         m_motor1.set(output);
     }
 
     private void moveDirect() {
-        double output = limitOutput(this.directOutput, getEncoderDistance());
+        double output = limitOutput(this.directOutput);
         log(output);
         m_motor1.set(output);
     }
@@ -121,18 +123,28 @@ public class Arm extends SubsystemBase {
     private void log(double output) {
         SmartDashboardWrapper.putNumber("Arm / Output", output);
         SmartDashboardWrapper.putNumberImportant("Arm / Distance", getEncoderDistance());
+        SmartDashboardWrapper.putNumber("Arm / Setpoint", m_pidController.getSetpoint());
         SmartDashboardWrapper.putBoolean("Arm / Low limit switch", lowLimitSwitchPushed());
+        SmartDashboardWrapper.putBoolean("Arm / At setpoint", atSetpoint());
     }
 
     private boolean lowLimitSwitchPushed() {
         return !m_lowLimitSwitch.get();
     }
 
-    private double limitOutput(double output, double position) {
-        if (position < Constants.Arm.kLowestPosition || lowLimitSwitchPushed()) {
+    private boolean armAtLowestPos() {
+        return getEncoderDistance() < Constants.Arm.kLowestPosition || lowLimitSwitchPushed();
+    }
+
+    private boolean armAtHighestPos() {
+        return getEncoderDistance() > Constants.Arm.kHighestPosition;
+    }
+
+    private double limitOutput(double output) {
+        if (armAtLowestPos()) {
             return Math.max(output, 0);
         }
-        if (position > Constants.Arm.kHighestPosition) {
+        if (armAtHighestPos()) {
             return Math.min(output, 0);
         }
         return output;

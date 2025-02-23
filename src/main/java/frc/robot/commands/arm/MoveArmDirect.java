@@ -8,10 +8,12 @@ import frc.robot.subsystems.Arm;
 public class MoveArmDirect extends Command {
     private final Arm m_arm;
     private final CommandXboxController m_controller;
+    private final KeepArmInPosition m_keepArmInPositionCommand;
 
-    public MoveArmDirect(Arm arm, CommandXboxController controller) {
+    public MoveArmDirect(Arm arm, CommandXboxController controller, KeepArmInPosition keepArmInPositionCommand) {
         m_arm = arm;
         m_controller = controller;
+        m_keepArmInPositionCommand = keepArmInPositionCommand;
         addRequirements(arm);
     }
 
@@ -25,5 +27,10 @@ public class MoveArmDirect extends Command {
         double speed = -m_controller.getLeftY();
 
         m_arm.setDirectOutput(MathUtil.applyDeadband(speed, 0.1));
+    }
+
+    @Override
+    public void end(boolean isFinished) {
+        m_keepArmInPositionCommand.setPositionAsCurrent();
     }
 }
