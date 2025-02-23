@@ -21,11 +21,12 @@ import frc.robot.commands.arm.MoveArmDirect;
 import frc.robot.commands.arm.StopArm;
 import frc.robot.commands.balls.RollBalls;
 import frc.robot.commands.drivetrain.DriveSwerveCommand;
+import frc.robot.commands.winch.RollCageGripper;
+import frc.robot.commands.winch.RollWinchSpeed;
+import frc.robot.commands.winch.RollWinchStick;
 import frc.robot.generated.TunerConstants;
 import frc.robot.limelight.LimelightThree;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Balls;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.*;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -42,12 +43,18 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Arm m_arm = new Arm();
     public final Balls m_balls = new Balls();
+    public final Winch m_winch = new Winch();
+    public final CageGripper m_cageGripper = new CageGripper();
     public final LimelightThree limelightThree = new LimelightThree("limelight", this);
 
     private final DriveSwerveCommand driveSwerveCommand = new DriveSwerveCommand(drivetrain, m_driverController, limelightThree);
     private final StopArm m_stopArm = new StopArm(m_arm);
     private final MoveArmDirect m_moveArmDirect = new MoveArmDirect(m_arm, m_helperController);
     private final RollBalls m_rollBalls = new RollBalls(m_balls, m_helperController);
+    private final RollWinchStick m_rollWinchStick = new RollWinchStick(m_winch, m_helperController);
+    private final RollWinchSpeed m_rollWinchSpeed = new RollWinchSpeed(m_winch, 0.5);
+    private final RollCageGripper m_rollCageGripper = new RollCageGripper(m_cageGripper);
+    private final RollCageGripper m_stopCageGripper = new RollCageGripper(m_cageGripper, 0.0);
 
     public Alliance m_alliance = Alliance.Red;
 
@@ -83,12 +90,15 @@ public class RobotContainer {
         m_helperController.a().onTrue(new InstantCommand(m_arm::toggleFrontGripper, m_arm));
         m_helperController.b().onTrue(new InstantCommand(m_arm::toggleSideGripper, m_arm));
         m_helperController.x().onTrue(new InstantCommand(m_arm::toggleExtender, m_arm));
+        m_helperController.y().whileTrue(m_rollCageGripper);
     }
 
     public void configureDefaultCommands() {
         drivetrain.setDefaultCommand(driveSwerveCommand);
         m_arm.setDefaultCommand(m_stopArm);
         m_balls.setDefaultCommand(m_rollBalls);
+        m_winch.setDefaultCommand(m_rollWinchSpeed);
+        m_cageGripper.setDefaultCommand(m_stopCageGripper);
     }
 
     public Command getAutonomousCommand() {

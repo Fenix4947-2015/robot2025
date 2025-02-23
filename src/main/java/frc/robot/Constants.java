@@ -34,7 +34,7 @@ public final class Constants {
 
         public static final int kBallsCanId = 12;
 
-        public static final int kWinchClampChannel = 15;
+        public static final int kWinchCageGripperChannel = 15;
         public static final int kWinchMotorOneChannel = 16;
         public static final int kWinchMotorTwoChannel = 17;
         public static final int kWinchEncoderChannel1 = 0;
