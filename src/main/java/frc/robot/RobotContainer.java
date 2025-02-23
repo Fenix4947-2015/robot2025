@@ -4,10 +4,7 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.*;
-
 import com.ctre.phoenix6.swerve.SwerveRequest;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -28,8 +25,10 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.limelight.LimelightFour;
 import frc.robot.subsystems.*;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 public class RobotContainer {
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private final double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -69,7 +68,7 @@ public class RobotContainer {
 
         m_driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         m_driverController.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-m_driverController.getLeftY(), -m_driverController.getLeftX()))
+                point.withModuleDirection(new Rotation2d(-m_driverController.getLeftY(), -m_driverController.getLeftX()))
         ));
 
         // Run SysId routines when holding back/start and X/Y.
