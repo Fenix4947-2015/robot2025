@@ -63,7 +63,7 @@ public class RobotContainer {
     private final MoveArmDropPosition m_moveArmL2 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L2);
     private final RollBalls m_rollBalls = new RollBalls(m_balls, m_helperController);
     private final RollWinchStick m_rollWinchStick = new RollWinchStick(m_winch, m_helperController);
-    private final RollWinchSpeed m_rollWinchSpeed = new RollWinchSpeed(m_winch, 0.5);
+    private final RollWinchSpeed m_stopWinch = new RollWinchSpeed(m_winch, 0.0);
     private final RollCageGripper m_rollCageGripper = new RollCageGripper(m_cageGripper);
     private final RollCageGripper m_stopCageGripper = new RollCageGripper(m_cageGripper, 0.0);
 
@@ -100,6 +100,7 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
         m_helperController.leftStick().whileTrue(m_moveArmDirect);
+        m_helperController.rightStick().whileTrue(m_rollWinchStick);
 
         m_helperController.leftBumper().onTrue(new InstantCommand(m_coralGripper::toggleFrontGripper, m_arm));
         m_helperController.rightBumper().onTrue(new InstantCommand(m_coralGripper::toggleSideGripper, m_arm));
@@ -114,7 +115,7 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(driveSwerveCommand);
         m_arm.setDefaultCommand(m_keepArmInPosition);
         m_balls.setDefaultCommand(m_rollBalls);
-        m_winch.setDefaultCommand(m_rollWinchSpeed);
+        m_winch.setDefaultCommand(m_stopWinch);
         m_cageGripper.setDefaultCommand(m_stopCageGripper);
     }
 
