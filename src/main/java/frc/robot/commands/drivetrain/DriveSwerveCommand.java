@@ -59,7 +59,7 @@ public class DriveSwerveCommand extends Command {
         double rightInvDbSq = Math.pow(rightXInvDb, 2.0) * Math.signum(rightXInvDb);
 
         var driveState = drivetrain.getState();
-        double headingDeg = drivetrain.getPigeon2().getYaw().getValueAsDouble();
+        double headingDeg = driveState.Pose.getRotation().getDegrees();
         double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
 
         LimelightHelpers.SetRobotOrientation("limelight", headingDeg, 0, 0, 0, 0, 0);

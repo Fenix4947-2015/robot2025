@@ -101,13 +101,17 @@ public class RobotContainer {
 
         m_helperController.leftStick().whileTrue(m_moveArmDirect);
 
-        m_helperController.leftBumper().onTrue(new InstantCommand(m_coralGripper::toggleFrontGripper, m_arm));
-        m_helperController.rightBumper().onTrue(new InstantCommand(m_coralGripper::toggleSideGripper, m_arm));
+        m_helperController.povLeft().onTrue(m_autoSequences.clampCoral());
+        m_helperController.povRight().onTrue(m_autoSequences.freeCoral());
+        m_helperController.povDown().onTrue(m_autoSequences.dropCoral());
+        m_helperController.povUp().onTrue(new InstantCommand(m_coralGripper::openSideGripper, m_arm));
         m_helperController.start().onTrue(new InstantCommand(m_arm::toggleExtender, m_arm));
         m_helperController.x().whileTrue(m_rollCageGripper);
         m_helperController.y().whileTrue(m_moveArmL4);
         m_helperController.b().whileTrue(m_moveArmL3);
         m_helperController.a().whileTrue(m_moveArmL2);
+        m_helperController.leftBumper().onTrue(new InstantCommand(m_coralGripper::toggleFrontGripper, m_arm));
+        m_helperController.rightBumper().onTrue(new InstantCommand(m_coralGripper::toggleSideGripper, m_arm));
     }
 
     public void configureDefaultCommands() {

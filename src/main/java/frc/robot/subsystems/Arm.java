@@ -79,6 +79,7 @@ public class Arm extends SubsystemBase {
         m_motor4.configure(config4, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         m_pidController.setTolerance(Constants.Arm.kToleranceDistance);
+        m_pidController.setSetpoint(getEncoderDistan);
     }
 
     public void setTargetPosition(double position) {

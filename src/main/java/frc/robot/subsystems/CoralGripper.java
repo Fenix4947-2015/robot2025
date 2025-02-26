@@ -27,11 +27,11 @@ public class CoralGripper extends SubsystemBase {
     }
 
     public void openSideGripper() {
-        m_sideGripper.set(true);
+        m_sideGripper.set(false);
     }
 
     public void closeSideGripper() {
-        m_sideGripper.set(false);
+        m_sideGripper.set(true);
     }
 
     public void toggleSideGripper() {
@@ -39,11 +39,11 @@ public class CoralGripper extends SubsystemBase {
     }
 
     public void openFrontGripper() {
-        m_frontGripper.set(true);
+        m_frontGripper.set(false);
     }
 
     public void closeFrontGripper() {
-        m_frontGripper.set(false);
+        m_frontGripper.set(true);
     }
 
     public void toggleFrontGripper() {
