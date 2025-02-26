@@ -19,18 +19,18 @@ import frc.robot.SmartDashboardWrapper;
 
 public class Arm extends SubsystemBase {
 
+    private final CoralGripper m_coralGripper;
+
     private final SparkMax m_motor1 = new SparkMax(ElectricConstants.kArmMotor1CanId, SparkLowLevel.MotorType.kBrushless);
     private final SparkMax m_motor2 = new SparkMax(ElectricConstants.kArmMotor2CanId, SparkLowLevel.MotorType.kBrushless);
     private final SparkMax m_motor3 = new SparkMax(ElectricConstants.kArmMotor3CanId, SparkLowLevel.MotorType.kBrushless);
     private final SparkMax m_motor4 = new SparkMax(ElectricConstants.kArmMotor4CanId, SparkLowLevel.MotorType.kBrushless);
 
-    private final CANcoder m_encoder = new CANcoder(ElectricConstants.kArmCancoderCanId);;
+    private final CANcoder m_encoder = new CANcoder(ElectricConstants.kArmCancoderCanId);
 
     private final DigitalInput m_lowLimitSwitch = new DigitalInput(ElectricConstants.kArmLowLimitSwitchChannel);
 
     private final Solenoid m_extender = new Solenoid(ElectricConstants.kPneumaticHubCanId, PneumaticsModuleType.REVPH, ElectricConstants.kArmExtenderChannel);
-    private final Solenoid m_sideGripper = new Solenoid(ElectricConstants.kPneumaticHubCanId, PneumaticsModuleType.REVPH, ElectricConstants.kArmSideGripperChannel);
-    private final Solenoid m_frontGripper = new Solenoid(ElectricConstants.kPneumaticHubCanId, PneumaticsModuleType.REVPH, ElectricConstants.kArmFrontGripperChannel);
 
     private final PIDController m_pidController = new PIDController(Constants.Arm.kP, Constants.Arm.kI, Constants.Arm.kD);
     private final SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.Arm.kS, Constants.Arm.kV);
@@ -42,8 +42,25 @@ public class Arm extends SubsystemBase {
         PID
     }
 
-    public Arm() {
-        //resetEncoder();
+    private DropPosition currDropPosition = null;
+    private boolean armRetracted = false;
+
+    public enum DropPosition {
+        L4(Constants.Arm.kCoralL4Position, true),
+        L3(Constants.Arm.kCoralL3Position, false),
+        L2(Constants.Arm.kCoralL2Position, false);
+
+        private final double distance;
+        private final boolean extended;
+
+        DropPosition(double distance, boolean extended) {
+            this.distance = distance;
+            this.extended = extended;
+        }
+    }
+
+    public Arm(CoralGripper coralGripper) {
+        m_coralGripper = coralGripper;
 
         SparkMaxConfig config1 = new SparkMaxConfig();
         config1.idleMode(IdleMode.kBrake);
@@ -71,6 +88,10 @@ public class Arm extends SubsystemBase {
         m_pidController.setSetpoint(position);
     }
 
+    public void setTargetPositionAsCurrent() {
+        setTargetPosition(getEncoderDistance());
+    }
+
     public boolean atSetpoint() {
         return m_pidController.atSetpoint();
     }
@@ -87,13 +108,14 @@ public class Arm extends SubsystemBase {
         this.armMode = ArmMode.DIRECT;
     }
 
-    public double getEncoderDistance() {
-        return -m_encoder.getPosition().getValueAsDouble();
+    public void goToDropPosition(DropPosition dropPosition) {
+        this.currDropPosition = dropPosition;
+        setPidMode();
+        setTargetPosition(this.currDropPosition.distance);
     }
 
-    public void resetEncoder() {
-        // TODO: find how to reset encoder in wpilib 2025
-        //m_encoder.reset();
+    public double getEncoderDistance() {
+        return -m_encoder.getPosition().getValueAsDouble();
     }
 
     private void movePid() {
@@ -111,6 +133,19 @@ public class Arm extends SubsystemBase {
         m_motor1.set(output);
     }
 
+    public void moveExtenderIfRequired() {
+        //System.out.println("m_extender.get:" + m_extender.get());
+        //System.out.println("armRetracted:" + armRetracted);
+        if (armRetracted != m_extender.get()) {
+            if (armRetracted && armAtLowestPos()) {
+                //System.out.println("atLowestPos");
+                m_extender.set(false);
+            } else {
+                m_extender.set(armRetracted);
+            }
+        }
+    }
+
     @Override
     public void periodic() {
         if (armMode == ArmMode.PID) {
@@ -118,6 +153,8 @@ public class Arm extends SubsystemBase {
         } else {
             moveDirect();
         }
+
+        moveExtenderIfRequired();
     }
 
     private void log(double output) {
@@ -133,7 +170,11 @@ public class Arm extends SubsystemBase {
     }
 
     private boolean armAtLowestPos() {
-        return getEncoderDistance() < Constants.Arm.kLowestPosition || lowLimitSwitchPushed();
+        //if (!armRetracted) {
+            return getEncoderDistance() < Constants.Arm.kLowestPosition || lowLimitSwitchPushed();
+        //} else {
+        //    return getEncoderDistance() < Constants.Arm.kCoralL2Position || lowLimitSwitchPushed();
+        //}
     }
 
     private boolean armAtHighestPos() {
@@ -151,38 +192,14 @@ public class Arm extends SubsystemBase {
     }
 
     public void extendExtender() {
-        m_extender.set(true);
+        armRetracted = true;
     }
 
     public void retractExtender() {
-        m_extender.set(false);
+        armRetracted = false;
     }
 
     public void toggleExtender() {
-        m_extender.toggle();
-    }
-
-    public void openSideGripper() {
-        m_sideGripper.set(true);
-    }
-
-    public void closeSideGripper() {
-        m_sideGripper.set(false);
-    }
-
-    public void toggleSideGripper() {
-        m_sideGripper.toggle();
-    }
-
-    public void openFrontGripper() {
-        m_frontGripper.set(true);
-    }
-
-    public void closeFrontGripper() {
-        m_frontGripper.set(false);
-    }
-
-    public void toggleFrontGripper() {
-        m_frontGripper.toggle();
+        armRetracted = !armRetracted;
     }
 }

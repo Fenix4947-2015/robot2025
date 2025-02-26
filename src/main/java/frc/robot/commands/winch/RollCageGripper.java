@@ -7,7 +7,7 @@ public class RollCageGripper extends Command {
     private final CageGripper m_cageGripper;
     private final double m_speed;
 
-    private static final double DEFAULT_SPEED = 0.5;
+    private static final double DEFAULT_SPEED = -0.5;
 
     public RollCageGripper(CageGripper cageGripper) {
         this(cageGripper, DEFAULT_SPEED);
