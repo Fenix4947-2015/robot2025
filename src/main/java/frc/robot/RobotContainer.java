@@ -80,7 +80,7 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
-        NamedCommands.registerCommand("toggle side gripper",new InstantCommand(m_arm::toggleSideGripper, m_arm));
+        NamedCommands.registerCommand("toggle side gripper",new InstantCommand(m_coralGripper::toggleSideGripper, m_coralGripper));
         autoChooser = AutoBuilder.buildAutoChooser("auto_path");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
