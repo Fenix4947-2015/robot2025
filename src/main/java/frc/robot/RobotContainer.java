@@ -44,13 +44,13 @@ public class RobotContainer {
 
     private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
     private final CommandXboxController m_helperController = new CommandXboxController(OperatorConstants.kHelperControllerPort);
-
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    
+    public final LimelightFour limelightFour = new LimelightFour("limelight", this);
+    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain(limelightFour);
     public final Arm m_arm = new Arm();
     public final Balls m_balls = new Balls();
     public final Winch m_winch = new Winch();
     public final CageGripper m_cageGripper = new CageGripper();
-    public final LimelightFour limelightFour = new LimelightFour("limelight", this);
 
     private final DriveSwerveCommand driveSwerveCommand = new DriveSwerveCommand(drivetrain, m_driverController, limelightFour);
     private final StopArm m_stopArm = new StopArm(m_arm);
@@ -70,7 +70,6 @@ public class RobotContainer {
         NamedCommands.registerCommand("toggle side gripper",new InstantCommand(m_arm::toggleSideGripper, m_arm));
         autoChooser = AutoBuilder.buildAutoChooser("auto_path");
         SmartDashboard.putData("Auto Mode", autoChooser);
-
 
 
         configureBindings();
