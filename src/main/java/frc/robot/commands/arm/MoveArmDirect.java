@@ -27,10 +27,10 @@ public class MoveArmDirect extends Command {
         double speed = -m_controller.getLeftY();
 
         m_arm.setDirectOutput(MathUtil.applyDeadband(speed, 0.1));
+        m_arm.setTargetPositionAsCurrent();
     }
 
     @Override
     public void end(boolean isFinished) {
-        m_keepArmInPositionCommand.setPositionAsCurrent();
     }
 }
