@@ -5,10 +5,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Balls;
 
-public class RollBalls extends Command {
+public class RollBallsClockWise extends Command {
     private final Balls m_balls;
 
-    public RollBalls(Balls balls) {
+    public RollBallsClockWise(Balls balls) {
         m_balls = balls;
         addRequirements(balls);
     }
@@ -19,7 +19,7 @@ public class RollBalls extends Command {
 
     @Override
     public void execute() {
-        double speed = 1;
+        double speed = -1;
 
         m_balls.roll(speed);
     }

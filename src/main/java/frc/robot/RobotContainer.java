@@ -21,9 +21,12 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.arm.KeepArmInPosition;
 import frc.robot.commands.arm.MoveArmDirect;
+import frc.robot.commands.arm.MoveArmDirectDriverDown;
+import frc.robot.commands.arm.MoveArmDirectDriverUp;
 import frc.robot.commands.arm.MoveArmDropPosition;
 import frc.robot.commands.arm.StopArm;
 import frc.robot.commands.balls.RollBalls;
+import frc.robot.commands.balls.RollBallsClockWise;
 import frc.robot.commands.combo.AutoSequences;
 import frc.robot.commands.drivetrain.DriveSwerveCommand;
 import frc.robot.commands.winch.RollCageGripper;
@@ -63,10 +66,13 @@ public class RobotContainer {
     private final StopArm m_stopArm = new StopArm(m_arm);
     private final KeepArmInPosition m_keepArmInPosition = new KeepArmInPosition(m_arm);
     private final MoveArmDirect m_moveArmDirect = new MoveArmDirect(m_arm, m_helperController, m_keepArmInPosition);
+    private final MoveArmDirectDriverUp m_moveArmDriverUp = new MoveArmDirectDriverUp(m_arm, m_keepArmInPosition);
+    private final MoveArmDirectDriverDown m_moveArmDriverDown = new MoveArmDirectDriverDown(m_arm, m_keepArmInPosition);
     private final MoveArmDropPosition m_moveArmL4 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L4);
     private final MoveArmDropPosition m_moveArmL3 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L3);
     private final MoveArmDropPosition m_moveArmL2 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L2);
-    private final RollBalls m_rollBalls = new RollBalls(m_balls, m_helperController);
+    private final RollBalls m_rollBalls = new RollBalls(m_balls);
+    private final RollBallsClockWise m_rollBallsClockWise = new RollBallsClockWise(m_balls);
     private final RollWinchStick m_rollWinchStick = new RollWinchStick(m_winch, m_helperController);
     private final RollWinchSpeed m_stopWinch = new RollWinchSpeed(m_winch, 0.0);
     private final RollCageGripper m_rollCageGripper = new RollCageGripper(m_cageGripper);
@@ -100,31 +106,36 @@ public class RobotContainer {
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        m_driverController.back().and(m_driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        m_driverController.back().and(m_driverController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        m_driverController.start().and(m_driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        m_driverController.start().and(m_driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-        m_driverController.rightBumper().onTrue(new InstantCommand(logger::stop));
+        //m_driverController.back().and(m_driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        //m_driverController.back().and(m_driverController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        //m_driverController.start().and(m_driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        //m_driverController.start().and(m_driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        //m_driverController.rightBumper().onTrue(new InstantCommand(logger::stop));
 
         // reset the field-centric heading on left bumper press
-        m_driverController.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        m_driverController.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        m_driverController.rightTrigger().whileTrue(m_moveArmDriverUp);
+        m_driverController.leftTrigger().whileTrue(m_moveArmDriverDown);
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
         m_helperController.leftStick().whileTrue(m_moveArmDirect);
-        m_helperController.rightStick().whileTrue(m_rollWinchStick);
+        m_helperController.rightStick().onTrue(m_rollWinchStick);
 
         m_helperController.povLeft().onTrue(m_autoSequences.clampCoral());
         m_helperController.povRight().onTrue(m_autoSequences.freeCoral());
         m_helperController.povDown().onTrue(m_autoSequences.dropCoral());
         m_helperController.povUp().onTrue(new InstantCommand(m_coralGripper::openSideGripper, m_arm));
-        m_helperController.start().onTrue(new InstantCommand(m_arm::toggleExtender, m_arm));
-        m_helperController.x().whileTrue(m_rollCageGripper);
-        m_helperController.y().whileTrue(m_moveArmL4);
-        m_helperController.b().whileTrue(m_moveArmL3);
-        m_helperController.a().whileTrue(m_moveArmL2);
-        m_helperController.leftBumper().onTrue(new InstantCommand(m_coralGripper::toggleFrontGripper, m_arm));
-        m_helperController.rightBumper().onTrue(new InstantCommand(m_coralGripper::toggleSideGripper, m_arm));
+        m_helperController.x().onTrue(new InstantCommand(m_arm::toggleExtender, m_arm));
+        m_helperController.start().whileTrue(m_rollCageGripper);
+        m_helperController.y().whileTrue(m_moveArmL2);
+        m_helperController.leftBumper().whileTrue(m_moveArmL3);
+        m_helperController.rightBumper().whileTrue(m_moveArmL4);
+        m_helperController.a().onTrue(new InstantCommand(m_coralGripper::toggleFrontGripper, m_coralGripper));
+        m_helperController.b().onTrue(new InstantCommand(m_coralGripper::toggleSideGripper, m_coralGripper));
+        m_helperController.rightTrigger().whileTrue(m_rollBalls);
+        m_helperController.leftTrigger().whileTrue(m_rollBallsClockWise);
+
     }
 
     public void configureDefaultCommands() {
