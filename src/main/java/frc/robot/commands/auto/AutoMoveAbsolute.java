@@ -17,7 +17,8 @@ public class AutoMoveAbsolute extends AutoMoveStrategy {
         CommandSwerveDrivetrain driveTrain, 
         SmartDashboardSettings smartDashboardSettings,
         Pose2d target,
+        long setpointDelayMs,
         Pose2d posTolerance) {
-            super(driveTrain, smartDashboardSettings, target, posTolerance);
+            super(driveTrain, smartDashboardSettings, target, setpointDelayMs, posTolerance);
     }
 }

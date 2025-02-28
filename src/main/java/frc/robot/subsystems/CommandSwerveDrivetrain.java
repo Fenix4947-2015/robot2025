@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.Limelight;
 import frc.robot.LimelightHelpers;
+import frc.robot.SmartDashboardWrapper;
 import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.limelight.LimelightFour;
@@ -281,11 +282,15 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
          * This ensures driving behavior doesn't change until an explicit disable event occurs during testing.
          */
         var driveState = this.getState();
-        double headingDeg = this.getPigeon2().getYaw().getValueAsDouble();
+        double headingDeg = driveState.Pose.getRotation().getDegrees();
         double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
 
         LimelightHelpers.SetRobotOrientation("limelight", headingDeg, 0, 0, 0, 0, 0);
         PoseEstimate llMeasurement = limelightFour.getPoseEstimate();
+        if (llMeasurement != null && llMeasurement.tagCount > 0 && Math.abs(omegaRps) < 2.0) {
+            this.addVisionMeasurement(llMeasurement.pose, llMeasurement.timestampSeconds);
+        }
+
         if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
             DriverStation.getAlliance().ifPresent(allianceColor -> {
                 setOperatorPerspectiveForward(
@@ -296,6 +301,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
+
+        SmartDashboardWrapper.putNumber("Swerve/X", driveState.Pose.getX());
+        SmartDashboardWrapper.putNumber("Swerve/Y", driveState.Pose.getY());
+        SmartDashboardWrapper.putNumber("Swerve/Rot", driveState.Pose.getRotation().getDegrees());
     }
 
     private void startSimThread() {

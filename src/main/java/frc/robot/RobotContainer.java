@@ -78,7 +78,8 @@ public class RobotContainer {
     private final RollWinchSpeed m_stopWinch = new RollWinchSpeed(m_winch, 0.0);
     private final RollCageGripper m_rollCageGripper = new RollCageGripper(m_cageGripper);
     private final RollCageGripper m_stopCageGripper = new RollCageGripper(m_cageGripper, 0.0);
-    private final Command autoMoveTest = new AutoSequences(this).moveAbsolute(Position.CORAL_L4_RIGHT);
+    private final Command autoDropCoralL4Right = new AutoSequences(this).autoDropCoralL4Right();
+    private final Command autoPickupCoralStation1 = new AutoSequences(this).autoPickupCoralStation1();
 
     // Combo commands
     private final Command m_clampCoral = m_autoSequences.clampCoral();
@@ -111,7 +112,8 @@ public class RobotContainer {
         //m_driverController.start().and(m_driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         //m_driverController.start().and(m_driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
         //m_driverController.rightBumper().onTrue(new InstantCommand(logger::stop));
-        m_driverController.a().whileTrue(autoMoveTest);
+        m_driverController.x().whileTrue(autoDropCoralL4Right);
+        m_driverController.y().whileTrue(autoPickupCoralStation1);
 
         // reset the field-centric heading on left bumper press
         m_driverController.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
@@ -142,7 +144,6 @@ public class RobotContainer {
     public void configureDefaultCommands() {
         drivetrain.setDefaultCommand(driveSwerveCommand);
         m_arm.setDefaultCommand(m_keepArmInPosition);
-        m_balls.setDefaultCommand(m_rollBalls);
         m_winch.setDefaultCommand(m_stopWinch);
         m_cageGripper.setDefaultCommand(m_stopCageGripper);
     }
