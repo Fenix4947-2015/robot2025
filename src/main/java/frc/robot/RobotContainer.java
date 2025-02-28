@@ -53,6 +53,7 @@ public class RobotContainer {
     public final Winch m_winch = new Winch();
     public final CageGripper m_cageGripper = new CageGripper();
     public final LimelightFour limelightFour = new LimelightFour("limelight", this);
+    public final SmartDashboardSettings smartDashboardSettings = new SmartDashboardSettings();
 
     private final DriveSwerveCommand driveSwerveCommand = new DriveSwerveCommand(drivetrain, m_driverController, limelightFour);
     private final StopArm m_stopArm = new StopArm(m_arm);
@@ -66,6 +67,7 @@ public class RobotContainer {
     private final RollWinchSpeed m_stopWinch = new RollWinchSpeed(m_winch, 0.0);
     private final RollCageGripper m_rollCageGripper = new RollCageGripper(m_cageGripper);
     private final RollCageGripper m_stopCageGripper = new RollCageGripper(m_cageGripper, 0.0);
+    private final Command autoMoveTest = new AutoSequences(this).moveAbsolute(Position.CORAL_L4_RIGHT);
 
     // Combo commands
     private final Command m_clampCoral = m_autoSequences.clampCoral();
@@ -80,8 +82,6 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-
-        m_driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         m_driverController.b().whileTrue(drivetrain.applyRequest(() ->
                 point.withModuleDirection(new Rotation2d(-m_driverController.getLeftY(), -m_driverController.getLeftX()))
         ));
@@ -93,6 +93,7 @@ public class RobotContainer {
         m_driverController.start().and(m_driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         m_driverController.start().and(m_driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
         m_driverController.rightBumper().onTrue(new InstantCommand(logger::stop));
+        m_driverController.a().whileTrue(autoMoveTest);
 
         // reset the field-centric heading on left bumper press
         m_driverController.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
