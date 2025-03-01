@@ -13,7 +13,7 @@ public class AutoMoveAbsolute extends AutoMoveStrategy {
             super(driveTrain, smartDashboardSettings, target);
     }
 
-        public AutoMoveAbsolute(
+    public AutoMoveAbsolute(
         CommandSwerveDrivetrain driveTrain, 
         SmartDashboardSettings smartDashboardSettings,
         Pose2d target,

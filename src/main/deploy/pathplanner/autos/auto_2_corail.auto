@@ -11,9 +11,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "auto dunk coral right"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "retour_1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "auto get coral station 1"
           }
         },
         {
@@ -23,9 +35,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "auto dunk coral right"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "retour_2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "auto get coral station 1"
           }
         }
       ]
