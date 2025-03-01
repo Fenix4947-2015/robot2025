@@ -53,7 +53,7 @@ public final class Constants {
         public static final double kToleranceDistance = 0.005;
         public static final double kLowestPosition = 0.235;
         public static final double kHighestPosition = 1.25;
-        public static final double kCoralL4Position = 1.066;
+        public static final double kCoralL4Position = 1.1;
         public static final double kCoralL3Position = 0.771;
         public static final double kCoralL2Position = 0.593;
     }

@@ -18,6 +18,7 @@ public class Winch extends SubsystemBase {
 
     private final Encoder m_encoder = new Encoder(ElectricConstants.kWinchEncoderChannel1, ElectricConstants.kWinchEncoderChannel2);
 
+    
     //private final DigitalInput m_safetySwitch = new DigitalInput(ElectricConstants.kWinchSafetySwitchChannel);
 
     private static final boolean PREVENT_UNROLL = false;
