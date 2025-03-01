@@ -34,30 +34,39 @@ public enum Position {
             }
         }
     },
-    CORAL_L4_LEFT {
-        public Pose2d getPositionForTeam(Alliance team) {
-            if (team == Blue) {
-                return new Pose2d(1.5, 4, Rotation2d.fromDegrees(135));
-            } else {
-                return new Pose2d(1.5, 4.2, Rotation2d.fromDegrees(-135));
-            }
-        }
-    },
     CORAL_L4_RIGHT {
         public Pose2d getPositionForTeam(Alliance team) {
             if (team == Blue) {
-                return new Pose2d(0.3, 0, Rotation2d.fromDegrees(180));
+                return new Pose2d(0.51, 0.17, Rotation2d.fromDegrees(180));
             } else {
-                return new Pose2d(0.3, 0, Rotation2d.fromDegrees(180));
+                return new Pose2d(0.51, 0.17, Rotation2d.fromDegrees(180));
             }
         }
     },
     L4_APPROACH_RIGHT {
         public Pose2d getPositionForTeam(Alliance team) {
             if (team == Blue) {
-                return new Pose2d(3.05, 3.82, Rotation2d.fromDegrees(0));
+                return new Pose2d(1, 0.17, Rotation2d.fromDegrees(180));
             } else {
-                return new Pose2d(3.05, 3.82, Rotation2d.fromDegrees(0));
+                return new Pose2d(1, 0.17, Rotation2d.fromDegrees(180));
+            }
+        }
+    },
+    CORAL_L4_LEFT {
+        public Pose2d getPositionForTeam(Alliance team) {
+            if (team == Blue) {
+                return new Pose2d(0.51, -0.17, Rotation2d.fromDegrees(180));
+            } else {
+                return new Pose2d(0.51, -0.17, Rotation2d.fromDegrees(180));
+            }
+        }
+    },
+    L4_APPROACH_LEFT {
+        public Pose2d getPositionForTeam(Alliance team) {
+            if (team == Blue) {
+                return new Pose2d(1, -0.17, Rotation2d.fromDegrees(180));
+            } else {
+                return new Pose2d(1, -0.17, Rotation2d.fromDegrees(180));
             }
         }
     },

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.generated.TunerConstants;
 import frc.robot.limelight.LimelightFour;
+import frc.robot.limelight.LimelightMegaTagType;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class DriveSwerveCommand extends Command {
@@ -41,6 +42,12 @@ public class DriveSwerveCommand extends Command {
         this.drivetrain = commandSwerveDrivetrain;
         this.joystick = joystick;
         this.limelightFour = limelightFour;
+    }
+
+    @Override
+    public void initialize() {
+        drivetrain.setLimelightMegaTagType(LimelightMegaTagType.MEGA_TAG_2);
+
     }
 
     @Override

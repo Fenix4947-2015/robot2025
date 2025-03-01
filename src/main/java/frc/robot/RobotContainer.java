@@ -14,10 +14,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.arm.KeepArmInPosition;
 import frc.robot.commands.arm.MoveArmDirect;
@@ -79,6 +77,7 @@ public class RobotContainer {
     private final RollCageGripper m_rollCageGripper = new RollCageGripper(m_cageGripper);
     private final RollCageGripper m_stopCageGripper = new RollCageGripper(m_cageGripper, 0.0);
     private final Command autoDropCoralL4Right = new AutoSequences(this).autoDropCoralL4Right();
+    private final Command autoDropCoralL4Left = new AutoSequences(this).autoDropCoralL4Left();
     private final Command autoPickupCoralStation1 = new AutoSequences(this).autoPickupCoralStation1();
 
     // Combo commands
@@ -118,8 +117,8 @@ public class RobotContainer {
         //m_driverController.start().and(m_driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         //m_driverController.start().and(m_driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
         //m_driverController.rightBumper().onTrue(new InstantCommand(logger::stop));
-        m_driverController.x().whileTrue(autoDropCoralL4Right);
-        m_driverController.y().whileTrue(autoPickupCoralStation1);
+        m_driverController.povRight().whileTrue(autoDropCoralL4Right);
+        m_driverController.povLeft().whileTrue(autoDropCoralL4Left);
 
         // reset the field-centric heading on left bumper press
         m_driverController.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));

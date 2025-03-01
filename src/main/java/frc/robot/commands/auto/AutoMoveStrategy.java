@@ -318,4 +318,8 @@ public class AutoMoveStrategy extends Command {
     protected static Pose2d transform2dAsPose2d(Transform2d transform) {
         return new Pose2d(transform.getTranslation(), transform.getRotation());
     }
+
+    protected static Transform2d pose2dAsTransform2d(Pose2d pose) {
+        return new Transform2d(pose.getTranslation(), pose.getRotation());
+    }
 }

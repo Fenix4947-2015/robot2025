@@ -28,12 +28,12 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.Constants.Limelight;
 import frc.robot.LimelightHelpers;
 import frc.robot.SmartDashboardWrapper;
 import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.limelight.LimelightFour;
+import frc.robot.limelight.LimelightMegaTagType;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
@@ -56,7 +56,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
-    public final LimelightFour limelightFour;
+    private final LimelightFour limelightFour;
+    private LimelightMegaTagType limelightMegaTagType;
 
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
@@ -141,6 +142,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
 
         this.limelightFour = limelight;
+        this.limelightMegaTagType = LimelightMegaTagType.NONE;
 
         configureAutoBuilder();
     }
@@ -169,6 +171,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
 
         this.limelightFour = null;
+        this.limelightMegaTagType = LimelightMegaTagType.NONE;
 
         configureAutoBuilder();
     }
@@ -207,6 +210,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
 
         this.limelightFour = null;
+        this.limelightMegaTagType = LimelightMegaTagType.NONE;
 
         configureAutoBuilder();
     }
@@ -281,15 +285,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
          * Otherwise, only check and apply the operator perspective if the DS is disabled.
          * This ensures driving behavior doesn't change until an explicit disable event occurs during testing.
          */
-        var driveState = this.getState();
-        double headingDeg = driveState.Pose.getRotation().getDegrees();
-        double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
-
-        LimelightHelpers.SetRobotOrientation("limelight", headingDeg, 0, 0, 0, 0, 0);
-        PoseEstimate llMeasurement = limelightFour.getPoseEstimate();
-        if (llMeasurement != null && llMeasurement.tagCount > 0 && Math.abs(omegaRps) < 2.0) {
-            this.addVisionMeasurement(llMeasurement.pose, llMeasurement.timestampSeconds);
-        }
+        setVisionMeasurementFromLimelight();
 
         if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
             DriverStation.getAlliance().ifPresent(allianceColor -> {
@@ -301,10 +297,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
-
-        SmartDashboardWrapper.putNumber("Swerve/X", driveState.Pose.getX());
-        SmartDashboardWrapper.putNumber("Swerve/Y", driveState.Pose.getY());
-        SmartDashboardWrapper.putNumber("Swerve/Rot", driveState.Pose.getRotation().getDegrees());
     }
 
     private void startSimThread() {
@@ -354,5 +346,31 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         Matrix<N3, N1> visionMeasurementStdDevs
     ) {
         super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds), visionMeasurementStdDevs);
+    }
+
+    private void setVisionMeasurementFromLimelight() {
+        if (this.limelightMegaTagType == LimelightMegaTagType.NONE) {
+            return;
+        }
+        var driveState = this.getState();
+        double headingDeg = driveState.Pose.getRotation().getDegrees();
+        double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
+
+        LimelightHelpers.SetRobotOrientation("limelight", headingDeg, 0, 0, 0, 0, 0);
+        
+        PoseEstimate llMeasurement;
+        if (this.limelightMegaTagType == LimelightMegaTagType.MEGA_TAG) {
+            llMeasurement = limelightFour.getPoseEstimate();
+        } else {
+            llMeasurement = limelightFour.getPoseEstimateMegaTag2();
+        }
+        
+        if (llMeasurement != null && llMeasurement.tagCount > 0 && Math.abs(omegaRps) < 2.0) {
+            this.addVisionMeasurement(llMeasurement.pose, llMeasurement.timestampSeconds);
+        }
+    }
+
+    public void setLimelightMegaTagType(LimelightMegaTagType limelightMegaTagType) {
+        this.limelightMegaTagType = limelightMegaTagType;
     }
 }

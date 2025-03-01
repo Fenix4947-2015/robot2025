@@ -6,12 +6,15 @@ import edu.wpi.first.math.geometry.Transform2d;
 import frc.robot.SmartDashboardSettings;
 import frc.robot.SmartDashboardWrapper;
 import frc.robot.limelight.LimelightFour;
+import frc.robot.limelight.LimelightMegaTagType;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class AutoAimPose extends AutoMoveStrategy {
 
     private final LimelightFour _limelight;
+    private Pose2d _currentTarget;
     private final Transform2d _initialTaget;
+    private final int _activeFiducialId;
 
     public AutoAimPose(
         CommandSwerveDrivetrain driveTrain,
@@ -20,12 +23,29 @@ public class AutoAimPose extends AutoMoveStrategy {
         Pose2d target) {
             super(driveTrain, smartDashboardSettings, target);
             _limelight = limelight;
+            _currentTarget = updateRobotPosition();
             _initialTaget = new Transform2d(new Pose2d(), target);
+            _activeFiducialId = limelight.getActiveFiducialId();
+    }
+
+    public AutoAimPose(
+        CommandSwerveDrivetrain driveTrain, 
+        SmartDashboardSettings smartDashboardSettings,
+        LimelightFour limelight,
+        Pose2d target,
+        long setpointDelayMs,
+        Pose2d posTolerance) {
+            super(driveTrain, smartDashboardSettings, target, setpointDelayMs, posTolerance);
+            _limelight = limelight;
+            _currentTarget = updateRobotPosition();
+            _initialTaget = new Transform2d(new Pose2d(), target);
+            _activeFiducialId = limelight.getActiveFiducialId();
     }
     
     @Override
     public void initialize() {
         super.initialize();
+        _driveTrain.setLimelightMegaTagType(LimelightMegaTagType.NONE);
     }
 
     @Override
@@ -40,12 +60,16 @@ public class AutoAimPose extends AutoMoveStrategy {
 
     @Override
     public Pose2d updateDestination() {
-        Pose2d closestFiducial = _limelight.getClosestFiducial();
+        Transform2d closestFiducial = _limelight.getClosestFiducial();
+        if (closestFiducial == null || _limelight.getActiveFiducialId() == _activeFiducialId) {
+            return _currentTarget;
+        }
         SmartDashboardWrapper.putNumber("fiducailX", closestFiducial.getX());
         SmartDashboardWrapper.putNumber("fiducailY", closestFiducial.getY());
-        SmartDashboardWrapper.putNumber("fiducailROt", closestFiducial.getRotation().getDegrees());
+        SmartDashboardWrapper.putNumber("fiducailRot", closestFiducial.getRotation().getDegrees());
 
-        Transform2d targetPose = new Transform2d(_driveTrain.getState().Pose, closestFiducial.rotateBy(Rotation2d.k180deg)); ;
-        return transform2dAsPose2d(targetPose.plus(_initialTaget));
+        Transform2d targetPose = pose2dAsTransform2d(_driveTrain.getState().Pose).plus(closestFiducial);
+        _currentTarget = transform2dAsPose2d(targetPose.plus(_initialTaget));
+        return _currentTarget;
     }
 }

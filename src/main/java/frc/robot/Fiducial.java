@@ -177,4 +177,13 @@ public enum Fiducial {
         double theta = Math.atan2(transform[4], transform[0]);
         return new Pose2d(new Translation2d(x, y), new Rotation2d(theta));
     }
+
+    public static Fiducial getFiducialById(int id) {
+        for (Fiducial fiducial : Fiducial.values()) {
+            if (fiducial.getId() == id) {
+                return fiducial;
+            }
+        }
+        return null; // Or throw an exception if preferred
+    }
 }
