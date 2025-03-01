@@ -47,7 +47,8 @@ public class Arm extends SubsystemBase {
     public enum DropPosition {
         L4(Constants.Arm.kCoralL4Position, true),
         L3(Constants.Arm.kCoralL3Position, false),
-        L2(Constants.Arm.kCoralL2Position, false);
+        L2(Constants.Arm.kCoralL2Position, false),
+        LOW(Constants.Arm.kLowestPosition, true);
 
         private final double distance;
         private final boolean extended;
