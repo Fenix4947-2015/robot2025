@@ -17,9 +17,14 @@ public class RollWinchStick extends Command {
 
     @Override
     public void execute() {
-        double speed = -m_controller.getRightY();
+        double speed = m_controller.getRightY();
 
         m_winch.roll(MathUtil.applyDeadband(speed, 0.1));
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false;
     }
     
 }

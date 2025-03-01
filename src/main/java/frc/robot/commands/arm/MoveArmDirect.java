@@ -9,12 +9,10 @@ public class MoveArmDirect extends Command {
     private final Arm m_arm;
     private final CommandXboxController m_controller;
     private final CommandXboxController m_controllerDriver;
-    private final KeepArmInPosition m_keepArmInPositionCommand;
 
-    public MoveArmDirect(Arm arm, CommandXboxController controller,CommandXboxController controllerDriver, KeepArmInPosition keepArmInPositionCommand) {
+    public MoveArmDirect(Arm arm, CommandXboxController controller,CommandXboxController controllerDriver) {
         m_arm = arm;
         m_controller = controller;
-        m_keepArmInPositionCommand = keepArmInPositionCommand;
         m_controllerDriver = controllerDriver;
         addRequirements(arm);
     }
@@ -26,7 +24,7 @@ public class MoveArmDirect extends Command {
 
     @Override
     public void execute() {
-        double speed_helper = -m_controller.getLeftY();
+        double speed_helper = m_controller.leftStick().getAsBoolean() ? -m_controller.getLeftY() : 0.0;
         double speed_driver =  m_controllerDriver.getRightTriggerAxis() - m_controllerDriver.getLeftTriggerAxis();
         double speed;
 

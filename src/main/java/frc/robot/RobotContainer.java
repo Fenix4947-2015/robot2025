@@ -65,10 +65,8 @@ public class RobotContainer {
 
     private final DriveSwerveCommand driveSwerveCommand = new DriveSwerveCommand(drivetrain, m_driverController, limelightFour);
     private final StopArm m_stopArm = new StopArm(m_arm);
-    private final KeepArmInPosition m_keepArmInPosition = new KeepArmInPosition(m_arm);
-    private final MoveArmDirect m_moveArmDirect = new MoveArmDirect(m_arm, m_helperController,m_driverController, m_keepArmInPosition);
-    private final MoveArmDirectDriverUp m_moveArmDriverUp = new MoveArmDirectDriverUp(m_arm, m_keepArmInPosition);
-    private final MoveArmDirectDriverDown m_moveArmDriverDown = new MoveArmDirectDriverDown(m_arm, m_keepArmInPosition);
+    //private final KeepArmInPosition m_keepArmInPosition = new KeepArmInPosition(m_arm);
+    private final MoveArmDirect m_moveArmDirect = new MoveArmDirect(m_arm, m_helperController,m_driverController);
     private final MoveArmDropPosition m_moveArmL4 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L4);
     private final MoveArmDropPosition m_moveArmL3 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L3);
     private final MoveArmDropPosition m_moveArmL2 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L2);
@@ -123,12 +121,12 @@ public class RobotContainer {
 
         // reset the field-centric heading on left bumper press
         m_driverController.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-        m_driverController.rightTrigger().onChange(m_moveArmDirect);
-        m_driverController.leftTrigger().onChange(m_moveArmDirect);
+        //m_driverController.rightTrigger().onChange(m_moveArmDirect);
+        //m_driverController.leftTrigger().onChange(m_moveArmDirect);
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
-        m_helperController.leftStick().onTrue(m_moveArmDirect);
+        //m_helperController.leftStick().onTrue(m_moveArmDirect);
         m_helperController.rightStick().whileTrue(m_rollWinchStick);
 
         m_helperController.povLeft().onTrue(m_autoSequences.clampCoral());
@@ -146,7 +144,7 @@ public class RobotContainer {
 
     public void configureDefaultCommands() {
         drivetrain.setDefaultCommand(driveSwerveCommand);
-        m_arm.setDefaultCommand(m_keepArmInPosition);
+        m_arm.setDefaultCommand(m_moveArmDirect);
         m_winch.setDefaultCommand(m_stopWinch);
         m_balls.setDefaultCommand(m_rollBalls);
         m_cageGripper.setDefaultCommand(m_stopCageGripper);

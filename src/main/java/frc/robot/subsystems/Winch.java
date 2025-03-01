@@ -28,7 +28,7 @@ public class Winch extends SubsystemBase {
         config1.idleMode(IdleMode.kBrake);
 
         SparkMaxConfig config2 = new SparkMaxConfig();
-        config1.idleMode(IdleMode.kBrake).follow(m_motorOne);
+        config2.idleMode(IdleMode.kBrake).follow(m_motorOne);
 
         m_motorOne.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         m_motorTwo.configure(config2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -36,7 +36,7 @@ public class Winch extends SubsystemBase {
 
     public void roll(double speed) {
         if (PREVENT_UNROLL) {
-            speed = Math.min(speed, 0.0);
+            speed = Math.max(speed, 0.0);
         }
         //if (m_safetySwitch.get()) {
         //    speed = Math.max(speed, 0.0);
