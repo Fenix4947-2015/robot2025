@@ -24,7 +24,6 @@ public class Arm extends SubsystemBase {
     private final SparkMax m_motor1 = new SparkMax(ElectricConstants.kArmMotor1CanId, SparkLowLevel.MotorType.kBrushless);
     private final SparkMax m_motor2 = new SparkMax(ElectricConstants.kArmMotor2CanId, SparkLowLevel.MotorType.kBrushless);
     private final SparkMax m_motor3 = new SparkMax(ElectricConstants.kArmMotor3CanId, SparkLowLevel.MotorType.kBrushless);
-    private final SparkMax m_motor4 = new SparkMax(ElectricConstants.kArmMotor4CanId, SparkLowLevel.MotorType.kBrushless);
 
     private final CANcoder m_encoder = new CANcoder(ElectricConstants.kArmCancoderCanId);
 
@@ -37,7 +36,7 @@ public class Arm extends SubsystemBase {
     private double directOutput = 0;
     private ArmMode armMode = ArmMode.DIRECT;
 
-    private enum ArmMode {
+    public enum ArmMode {
         DIRECT,
         PID
     }
@@ -74,10 +73,6 @@ public class Arm extends SubsystemBase {
         config3.idleMode(IdleMode.kBrake).follow(m_motor1.getDeviceId());
         m_motor3.configure(config3, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        SparkMaxConfig config4 = new SparkMaxConfig();
-        config4.idleMode(IdleMode.kBrake).follow(m_motor1.getDeviceId());
-        m_motor4.configure(config4, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
         m_pidController.setTolerance(Constants.Arm.kToleranceDistance);
         m_pidController.setSetpoint(getEncoderDistance());
     }
@@ -107,6 +102,10 @@ public class Arm extends SubsystemBase {
 
     public void setDirectMode() {
         this.armMode = ArmMode.DIRECT;
+    }
+
+    public ArmMode getArmMode() {
+        return armMode;
     }
 
     public void goToDropPosition(DropPosition dropPosition) {

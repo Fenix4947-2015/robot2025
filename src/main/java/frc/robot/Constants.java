@@ -19,13 +19,13 @@ public final class Constants {
     }
 
     public static class ElectricConstants {
-        public static final int kArmMotor1CanId = 5;
-        public static final int kArmMotor2CanId = 6;
-        public static final int kArmMotor3CanId = 7;
-        public static final int kArmMotor4CanId = 8;
+        //public static final int kArmMotor1CanId = 5;
+        public static final int kArmMotor1CanId = 6;
+        public static final int kArmMotor2CanId = 7;
+        public static final int kArmMotor3CanId = 8;
         public static final int kArmCancoderCanId = 9;
         public static final int kArmLowLimitSwitchChannel = 8;
-        public static final int kArmGripperProximityChannel = 9;
+        public static final int kArmGripperProximityChannel = 4;
         public static final int kArmSideGripperLimitSwitch = 7;
         public static final int kArmFrontGripperLimitSwitch = 6;
         public static final int kArmExtenderChannel = 4;
@@ -48,7 +48,7 @@ public final class Constants {
         public static final double kP = 3.0;
         public static final double kI = 0;
         public static final double kD = 0;
-        public static final double kS = 0.02;
+        public static final double kS = 0.025;
         public static final double kV = 0;
         public static final double kToleranceDistance = 0.005;
         public static final double kLowestPosition = 0.235;
