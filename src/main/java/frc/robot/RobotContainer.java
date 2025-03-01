@@ -68,6 +68,7 @@ public class RobotContainer {
     private final MoveArmDropPosition m_moveArmL4 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L4);
     private final MoveArmDropPosition m_moveArmL3 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L3);
     private final MoveArmDropPosition m_moveArmL2 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L2);
+    private final MoveArmDropPosition m_moveArmLow = new MoveArmDropPosition(m_arm, Arm.DropPosition.LOW);
     private final RollBalls m_rollBalls = new RollBalls(m_balls,m_helperController);
     private final RollBallsClockWise m_rollBallsClockWise = new RollBallsClockWise(m_balls);
     private final RollWinchStick m_rollWinchStick = new RollWinchStick(m_winch, m_helperController);
@@ -115,8 +116,9 @@ public class RobotContainer {
         //m_driverController.start().and(m_driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         //m_driverController.start().and(m_driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
         //m_driverController.rightBumper().onTrue(new InstantCommand(logger::stop));
-        m_driverController.povRight().whileTrue(autoDropCoralL4Right);
-        m_driverController.povLeft().whileTrue(autoDropCoralL4Left);
+        m_driverController.x().whileTrue(autoDropCoralL4Right);
+        m_driverController.y().whileTrue(autoPickupCoralStation1);
+        m_driverController.a().whileTrue(m_moveArmLow);
 
         // reset the field-centric heading on left bumper press
         m_driverController.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
@@ -137,6 +139,7 @@ public class RobotContainer {
         m_helperController.y().whileTrue(m_moveArmL2);
         m_helperController.leftBumper().whileTrue(m_moveArmL3);
         m_helperController.rightBumper().whileTrue(m_moveArmL4);
+        m_helperController.back().whileTrue(m_moveArmLow);
         m_helperController.a().onTrue(new InstantCommand(m_coralGripper::toggleFrontGripper, m_coralGripper));
         m_helperController.b().onTrue(new InstantCommand(m_coralGripper::toggleSideGripper, m_coralGripper));
     }

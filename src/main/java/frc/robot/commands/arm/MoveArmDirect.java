@@ -24,7 +24,7 @@ public class MoveArmDirect extends Command {
 
     @Override
     public void execute() {
-        double speed_helper = m_controller.leftStick().getAsBoolean() ? -m_controller.getLeftY() : 0.0;
+        double speed_helper = -m_controller.getLeftY();
         double speed_driver =  m_controllerDriver.getRightTriggerAxis() - m_controllerDriver.getLeftTriggerAxis();
         double speed;
 

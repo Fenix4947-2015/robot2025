@@ -21,7 +21,7 @@ public class Winch extends SubsystemBase {
     
     //private final DigitalInput m_safetySwitch = new DigitalInput(ElectricConstants.kWinchSafetySwitchChannel);
 
-    private static final boolean PREVENT_UNROLL = false;
+    private static final boolean PREVENT_UNROLL = true;
 
     public Winch() {
         SparkMaxConfig config1 = new SparkMaxConfig();
@@ -36,7 +36,7 @@ public class Winch extends SubsystemBase {
 
     public void roll(double speed) {
         if (PREVENT_UNROLL) {
-            speed = Math.max(speed, 0.0);
+            speed = Math.min(speed, 0.0);
         }
         //if (m_safetySwitch.get()) {
         //    speed = Math.max(speed, 0.0);
