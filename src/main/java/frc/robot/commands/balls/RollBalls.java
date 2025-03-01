@@ -7,9 +7,11 @@ import frc.robot.subsystems.Balls;
 
 public class RollBalls extends Command {
     private final Balls m_balls;
+    private final CommandXboxController m_controller;
 
-    public RollBalls(Balls balls) {
+    public RollBalls(Balls balls, CommandXboxController controller) {
         m_balls = balls;
+        m_controller = controller;
         addRequirements(balls);
     }
 
@@ -19,8 +21,8 @@ public class RollBalls extends Command {
 
     @Override
     public void execute() {
-        double speed = 1;
-
+        double speed = m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis();
+        speed = MathUtil.clamp(speed, -1.0, 1.0);
         m_balls.roll(speed);
     }
 

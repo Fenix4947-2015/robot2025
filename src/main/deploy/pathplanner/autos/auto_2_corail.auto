@@ -11,15 +11,21 @@
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 2.0
+            "pathName": "retour_1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "retour_1"
+            "pathName": "corail_2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "retour_2"
           }
         }
       ]

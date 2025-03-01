@@ -66,13 +66,13 @@ public class RobotContainer {
     private final DriveSwerveCommand driveSwerveCommand = new DriveSwerveCommand(drivetrain, m_driverController, limelightFour);
     private final StopArm m_stopArm = new StopArm(m_arm);
     private final KeepArmInPosition m_keepArmInPosition = new KeepArmInPosition(m_arm);
-    private final MoveArmDirect m_moveArmDirect = new MoveArmDirect(m_arm, m_helperController, m_keepArmInPosition);
+    private final MoveArmDirect m_moveArmDirect = new MoveArmDirect(m_arm, m_helperController,m_driverController, m_keepArmInPosition);
     private final MoveArmDirectDriverUp m_moveArmDriverUp = new MoveArmDirectDriverUp(m_arm, m_keepArmInPosition);
     private final MoveArmDirectDriverDown m_moveArmDriverDown = new MoveArmDirectDriverDown(m_arm, m_keepArmInPosition);
     private final MoveArmDropPosition m_moveArmL4 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L4);
     private final MoveArmDropPosition m_moveArmL3 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L3);
     private final MoveArmDropPosition m_moveArmL2 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L2);
-    private final RollBalls m_rollBalls = new RollBalls(m_balls);
+    private final RollBalls m_rollBalls = new RollBalls(m_balls,m_helperController);
     private final RollBallsClockWise m_rollBallsClockWise = new RollBallsClockWise(m_balls);
     private final RollWinchStick m_rollWinchStick = new RollWinchStick(m_winch, m_helperController);
     private final RollWinchSpeed m_stopWinch = new RollWinchSpeed(m_winch, 0.0);
@@ -90,6 +90,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         NamedCommands.registerCommand("toggle side gripper",new InstantCommand(m_coralGripper::toggleSideGripper, m_coralGripper));
+        NamedCommands.registerCommand("auto dunk coral right",autoDropCoralL4Right);
         autoChooser = AutoBuilder.buildAutoChooser("auto_path");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
@@ -117,13 +118,13 @@ public class RobotContainer {
 
         // reset the field-centric heading on left bumper press
         m_driverController.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-        m_driverController.rightTrigger().whileTrue(m_moveArmDriverUp);
-        m_driverController.leftTrigger().whileTrue(m_moveArmDriverDown);
+        m_driverController.rightTrigger().onChange(m_moveArmDirect);
+        m_driverController.leftTrigger().onChange(m_moveArmDirect);
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
-        m_helperController.leftStick().whileTrue(m_moveArmDirect);
-        m_helperController.rightStick().onTrue(m_rollWinchStick);
+        m_helperController.leftStick().onTrue(m_moveArmDirect);
+        m_helperController.rightStick().whileTrue(m_rollWinchStick);
 
         m_helperController.povLeft().onTrue(m_autoSequences.clampCoral());
         m_helperController.povRight().onTrue(m_autoSequences.freeCoral());
@@ -136,15 +137,13 @@ public class RobotContainer {
         m_helperController.rightBumper().whileTrue(m_moveArmL4);
         m_helperController.a().onTrue(new InstantCommand(m_coralGripper::toggleFrontGripper, m_coralGripper));
         m_helperController.b().onTrue(new InstantCommand(m_coralGripper::toggleSideGripper, m_coralGripper));
-        m_helperController.rightTrigger().whileTrue(m_rollBalls);
-        m_helperController.leftTrigger().whileTrue(m_rollBallsClockWise);
-
     }
 
     public void configureDefaultCommands() {
         drivetrain.setDefaultCommand(driveSwerveCommand);
         m_arm.setDefaultCommand(m_keepArmInPosition);
         m_winch.setDefaultCommand(m_stopWinch);
+        m_balls.setDefaultCommand(m_rollBalls);
         m_cageGripper.setDefaultCommand(m_stopCageGripper);
     }
 
