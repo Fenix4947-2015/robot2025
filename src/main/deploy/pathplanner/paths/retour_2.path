@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.296618852459016,
-        "y": 1.7653176229508187
+        "x": 3.44047131147541,
+        "y": 1.9990778688524597
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.5452859971214066,
-        "y": 1.7910984523683071
+        "x": 3.690212199585057,
+        "y": 2.0104571836914413
       },
       "isLocked": false,
       "linkedName": "end_corail_2"
@@ -20,8 +20,8 @@
         "y": 0.9681352459016398
       },
       "prevControl": {
-        "x": 2.7913411873221974,
-        "y": 1.1816337568267157
+        "x": 2.8392370432339638,
+        "y": 1.1943251334725171
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 5.0,
+    "maxAcceleration": 9.3,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
