@@ -314,4 +314,8 @@ public class AutoMoveStrategy extends Command {
             )
             .execute();
     }
+
+    protected static Pose2d transform2dAsPose2d(Transform2d transform) {
+        return new Pose2d(transform.getTranslation(), transform.getRotation());
+    }
 }

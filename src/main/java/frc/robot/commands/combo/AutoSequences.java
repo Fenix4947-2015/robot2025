@@ -12,6 +12,7 @@ import frc.robot.Constants;
 import frc.robot.Position;
 import frc.robot.RobotContainer;
 import frc.robot.commands.arm.MoveArmPosition;
+import frc.robot.commands.auto.AutoAimPose;
 import frc.robot.commands.auto.AutoMoveAbsolute;
 import frc.robot.commands.coralgripper.CloseFrontGripper;
 import frc.robot.commands.coralgripper.CloseSideGripper;
@@ -59,11 +60,17 @@ public class AutoSequences {
         return new SequentialCommandGroup(
             new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kCoralL4Position),
             new OpenSideGripper(m_robotContainer.m_coralGripper),
-            moveAbsoluteRough(Position.L4_APPROACH_RIGHT),
-            moveAbsolute(Position.CORAL_L4_RIGHT),
+            moveFiducialRelative(Position.L4_APPROACH_RIGHT),
+            moveFiducialRelative(Position.CORAL_L4_RIGHT),
             dropCoral(),
-            moveAbsoluteRough(Position.L4_APPROACH_RIGHT)
+            moveFiducialRelative(Position.L4_APPROACH_RIGHT)
 
+        );
+    }
+
+    public Command autoMoveCoralL4Right() {
+        return new SequentialCommandGroup(
+            moveFiducialRelative(Position.CORAL_L4_RIGHT)
         );
     }
 
@@ -107,6 +114,15 @@ public class AutoSequences {
                         position.getPositionForTeam(m_robotContainer.m_alliance),
                         0,
                         posTolerance);
+    }
+
+    public Command moveFiducialRelative(Position position) {
+        return new AutoAimPose(
+                        m_robotContainer.drivetrain,
+                        m_robotContainer.smartDashboardSettings,
+                        m_robotContainer.limelightFour,
+                        position.getPositionForTeam(m_robotContainer.m_alliance)
+                        );
     }
 
     // AUTOS
