@@ -46,9 +46,9 @@ public enum Position {
     CORAL_L4_RIGHT {
         public Pose2d getPositionForTeam(Alliance team) {
             if (team == Blue) {
-                return new Pose2d(3.34, 3.82, Rotation2d.fromDegrees(0));
+                return new Pose2d(0.3, 0, Rotation2d.fromDegrees(180));
             } else {
-                return new Pose2d(3.34, 3.82, Rotation2d.fromDegrees(0));
+                return new Pose2d(0.3, 0, Rotation2d.fromDegrees(180));
             }
         }
     },

@@ -89,15 +89,19 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
+        autoChooser = buildAutoChooser();
+        configureBindings();
+        configureDefaultCommands();
+    }
+
+    private SendableChooser<Command> buildAutoChooser() {
+        final SendableChooser<Command> autoChooser;
         NamedCommands.registerCommand("toggle side gripper",new InstantCommand(m_coralGripper::toggleSideGripper, m_coralGripper));
         NamedCommands.registerCommand("auto dunk coral right",autoDropCoralL4Right);
         NamedCommands.registerCommand("auto get coral station 1",autoPickupCoralStation1);
         autoChooser = AutoBuilder.buildAutoChooser("auto_path");
         SmartDashboard.putData("Auto Mode", autoChooser);
-
-
-        configureBindings();
-        configureDefaultCommands();
+        return autoChooser;
     }
 
     private void configureBindings() {

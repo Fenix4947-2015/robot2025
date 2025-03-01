@@ -36,8 +36,15 @@ public class MoveArmDirect extends Command {
             speed = speed_helper;
         }	
 
-        m_arm.setDirectOutput(MathUtil.applyDeadband(speed, 0.1));
-        m_arm.setTargetPositionAsCurrent();
+        double realSpeed = MathUtil.applyDeadband(speed, 0.1);
+
+        if (Math.abs(realSpeed) > 0.0) {
+            m_arm.setDirectMode();
+            m_arm.setDirectOutput(realSpeed);
+        } else if (m_arm.getArmMode() != Arm.ArmMode.PID){
+            m_arm.setPidMode();
+            m_arm.setTargetPositionAsCurrent();
+        }
     }
 
     @Override

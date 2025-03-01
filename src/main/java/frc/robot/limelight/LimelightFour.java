@@ -1,5 +1,6 @@
 package frc.robot.limelight;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
@@ -38,6 +39,14 @@ public class LimelightFour extends Limelight {
   public double getLatency() {
     LimelightResults results = getLimelightResults();
     return (results.latency_capture + results.latency_jsonParse + results.latency_pipeline) / 1000;
+  }
+
+  public double getFiducialId() {
+    return LimelightHelpers.getFiducialID(identifier);
+  }
+
+  public Pose2d getClosestFiducial() {
+    return LimelightHelpers.getLatestResults(identifier).targets_Fiducials[(int) getFiducialId()].getRobotPose_TargetSpace2D();
   }
 
   public void setRotation(double robotYawInDegrees) {
