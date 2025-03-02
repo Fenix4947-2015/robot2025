@@ -96,6 +96,7 @@ public class RobotContainer {
         final SendableChooser<Command> autoChooser;
         NamedCommands.registerCommand("toggle side gripper",new InstantCommand(m_coralGripper::toggleSideGripper, m_coralGripper));
         NamedCommands.registerCommand("auto dunk coral right",autoDropCoralL4Right);
+        NamedCommands.registerCommand("auto dunk coral left",autoDropCoralL4Left);
         NamedCommands.registerCommand("auto get coral station 1",autoPickupCoralStation1);
         autoChooser = AutoBuilder.buildAutoChooser("auto_path");
         SmartDashboard.putData("Auto Mode", autoChooser);

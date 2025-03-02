@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.44047131147541,
-        "y": 1.9990778688524597
+        "x": 3.164754098360655,
+        "y": 1.9571209016393447
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.8841698594448717,
-        "y": 2.001182356974664
+        "x": 2.697233606557377,
+        "y": 1.6574282786885248
       },
       "isLocked": false,
       "linkedName": "end_corail_2"
     },
     {
       "anchor": {
-        "x": 1.750204918032787,
-        "y": 1.2198770491803281
+        "x": 2.121823770491803,
+        "y": 1.3217725409836065
       },
       "prevControl": {
-        "x": 2.1804903784003034,
-        "y": 1.8376719372616552
+        "x": 2.4215163934426225,
+        "y": 1.453637295081967
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 9.3,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -140.0
+    "rotation": -132.9545915111128
   },
   "reversed": false,
   "folder": "Auto 2 corail",

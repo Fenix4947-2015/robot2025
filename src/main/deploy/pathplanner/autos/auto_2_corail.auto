@@ -37,19 +37,13 @@
         {
           "type": "named",
           "data": {
-            "name": "auto dunk coral right"
+            "name": "auto dunk coral left"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "retour_2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "auto get coral station 1"
           }
         }
       ]
