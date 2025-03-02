@@ -45,17 +45,19 @@ public class Arm extends SubsystemBase {
     private boolean armRetracted = false;
 
     public enum DropPosition {
-        L4(Constants.Arm.kCoralL4Position, true),
-        L3(Constants.Arm.kCoralL3Position, false),
-        L2(Constants.Arm.kCoralL2Position, false),
-        LOW(Constants.Arm.kLowestPosition, true);
+        L4(Constants.Arm.kCoralL4Position, false, false),
+        L3(Constants.Arm.kCoralL3Position, true, false),
+        L2(Constants.Arm.kCoralL2Position, true, false),
+        LOW(Constants.Arm.kLowestPosition, false, true);
 
         private final double distance;
-        private final boolean extended;
+        private final boolean retracted;
+        private final boolean gripperMustBeOpen;
 
-        DropPosition(double distance, boolean extended) {
+        DropPosition(double distance, boolean retracted, boolean gripperMustBeOpen) {
             this.distance = distance;
-            this.extended = extended;
+            this.retracted = retracted;
+            this.gripperMustBeOpen = gripperMustBeOpen;
         }
     }
 
@@ -113,6 +115,7 @@ public class Arm extends SubsystemBase {
         this.currDropPosition = dropPosition;
         setPidMode();
         setTargetPosition(this.currDropPosition.distance);
+        armRetracted = this.currDropPosition.retracted;
     }
 
     public double getEncoderDistance() {
@@ -137,13 +140,10 @@ public class Arm extends SubsystemBase {
     public void moveExtenderIfRequired() {
         //System.out.println("m_extender.get:" + m_extender.get());
         //System.out.println("armRetracted:" + armRetracted);
-        if (armRetracted != m_extender.get()) {
-            if (armRetracted && armAtLowestPos()) {
-                //System.out.println("atLowestPos");
-                m_extender.set(false);
-            } else {
-                m_extender.set(armRetracted);
-            }
+        if (armRetracted && getEncoderDistance() < Constants.Arm.lowestRetractedPosition) {
+            m_extender.set(false);
+        } else {
+            m_extender.set(armRetracted);
         }
     }
 
@@ -171,11 +171,7 @@ public class Arm extends SubsystemBase {
     }
 
     private boolean armAtLowestPos() {
-        //if (!armRetracted) {
-            return getEncoderDistance() < Constants.Arm.kLowestPosition || lowLimitSwitchPushed();
-        //} else {
-        //    return getEncoderDistance() < Constants.Arm.kCoralL2Position || lowLimitSwitchPushed();
-        //}
+        return getEncoderDistance() < Constants.Arm.kLowestPosition || lowLimitSwitchPushed();
     }
 
     private boolean armAtHighestPos() {

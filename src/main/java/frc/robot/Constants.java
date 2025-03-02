@@ -55,7 +55,8 @@ public final class Constants {
         public static final double kHighestPosition = 1.25;
         public static final double kCoralL4Position = 1.065;
         public static final double kCoralL3Position = 0.771;
-        public static final double kCoralL2Position = 0.593;
+        public static final double kCoralL2Position = 0.650;
+        public static final double lowestRetractedPosition = 0.640;
     }
 
     public static class Limelight {
