@@ -360,14 +360,15 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     private void setVisionMeasurementFromLimelight() {
-        if (this.limelightMegaTagType == LimelightMegaTagType.NONE) {
-            return;
-        }
         var driveState = this.getState();
         double headingDeg = driveState.Pose.getRotation().getDegrees();
         double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
 
-        LimelightHelpers.SetRobotOrientation("limelight", headingDeg, 0, 0, 0, 0, 0);
+        this.limelightFour.seSetRobotOrientation(headingDeg);
+        
+        if (this.limelightMegaTagType == LimelightMegaTagType.NONE) {
+            return;
+        }
         
         PoseEstimate llMeasurement;
         if (this.limelightMegaTagType == LimelightMegaTagType.MEGA_TAG) {

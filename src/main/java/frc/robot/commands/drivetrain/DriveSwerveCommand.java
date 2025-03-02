@@ -62,6 +62,8 @@ public class DriveSwerveCommand extends Command {
         double leftXInvDbSq = Math.pow(leftXInvDb, 2.0) * Math.signum(leftXInvDb);
         double rightInvDbSq = Math.pow(rightXInvDb, 2.0) * Math.signum(rightXInvDb);
 
+        drivetrain.setLimelightMegaTagType(LimelightMegaTagType.MEGA_TAG_2);
+
         this.drivetrain.applyRequest(() ->
                 drive.withVelocityX(leftYInvDbSq * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(leftXInvDbSq * MaxSpeed) // Drive left with negative X (left)
