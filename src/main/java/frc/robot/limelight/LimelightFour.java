@@ -1,5 +1,7 @@
 package frc.robot.limelight;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -59,7 +61,8 @@ public class LimelightFour extends Limelight {
 
   public Transform2d getClosestFiducial() {
     int fiducialId = getFiducialId();
-    Pose2d robotPose = LimelightHelpers.getBotPose2d(identifier);
+    Pose2d robotPose = LimelightHelpers.getBotPoseEstimate_MegaTag2(identifier).pose;
+    LimelightHelpers.getBotPoseEstimate_MegaTag2(identifier);
     if (fiducialId == -1 || robotPose == null) {
       return null;
     }
@@ -80,6 +83,16 @@ public class LimelightFour extends Limelight {
 
   public int getActiveFiducialId() {
     return activeFiducuialId;
+  }
+
+  public void setIdFilter(int fiducialId) {
+    int[] newIds = {fiducialId};
+    LimelightHelpers.SetFiducialIDFiltersOverride(identifier, newIds);
+  }
+
+  public void resetIdFilter() {
+    int[] newIds = {};
+    LimelightHelpers.SetFiducialIDFiltersOverride(identifier, newIds);
   }
 }
 

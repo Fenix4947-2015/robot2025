@@ -14,7 +14,7 @@ public class AutoAimPose extends AutoMoveStrategy {
     private final LimelightFour _limelight;
     private Pose2d _currentTarget;
     private final Transform2d _initialTaget;
-    private final int _activeFiducialId;
+    private int _activeFiducialId;
 
     public AutoAimPose(
         CommandSwerveDrivetrain driveTrain,
@@ -45,7 +45,8 @@ public class AutoAimPose extends AutoMoveStrategy {
     @Override
     public void initialize() {
         super.initialize();
-        _driveTrain.setLimelightMegaTagType(LimelightMegaTagType.NONE);
+        _driveTrain.setLimelightMegaTagType(LimelightMegaTagType.MEGA_TAG_2);
+        _activeFiducialId = _limelight.getActiveFiducialId();
     }
 
     @Override
@@ -61,7 +62,7 @@ public class AutoAimPose extends AutoMoveStrategy {
     @Override
     public Pose2d updateDestination() {
         Transform2d closestFiducial = _limelight.getClosestFiducial();
-        if (closestFiducial == null || _limelight.getActiveFiducialId() == _activeFiducialId) {
+        if (closestFiducial == null || _limelight.getFiducialId() != _activeFiducialId) {
             return _currentTarget;
         }
         SmartDashboardWrapper.putNumber("fiducailX", closestFiducial.getX());

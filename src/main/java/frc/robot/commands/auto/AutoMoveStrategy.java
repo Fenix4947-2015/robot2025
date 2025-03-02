@@ -63,7 +63,7 @@ public class AutoMoveStrategy extends Command {
     private PIDController _pidDistanceY = new PIDController(K_PID_P_DISTANCE, K_PID_I_DISTANCE, K_PID_D_DISTANCE);
 
     private final long _setpointDelayMs;
-    public static final long DEFAULT_SETPOINT_DELAY_MS = 500;
+    public static final long DEFAULT_SETPOINT_DELAY_MS = 100;
     private final Pose2d _posTolerance;
     public static final Pose2d DEFAULT_POS_TOLERANCE = new Pose2d(0.05, 0.05, Rotation2d.fromDegrees(0.5));
      private final double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -321,5 +321,9 @@ public class AutoMoveStrategy extends Command {
 
     protected static Transform2d pose2dAsTransform2d(Pose2d pose) {
         return new Transform2d(pose.getTranslation(), pose.getRotation());
+    }
+
+    protected void setTarget(Pose2d target) {
+        _target = target;
     }
 }

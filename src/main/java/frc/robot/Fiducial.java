@@ -184,6 +184,6 @@ public enum Fiducial {
                 return fiducial;
             }
         }
-        return null; // Or throw an exception if preferred
+        return null;
     }
 }

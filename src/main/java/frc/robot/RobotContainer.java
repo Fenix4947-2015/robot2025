@@ -116,7 +116,8 @@ public class RobotContainer {
         //m_driverController.start().and(m_driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         //m_driverController.start().and(m_driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
         //m_driverController.rightBumper().onTrue(new InstantCommand(logger::stop));
-        m_driverController.x().whileTrue(autoDropCoralL4Right);
+        m_driverController.povRight().whileTrue(autoDropCoralL4Right);
+        m_driverController.povLeft().whileTrue(autoDropCoralL4Left);
         m_driverController.y().whileTrue(autoPickupCoralStation1);
         m_driverController.a().whileTrue(m_moveArmLow);
 

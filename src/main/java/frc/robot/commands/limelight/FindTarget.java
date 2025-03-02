@@ -18,7 +18,7 @@ public class FindTarget extends Command {
     public void initialize() {
         limelight.setActiveFiducuialId(-1);
         drivetrain.setLimelightMegaTagType(LimelightMegaTagType.MEGA_TAG);
-
+        limelight.resetIdFilter();
     }
 
     @Override
@@ -26,6 +26,7 @@ public class FindTarget extends Command {
         int fiducialId = this.limelight.getFiducialId();
         if (fiducialId > 0) {
             this.limelight.setActiveFiducuialId(fiducialId);
+            this.limelight.setIdFilter(fiducialId);
         }
     }
 
@@ -37,5 +38,6 @@ public class FindTarget extends Command {
     @Override
     public void end(boolean interrupted) {
         drivetrain.setLimelightMegaTagType(LimelightMegaTagType.NONE);
+        super.end(interrupted);
     }
 }
