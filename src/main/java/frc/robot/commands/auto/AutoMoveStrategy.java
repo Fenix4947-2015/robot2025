@@ -1,10 +1,6 @@
 package frc.robot.commands.auto;
 
-import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalUnit;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -17,7 +13,6 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.SmartDashboardWrapper;
 import frc.robot.generated.TunerConstants;
@@ -51,10 +46,6 @@ public class AutoMoveStrategy extends Command {
 
     private final SmartDashboardSettings _smartDashboardSettings;
     private Pose2d _target;
-    private double _lastTimeMillis;
-    private Translation2d _lastSpeed;
-    private double _lastAngularSpeed;
-
     public double _driveCommandX = 0.0;
     public double _driveCommandY = 0.0;
     public double _steerCommand = 0.0;
@@ -118,10 +109,9 @@ public class AutoMoveStrategy extends Command {
     @Override
     public void initialize() {
         _isAtSetPoint = false;
-        _lastTimeMillis = System.currentTimeMillis();
+        System.currentTimeMillis();
         ChassisSpeeds chassisSpeeds = _driveTrain.getState().Speeds;
-        _lastSpeed = new Translation2d(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond);
-        _lastAngularSpeed = chassisSpeeds.omegaRadiansPerSecond;
+        new Translation2d(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -190,7 +180,7 @@ public class AutoMoveStrategy extends Command {
         SmartDashboardWrapper.putNumber("poseX", pose.getX());
         SmartDashboardWrapper.putNumber("poseY", pose.getY());
         SmartDashboardWrapper.putNumber("poseRot", pose.getRotation().getDegrees());
-        return _driveTrain.getState().Pose;
+        return pose;
         
     }
 
@@ -282,10 +272,6 @@ public class AutoMoveStrategy extends Command {
         return _target;
     }
     
-    private double getBrakeDistance(double speed) {
-        return Math.pow(speed, 2) / (2 * TunerConstants.MAX_ACCEL);
-    }
-
     protected static double computeFullAngleBetween(Transform2d transformA, Transform2d transformB) {
 
         return computeFullAngleBetween(transformA.getTranslation(), transformB.getTranslation());

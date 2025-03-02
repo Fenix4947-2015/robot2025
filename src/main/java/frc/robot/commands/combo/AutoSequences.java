@@ -104,8 +104,8 @@ public class AutoSequences {
             new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kLowestPosition),
             new OpenSideGripper(m_robotContainer.m_coralGripper),
             new OpenFrontGripper(m_robotContainer.m_coralGripper),
-            moveAbsoluteRough(Position.STATION_1_APPROACH),
-            moveAbsoluteRough(Position.STATION_1),
+            moveFiducialRelativeRough(Position.STATION_1_APPROACH),
+            moveFiducialRelativeRough(Position.STATION_1),
             new WaitForCoral(m_robotContainer.m_coralGripper),
             clampCoral(),
             moveRelativeRough(new Pose2d(-0.5, 0, Rotation2d.kZero))

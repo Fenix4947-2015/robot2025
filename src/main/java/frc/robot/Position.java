@@ -73,18 +73,18 @@ public enum Position {
     STATION_1_APPROACH {
         public Pose2d getPositionForTeam(Alliance team) {
             if (team == Blue) {
-                return new Pose2d(1.21, 1.36, Rotation2d.fromDegrees(-122));
+                return new Pose2d(0.5, 0, Rotation2d.fromDegrees(180));
             } else {
-                return new Pose2d(1.21, 1.36, Rotation2d.fromDegrees(-122));
+                return new Pose2d(0.5, 0, Rotation2d.fromDegrees(180));
             }
         }
     },
     STATION_1 {
         public Pose2d getPositionForTeam(Alliance team) {
             if (team == Blue) {
-                return new Pose2d(1.06, .87, Rotation2d.fromDegrees(-122));
+                return new Pose2d(0.02, 0, Rotation2d.fromDegrees(180));
             } else {
-                return new Pose2d(1.06, .87, Rotation2d.fromDegrees(-122));
+                return new Pose2d(0.02, 0, Rotation2d.fromDegrees(180));
             }
         }
     },

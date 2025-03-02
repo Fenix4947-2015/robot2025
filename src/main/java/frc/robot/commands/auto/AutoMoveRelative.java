@@ -1,7 +1,6 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.SmartDashboardSettings;
 import frc.robot.limelight.LimelightMegaTagType;
