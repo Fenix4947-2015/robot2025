@@ -3,17 +3,11 @@ package frc.robot.commands.combo;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import frc.robot.Constants;
 import frc.robot.Position;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.Limelight;
 import frc.robot.commands.arm.MoveArmPosition;
 import frc.robot.commands.auto.AutoAimPose;
 import frc.robot.commands.auto.AutoMoveAbsolute;
@@ -25,7 +19,7 @@ import frc.robot.commands.coralgripper.OpenSideGripper;
 import frc.robot.commands.coralgripper.WaitForCoral;
 import frc.robot.commands.limelight.FindTarget;
 import frc.robot.commands.limelight.ResetTarget;
-import frc.robot.limelight.LimelightFour;
+import frc.robot.limelight.Limelight2025;
 
 public class AutoSequences {
 
@@ -144,7 +138,7 @@ public class AutoSequences {
                         posTolerance);
     }
 
-    public Command moveFiducialRelative(Position position, LimelightFour limelight) {
+    public Command moveFiducialRelative(Position position, Limelight2025 limelight) {
         return new AutoAimPose(
                         m_robotContainer.drivetrain,
                         m_robotContainer.smartDashboardSettings,
@@ -153,7 +147,7 @@ public class AutoSequences {
                         );
     }
 
-    public Command moveFiducialRelativeRough(Position position, LimelightFour limelight) {
+    public Command moveFiducialRelativeRough(Position position, Limelight2025 limelight) {
         final Pose2d posTolerance = new Pose2d(0.1,0.1, Rotation2d.fromDegrees(3));
         return new AutoAimPose(
                         m_robotContainer.drivetrain,

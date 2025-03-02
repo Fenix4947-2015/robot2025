@@ -179,13 +179,17 @@ public class Arm extends SubsystemBase {
     }
 
     private double limitOutput(double output) {
-        if (armAtLowestPos()) {
+        if (armAtLowestPos() || isInGripperDangerZone()) {
             return Math.max(output, 0);
         }
         if (armAtHighestPos()) {
             return Math.min(output, 0);
         }
         return output;
+    }
+
+    private boolean isInGripperDangerZone() {
+        return !m_coralGripper.isSideGripperOpen() && getEncoderDistance() < Constants.Arm.gripperDangerZonePosition;
     }
 
     public void extendExtender() {

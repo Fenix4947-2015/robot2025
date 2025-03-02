@@ -17,10 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.arm.KeepArmInPosition;
 import frc.robot.commands.arm.MoveArmDirect;
-import frc.robot.commands.arm.MoveArmDirectDriverDown;
-import frc.robot.commands.arm.MoveArmDirectDriverUp;
 import frc.robot.commands.arm.MoveArmDropPosition;
 import frc.robot.commands.arm.StopArm;
 import frc.robot.commands.balls.RollBalls;
@@ -31,7 +28,7 @@ import frc.robot.commands.winch.RollCageGripper;
 import frc.robot.commands.winch.RollWinchSpeed;
 import frc.robot.commands.winch.RollWinchStick;
 import frc.robot.generated.TunerConstants;
-import frc.robot.limelight.LimelightFour;
+import frc.robot.limelight.Limelight2025;
 import frc.robot.subsystems.*;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
@@ -52,9 +49,9 @@ public class RobotContainer {
 
     // Subsystems
 
-    public final LimelightFour limelightThree = new LimelightFour("limelight-three", this);
-    public final LimelightFour limelightFour = new LimelightFour("limelight-four", this);
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain(limelightFour);
+    public final Limelight2025 limelightThree = new Limelight2025("limelight-three", this);
+    public final Limelight2025 limelightFour = new Limelight2025("limelight-four", this);
+    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain(limelightFour, limelightThree);
     public final CoralGripper m_coralGripper = new CoralGripper();
     public final Arm m_arm = new Arm(m_coralGripper);
     public final Balls m_balls = new Balls();

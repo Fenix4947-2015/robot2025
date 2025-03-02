@@ -1,15 +1,15 @@
 package frc.robot.commands.limelight;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.limelight.LimelightFour;
+import frc.robot.limelight.Limelight2025;
 import frc.robot.limelight.LimelightMegaTagType;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class FindTarget extends Command {
-    private final LimelightFour limelight;
+    private final Limelight2025 limelight;
     private final CommandSwerveDrivetrain drivetrain;
 
-    public FindTarget(LimelightFour limelight, CommandSwerveDrivetrain drivetrain) {
+    public FindTarget(Limelight2025 limelight, CommandSwerveDrivetrain drivetrain) {
         this.limelight = limelight;
         this.drivetrain = drivetrain;
     }

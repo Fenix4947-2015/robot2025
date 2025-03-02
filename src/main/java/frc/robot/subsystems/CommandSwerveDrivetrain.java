@@ -29,10 +29,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.LimelightHelpers;
-import frc.robot.SmartDashboardWrapper;
 import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
-import frc.robot.limelight.LimelightFour;
+import frc.robot.limelight.Limelight2025;
 import frc.robot.limelight.LimelightMegaTagType;
 
 /**
@@ -56,7 +55,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
-    private final LimelightFour limelightFour;
+    private final Limelight2025 limelightFour;
+    private final Limelight2025 limelightThree;
     private LimelightMegaTagType limelightMegaTagType;
 
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
@@ -121,6 +121,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     /* The SysId routine to test */
     private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
 
+    public enum LimelightToUse {
+        LIMELIGHT_FOUR,
+        LIMELIGHT_THREE
+    }
+
+    private LimelightToUse limelightToUse = LimelightToUse.LIMELIGHT_FOUR;
+
     /**
      * Constructs a CTRE SwerveDrivetrain using the specified constants.
      * <p>
@@ -133,7 +140,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      */
     public CommandSwerveDrivetrain(
         SwerveDrivetrainConstants drivetrainConstants,
-        LimelightFour limelight,
+        Limelight2025 limelightFour,
+        Limelight2025 limelightThree,
         SwerveModuleConstants<?, ?, ?>... modules
     ) {
         super(drivetrainConstants, modules);
@@ -141,7 +149,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
 
-        this.limelightFour = limelight;
+        this.limelightFour = limelightFour;
+        this.limelightThree = limelightThree;
         this.limelightMegaTagType = LimelightMegaTagType.NONE;
 
         configureAutoBuilder();
@@ -171,6 +180,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
 
         this.limelightFour = null;
+        this.limelightThree = null;
         this.limelightMegaTagType = LimelightMegaTagType.NONE;
 
         configureAutoBuilder();
@@ -210,6 +220,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
 
         this.limelightFour = null;
+        this.limelightThree = null;
         this.limelightMegaTagType = LimelightMegaTagType.NONE;
 
         configureAutoBuilder();
@@ -360,9 +371,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         
         PoseEstimate llMeasurement;
         if (this.limelightMegaTagType == LimelightMegaTagType.MEGA_TAG) {
-            llMeasurement = limelightFour.getPoseEstimate();
+            llMeasurement = getActiveLimelight().getPoseEstimate();
         } else {
-            llMeasurement = limelightFour.getPoseEstimateMegaTag2();
+            llMeasurement = getActiveLimelight().getPoseEstimateMegaTag2();
         }
         
         if (llMeasurement != null && llMeasurement.tagCount > 0 && Math.abs(omegaRps) < 2.0) {
@@ -372,5 +383,16 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public void setLimelightMegaTagType(LimelightMegaTagType limelightMegaTagType) {
         this.limelightMegaTagType = limelightMegaTagType;
+    }
+
+    public void setLimelightToUse(LimelightToUse limelightToUse) {
+        this.limelightToUse = limelightToUse;
+    }
+
+    private Limelight2025 getActiveLimelight() {
+        return switch (limelightToUse) {
+            case LIMELIGHT_FOUR -> limelightFour;
+            case LIMELIGHT_THREE -> limelightThree;
+        };
     }
 }

@@ -1,17 +1,16 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import frc.robot.SmartDashboardSettings;
 import frc.robot.SmartDashboardWrapper;
-import frc.robot.limelight.LimelightFour;
+import frc.robot.limelight.Limelight2025;
 import frc.robot.limelight.LimelightMegaTagType;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class AutoAimPose extends AutoMoveStrategy {
 
-    private final LimelightFour _limelight;
+    private final Limelight2025 _limelight;
     private Pose2d _currentTarget;
     private final Transform2d _initialTaget;
     private int _activeFiducialId;
@@ -19,7 +18,7 @@ public class AutoAimPose extends AutoMoveStrategy {
     public AutoAimPose(
         CommandSwerveDrivetrain driveTrain,
         SmartDashboardSettings smartDashboardSettings,
-        LimelightFour limelight,
+        Limelight2025 limelight,
         Pose2d target) {
             super(driveTrain, smartDashboardSettings, target);
             _limelight = limelight;
@@ -31,7 +30,7 @@ public class AutoAimPose extends AutoMoveStrategy {
     public AutoAimPose(
         CommandSwerveDrivetrain driveTrain, 
         SmartDashboardSettings smartDashboardSettings,
-        LimelightFour limelight,
+        Limelight2025 limelight,
         Pose2d target,
         long setpointDelayMs,
         Pose2d posTolerance) {

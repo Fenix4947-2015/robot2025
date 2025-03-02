@@ -18,9 +18,6 @@ public class Winch extends SubsystemBase {
 
     private final Encoder m_encoder = new Encoder(ElectricConstants.kWinchEncoderChannel1, ElectricConstants.kWinchEncoderChannel2);
 
-    
-    //private final DigitalInput m_safetySwitch = new DigitalInput(ElectricConstants.kWinchSafetySwitchChannel);
-
     private static final boolean PREVENT_UNROLL = true;
 
     public Winch() {
@@ -38,9 +35,6 @@ public class Winch extends SubsystemBase {
         if (PREVENT_UNROLL) {
             speed = Math.min(speed, 0.0);
         }
-        //if (m_safetySwitch.get()) {
-        //    speed = Math.max(speed, 0.0);
-        //}
 
         m_motorOne.set(speed);
     }
@@ -56,7 +50,6 @@ public class Winch extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboardWrapper.putNumber("Winch / Distance", getEncoderDistance());
-        //SmartDashboardWrapper.putBoolean("Winch / safetySwitch", m_safetySwitch.get());
     }
 
 }

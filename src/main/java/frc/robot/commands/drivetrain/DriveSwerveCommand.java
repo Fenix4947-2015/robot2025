@@ -7,13 +7,10 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.LimelightHelpers;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.generated.TunerConstants;
-import frc.robot.limelight.LimelightFour;
+import frc.robot.limelight.Limelight2025;
 import frc.robot.limelight.LimelightMegaTagType;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -35,9 +32,9 @@ public class DriveSwerveCommand extends Command {
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             //.withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * 0.2) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    private final LimelightFour limelightFour;
+    private final Limelight2025 limelightFour;
 
-    public DriveSwerveCommand(CommandSwerveDrivetrain commandSwerveDrivetrain, CommandXboxController joystick, LimelightFour limelightFour) {
+    public DriveSwerveCommand(CommandSwerveDrivetrain commandSwerveDrivetrain, CommandXboxController joystick, Limelight2025 limelightFour) {
         addRequirements(commandSwerveDrivetrain);
         this.drivetrain = commandSwerveDrivetrain;
         this.joystick = joystick;

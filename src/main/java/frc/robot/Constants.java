@@ -57,6 +57,7 @@ public final class Constants {
         public static final double kCoralL3Position = 0.771;
         public static final double kCoralL2Position = 0.650;
         public static final double lowestRetractedPosition = 0.640;
+        public static final double gripperDangerZonePosition = 0.3;
     }
 
     public static class Limelight {
