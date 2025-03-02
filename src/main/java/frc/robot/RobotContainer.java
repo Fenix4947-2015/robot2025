@@ -52,7 +52,8 @@ public class RobotContainer {
 
     // Subsystems
 
-    public final LimelightFour limelightFour = new LimelightFour("limelight", this);
+    public final LimelightFour limelightThree = new LimelightFour("limelight-three", this);
+    public final LimelightFour limelightFour = new LimelightFour("limelight-four", this);
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain(limelightFour);
     public final CoralGripper m_coralGripper = new CoralGripper();
     public final Arm m_arm = new Arm(m_coralGripper);

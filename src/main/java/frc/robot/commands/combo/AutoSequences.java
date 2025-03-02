@@ -25,6 +25,7 @@ import frc.robot.commands.coralgripper.OpenSideGripper;
 import frc.robot.commands.coralgripper.WaitForCoral;
 import frc.robot.commands.limelight.FindTarget;
 import frc.robot.commands.limelight.ResetTarget;
+import frc.robot.limelight.LimelightFour;
 
 public class AutoSequences {
 
@@ -67,11 +68,11 @@ public class AutoSequences {
             new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kCoralL4Position),
             new OpenSideGripper(m_robotContainer.m_coralGripper),
             new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
-            moveFiducialRelativeRough(Position.L4_APPROACH_RIGHT),
+            moveFiducialRelativeRough(Position.L4_APPROACH_RIGHT, m_robotContainer.limelightFour),
             new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
-            moveFiducialRelative(Position.CORAL_L4_RIGHT),
+            moveFiducialRelative(Position.CORAL_L4_RIGHT, m_robotContainer.limelightFour),
             dropCoral(),
-            moveRelativeRough(new Pose2d(-0.5, 0, Rotation2d.kZero)),
+            moveFiducialRelativeRough(Position.L4_APPROACH_RIGHT, m_robotContainer.limelightFour),
             new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain)
 
         );
@@ -82,11 +83,11 @@ public class AutoSequences {
             new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kCoralL4Position),
             new OpenSideGripper(m_robotContainer.m_coralGripper),
             new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
-            moveFiducialRelativeRough(Position.L4_APPROACH_LEFT),
+            moveFiducialRelativeRough(Position.L4_APPROACH_LEFT, m_robotContainer.limelightFour),
             new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
-            moveFiducialRelative(Position.CORAL_L4_LEFT),
+            moveFiducialRelative(Position.CORAL_L4_LEFT, m_robotContainer.limelightFour),
             dropCoral(),
-            moveRelativeRough(new Pose2d(-0.5, 0, Rotation2d.kZero)),
+            moveFiducialRelativeRough(Position.L4_APPROACH_LEFT, m_robotContainer.limelightFour),
             new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain)
 
         );
@@ -95,7 +96,7 @@ public class AutoSequences {
     public Command autoMoveCoralL4Right() {
         return new SequentialCommandGroup(
             new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kCoralL4Position),
-            moveFiducialRelative(Position.CORAL_L4_RIGHT)
+            moveFiducialRelative(Position.CORAL_L4_RIGHT, m_robotContainer.limelightFour)
         );
     }
 
@@ -104,11 +105,13 @@ public class AutoSequences {
             new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kLowestPosition),
             new OpenSideGripper(m_robotContainer.m_coralGripper),
             new OpenFrontGripper(m_robotContainer.m_coralGripper),
-            moveFiducialRelativeRough(Position.STATION_1_APPROACH),
-            moveFiducialRelativeRough(Position.STATION_1),
+            new FindTarget(m_robotContainer.limelightThree, m_robotContainer.drivetrain),
+            moveFiducialRelativeRough(Position.STATION_1_APPROACH, m_robotContainer.limelightThree),
+            moveFiducialRelativeRough(Position.STATION_1, m_robotContainer.limelightThree),
             new WaitForCoral(m_robotContainer.m_coralGripper),
             clampCoral(),
-            moveRelativeRough(new Pose2d(-0.5, 0, Rotation2d.kZero))
+            moveFiducialRelativeRough(Position.STATION_1_APPROACH, m_robotContainer.limelightThree),
+            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain)
         );
     }
 
@@ -141,16 +144,16 @@ public class AutoSequences {
                         posTolerance);
     }
 
-    public Command moveFiducialRelative(Position position) {
+    public Command moveFiducialRelative(Position position, LimelightFour limelight) {
         return new AutoAimPose(
                         m_robotContainer.drivetrain,
                         m_robotContainer.smartDashboardSettings,
-                        m_robotContainer.limelightFour,
+                        limelight,
                         position.getPositionForTeam(m_robotContainer.m_alliance)
                         );
     }
 
-    public Command moveFiducialRelativeRough(Position position) {
+    public Command moveFiducialRelativeRough(Position position, LimelightFour limelight) {
         final Pose2d posTolerance = new Pose2d(0.1,0.1, Rotation2d.fromDegrees(3));
         return new AutoAimPose(
                         m_robotContainer.drivetrain,

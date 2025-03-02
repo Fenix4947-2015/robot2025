@@ -45,7 +45,7 @@ public class AutoAimPose extends AutoMoveStrategy {
     @Override
     public void initialize() {
         super.initialize();
-        _driveTrain.setLimelightMegaTagType(LimelightMegaTagType.MEGA_TAG_2);
+        _driveTrain.setLimelightMegaTagType(LimelightMegaTagType.MEGA_TAG);
         _activeFiducialId = _limelight.getActiveFiducialId();
     }
 
