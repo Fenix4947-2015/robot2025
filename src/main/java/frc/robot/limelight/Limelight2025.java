@@ -92,7 +92,7 @@ public class Limelight2025 extends Limelight {
     LimelightHelpers.SetFiducialIDFiltersOverride(identifier, newIds);
   }
 
-  public void seSetRobotOrientation(double headingDeg) {
+  public void setRobotOrientation(double headingDeg) {
     LimelightHelpers.SetRobotOrientation(identifier, headingDeg, 0, 0, 0, 0, 0);
   }
 }

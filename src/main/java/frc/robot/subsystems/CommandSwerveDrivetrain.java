@@ -28,7 +28,6 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.limelight.Limelight2025;
@@ -364,7 +363,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         double headingDeg = driveState.Pose.getRotation().getDegrees();
         double omegaRps = Units.radiansToRotations(driveState.Speeds.omegaRadiansPerSecond);
 
-        this.limelightFour.seSetRobotOrientation(headingDeg);
+        this.limelightFour.setRobotOrientation(headingDeg);
+        this.limelightThree.setRobotOrientation(headingDeg);
         
         if (this.limelightMegaTagType == LimelightMegaTagType.NONE) {
             return;
