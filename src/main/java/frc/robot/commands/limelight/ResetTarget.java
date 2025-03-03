@@ -20,4 +20,15 @@ public class ResetTarget extends Command {
         drivetrain.setLimelightMegaTagType(LimelightMegaTagType.NONE);
         limelight.resetIdFilter();
     }
+
+    @Override
+    public boolean isFinished() {
+        return true;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        drivetrain.setLimelightMegaTagType(LimelightMegaTagType.NONE);
+        super.end(interrupted);
+    }
 }

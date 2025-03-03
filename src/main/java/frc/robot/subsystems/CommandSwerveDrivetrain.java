@@ -378,8 +378,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
         
         if (llMeasurement != null && llMeasurement.tagCount > 0 && Math.abs(omegaRps) < 2.0) {
-            this.addVisionMeasurement(llMeasurement.pose, llMeasurement.timestampSeconds);
+            setPoseEstimate(llMeasurement);
         }
+    }
+
+    public void setPoseEstimate(PoseEstimate llMeasurement) {
+        this.addVisionMeasurement(llMeasurement.pose, llMeasurement.timestampSeconds);
     }
 
     public void setLimelightMegaTagType(LimelightMegaTagType limelightMegaTagType) {

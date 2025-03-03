@@ -1320,6 +1320,11 @@ public class LimelightHelpers {
         return getBotPoseEstimate(limelightName, "botpose_orb", true);
     }
 
+    public static PoseEstimate getBotPoseEstimate(String limelightName) {
+        return getBotPoseEstimate(limelightName, "botpose", false);
+    }
+
+
     /**
      * Gets the Pose2d for easy use with Odometry vision pose estimator
      * (addVisionMeasurement)

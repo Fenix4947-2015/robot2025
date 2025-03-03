@@ -13,6 +13,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.limelight.Limelight2025;
 import frc.robot.limelight.LimelightMegaTagType;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.CommandSwerveDrivetrain.LimelightToUse;
 
 public class DriveSwerveCommand extends Command {
 
@@ -44,7 +45,7 @@ public class DriveSwerveCommand extends Command {
     @Override
     public void initialize() {
         drivetrain.setLimelightMegaTagType(LimelightMegaTagType.MEGA_TAG_2);
-
+        drivetrain.setLimelightToUse(LimelightToUse.LIMELIGHT_FOUR);
     }
 
     @Override
@@ -61,8 +62,6 @@ public class DriveSwerveCommand extends Command {
         double leftYInvDbSq = Math.pow(leftYInvDb, 2.0) * Math.signum(leftYInvDb);
         double leftXInvDbSq = Math.pow(leftXInvDb, 2.0) * Math.signum(leftXInvDb);
         double rightInvDbSq = Math.pow(rightXInvDb, 2.0) * Math.signum(rightXInvDb);
-
-        drivetrain.setLimelightMegaTagType(LimelightMegaTagType.MEGA_TAG_2);
 
         this.drivetrain.applyRequest(() ->
                 drive.withVelocityX(leftYInvDbSq * MaxSpeed) // Drive forward with negative Y (forward)

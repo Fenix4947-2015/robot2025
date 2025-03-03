@@ -27,6 +27,7 @@ public class FindTarget extends Command {
         if (fiducialId > 0) {
             this.limelight.setActiveFiducuialId(fiducialId);
             this.limelight.setIdFilter(fiducialId);
+            this.drivetrain.setPoseEstimate(this.limelight.getPoseEstimate());
         }
     }
 

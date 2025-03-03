@@ -30,6 +30,7 @@ import frc.robot.commands.winch.RollWinchStick;
 import frc.robot.generated.TunerConstants;
 import frc.robot.limelight.Limelight2025;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.CommandSwerveDrivetrain.LimelightToUse;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
@@ -49,8 +50,8 @@ public class RobotContainer {
 
     // Subsystems
 
-    public final Limelight2025 limelightThree = new Limelight2025("limelight-three", this);
-    public final Limelight2025 limelightFour = new Limelight2025("limelight-four", this);
+    public final Limelight2025 limelightThree = new Limelight2025("limelight-three", LimelightToUse.LIMELIGHT_THREE,this);
+    public final Limelight2025 limelightFour = new Limelight2025("limelight-four", LimelightToUse.LIMELIGHT_FOUR, this);
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain(limelightFour, limelightThree);
     public final CoralGripper m_coralGripper = new CoralGripper();
     public final Arm m_arm = new Arm(m_coralGripper);
@@ -96,6 +97,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("auto dunk coral right",autoDropCoralL4Right);
         NamedCommands.registerCommand("auto dunk coral left",autoDropCoralL4Left);
         NamedCommands.registerCommand("auto get coral station 1",autoPickupCoralStation1);
+        NamedCommands.registerCommand("Arm L4",m_moveArmL4);
+        NamedCommands.registerCommand("Arm Lowest",m_moveArmLow);
         autoChooser = AutoBuilder.buildAutoChooser("auto_path");
         SmartDashboard.putData("Auto Mode", autoChooser);
         return autoChooser;

@@ -1,7 +1,11 @@
 package frc.robot.commands.combo;
 
+import static edu.wpi.first.units.Units.Second;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.TimeUnit;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -68,7 +72,6 @@ public class AutoSequences {
             dropCoral(),
             moveFiducialRelativeRough(Position.L4_APPROACH_RIGHT, m_robotContainer.limelightFour),
             new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain)
-
         );
     }
 
@@ -83,7 +86,6 @@ public class AutoSequences {
             dropCoral(),
             moveFiducialRelativeRough(Position.L4_APPROACH_LEFT, m_robotContainer.limelightFour),
             new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain)
-
         );
     }
 
@@ -102,10 +104,10 @@ public class AutoSequences {
             new FindTarget(m_robotContainer.limelightThree, m_robotContainer.drivetrain),
             moveFiducialRelativeRough(Position.STATION_1_APPROACH, m_robotContainer.limelightThree),
             moveFiducialRelativeRough(Position.STATION_1, m_robotContainer.limelightThree),
-            new WaitForCoral(m_robotContainer.m_coralGripper),
+            new WaitForCoral(m_robotContainer.m_coralGripper).withTimeout(Second.of(3)),
             clampCoral(),
             moveFiducialRelativeRough(Position.STATION_1_APPROACH, m_robotContainer.limelightThree),
-            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain)
+            new ResetTarget(m_robotContainer.limelightThree, m_robotContainer.drivetrain)
         );
     }
 
@@ -152,7 +154,7 @@ public class AutoSequences {
         return new AutoAimPose(
                         m_robotContainer.drivetrain,
                         m_robotContainer.smartDashboardSettings,
-                        m_robotContainer.limelightFour,
+                        limelight,
                         position.getPositionForTeam(m_robotContainer.m_alliance),
                         0,
                         posTolerance);

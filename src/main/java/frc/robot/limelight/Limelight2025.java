@@ -6,8 +6,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Fiducial;
 import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
+import frc.robot.SmartDashboardWrapper;
 import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.LimelightHelpers.PoseEstimate;
+import frc.robot.subsystems.CommandSwerveDrivetrain.LimelightToUse;
 
 public class Limelight2025 extends Limelight {
 
@@ -15,12 +17,14 @@ public class Limelight2025 extends Limelight {
     private final String identifier;
     private final RobotContainer m_robotContainer;
     private int activeFiducuialId;
+    private LimelightToUse limelightToUse;
 
-  public Limelight2025(String identifier, RobotContainer robotContainer) {
+  public Limelight2025(String identifier, LimelightToUse limelightToUse, RobotContainer robotContainer) {
     super(identifier);
     this.identifier = identifier;
     m_robotContainer = robotContainer;
     activeFiducuialId = -1;
+    this.limelightToUse = limelightToUse;
   }
 
   @Override
@@ -56,11 +60,22 @@ public class Limelight2025 extends Limelight {
     return (int) LimelightHelpers.getFiducialID(identifier);
   }
 
-  public Transform2d getClosestFiducial() {
+  public Transform2d getClosestFiducial(LimelightMegaTagType limelightMegaTagType) {
     int fiducialId = getFiducialId();
-    Pose2d robotPose = LimelightHelpers.getBotPoseEstimate_MegaTag2(identifier).pose;
-    LimelightHelpers.getBotPoseEstimate_MegaTag2(identifier);
-    if (fiducialId == -1 || robotPose == null) {
+    PoseEstimate robotPoseEstimate;
+    if (limelightMegaTagType == LimelightMegaTagType.MEGA_TAG) {
+      robotPoseEstimate = LimelightHelpers.getBotPoseEstimate(identifier);
+    } else {
+      robotPoseEstimate = LimelightHelpers.getBotPoseEstimate_MegaTag2(identifier);
+    }
+
+    Pose2d robotPose = robotPoseEstimate.pose;
+    SmartDashboardWrapper.putString("Limelight2025/identifier", identifier);
+    SmartDashboardWrapper.putNumber("Limelight2025/robotPoseX", robotPose.getX());
+    SmartDashboardWrapper.putNumber("Limelight2025/robotPoseY", robotPose.getY());
+    SmartDashboardWrapper.putNumber("Limelight2025/robotPoseRot", robotPose.getRotation().getDegrees());
+    
+    if (fiducialId == -1 || robotPose == null || robotPoseEstimate.tagCount < 1) {
       return null;
     }
     Fiducial fiducial = Fiducial.getFiducialById(fiducialId);
@@ -94,6 +109,10 @@ public class Limelight2025 extends Limelight {
 
   public void setRobotOrientation(double headingDeg) {
     LimelightHelpers.SetRobotOrientation(identifier, headingDeg, 0, 0, 0, 0, 0);
+  }
+
+  public LimelightToUse getLimelightToUse() {
+    return limelightToUse;
   }
 }
 

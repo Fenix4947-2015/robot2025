@@ -5,9 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "corail_1"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "corail_1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm L4"
+                }
+              }
+            ]
           }
         },
         {
@@ -17,9 +30,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "retour_1"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "retour_1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Lowest"
+                }
+              }
+            ]
           }
         },
         {
@@ -29,9 +55,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "corail_2"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "corail_2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm L4"
+                }
+              }
+            ]
           }
         },
         {
@@ -41,9 +80,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "retour_2"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "retour_2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Lowest"
+                }
+              }
+            ]
           }
         }
       ]

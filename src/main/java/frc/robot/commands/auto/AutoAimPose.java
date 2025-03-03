@@ -46,6 +46,7 @@ public class AutoAimPose extends AutoMoveStrategy {
         super.initialize();
         _driveTrain.setLimelightMegaTagType(LimelightMegaTagType.MEGA_TAG);
         _activeFiducialId = _limelight.getActiveFiducialId();
+        _driveTrain.setLimelightToUse(_limelight.getLimelightToUse());
     }
 
     @Override
@@ -60,7 +61,7 @@ public class AutoAimPose extends AutoMoveStrategy {
 
     @Override
     public Pose2d updateDestination() {
-        Transform2d closestFiducial = _limelight.getClosestFiducial();
+        Transform2d closestFiducial = _limelight.getClosestFiducial(LimelightMegaTagType.MEGA_TAG);
         if (closestFiducial == null || _limelight.getFiducialId() != _activeFiducialId) {
             return _currentTarget;
         }
