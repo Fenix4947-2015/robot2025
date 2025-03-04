@@ -19,9 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.arm.MoveArmDirect;
 import frc.robot.commands.arm.MoveArmDropPosition;
-import frc.robot.commands.arm.StopArm;
 import frc.robot.commands.balls.RollBalls;
-import frc.robot.commands.balls.RollBallsClockWise;
 import frc.robot.commands.combo.AutoSequences;
 import frc.robot.commands.drivetrain.DriveSwerveCommand;
 import frc.robot.commands.winch.RollCageGripper;
@@ -61,21 +59,18 @@ public class RobotContainer {
     public final SmartDashboardSettings smartDashboardSettings = new SmartDashboardSettings();
 
     private final DriveSwerveCommand driveSwerveCommand = new DriveSwerveCommand(drivetrain, m_driverController, limelightFour);
-    private final StopArm m_stopArm = new StopArm(m_arm);
-    //private final KeepArmInPosition m_keepArmInPosition = new KeepArmInPosition(m_arm);
     private final MoveArmDirect m_moveArmDirect = new MoveArmDirect(m_arm, m_helperController,m_driverController);
     private final MoveArmDropPosition m_moveArmL4 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L4);
     private final MoveArmDropPosition m_moveArmL3 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L3);
     private final MoveArmDropPosition m_moveArmL2 = new MoveArmDropPosition(m_arm, Arm.DropPosition.L2);
     private final MoveArmDropPosition m_moveArmLow = new MoveArmDropPosition(m_arm, Arm.DropPosition.LOW);
     private final RollBalls m_rollBalls = new RollBalls(m_balls,m_helperController);
-    private final RollBallsClockWise m_rollBallsClockWise = new RollBallsClockWise(m_balls);
     private final RollWinchStick m_rollWinchStick = new RollWinchStick(m_winch, m_helperController);
     private final RollWinchSpeed m_stopWinch = new RollWinchSpeed(m_winch, 0.0);
     private final RollCageGripper m_rollCageGripper = new RollCageGripper(m_cageGripper);
     private final RollCageGripper m_stopCageGripper = new RollCageGripper(m_cageGripper, 0.0);
-    private final Command autoDropCoralL4Right = new AutoSequences(this).autoDropCoralL4Right();
-    private final Command autoDropCoralL4Left = new AutoSequences(this).autoDropCoralL4Left();
+    private final Command autoDropCoralRight = new AutoSequences(this).autoDropCoralRight();
+    private final Command autoDropCoralLeft = new AutoSequences(this).autoDropCoralLeft();
     private final Command autoPickupCoralStation1 = new AutoSequences(this).autoPickupCoralStation1();
     private final Command autoDropTrajerctoryCoralL4Left = new AutoSequences(this).autoDropTrajerctoryCoralL4Left();
     private final Command auto1m = new AutoSequences(this).auto1m();
@@ -96,8 +91,8 @@ public class RobotContainer {
     private SendableChooser<Command> buildAutoChooser() {
         final SendableChooser<Command> autoChooser;
         NamedCommands.registerCommand("toggle side gripper",new InstantCommand(m_coralGripper::toggleSideGripper, m_coralGripper));
-        NamedCommands.registerCommand("auto dunk coral right",autoDropCoralL4Right);
-        NamedCommands.registerCommand("auto dunk coral left",autoDropCoralL4Left);
+        NamedCommands.registerCommand("auto dunk coral right", autoDropCoralRight);
+        NamedCommands.registerCommand("auto dunk coral left", autoDropCoralLeft);
         NamedCommands.registerCommand("auto get coral station 1",autoPickupCoralStation1);
         NamedCommands.registerCommand("Arm L4",m_moveArmL4);
         NamedCommands.registerCommand("Arm Lowest",m_moveArmLow);
@@ -120,11 +115,14 @@ public class RobotContainer {
         //m_driverController.start().and(m_driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         //m_driverController.start().and(m_driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
         //m_driverController.rightBumper().onTrue(new InstantCommand(logger::stop));
-        m_driverController.rightBumper().whileTrue(autoDropCoralL4Right);
-        m_driverController.leftBumper().whileTrue(autoDropCoralL4Left);
+
+        m_driverController.rightBumper().whileTrue(autoDropCoralRight);
+        m_driverController.leftBumper().whileTrue(autoDropCoralLeft);
         m_driverController.povLeft().whileTrue(auto1m);
         m_driverController.y().whileTrue(autoPickupCoralStation1);
         m_driverController.a().whileTrue(m_moveArmLow);
+        m_helperController.x().whileTrue(m_moveArmL3);
+        m_helperController.b().whileTrue(m_moveArmL4);
 
         // reset the field-centric heading on left bumper press
         m_driverController.back().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
@@ -142,12 +140,12 @@ public class RobotContainer {
         m_helperController.povUp().onTrue(new InstantCommand(m_coralGripper::openSideGripper, m_arm));
         m_helperController.x().onTrue(new InstantCommand(m_arm::toggleExtender, m_arm));
         m_helperController.start().whileTrue(m_rollCageGripper);
-        m_helperController.y().whileTrue(m_moveArmL2);
         m_helperController.leftBumper().whileTrue(m_moveArmL3);
         m_helperController.rightBumper().whileTrue(m_moveArmL4);
         m_helperController.back().whileTrue(m_moveArmLow);
         m_helperController.a().onTrue(new InstantCommand(m_coralGripper::toggleFrontGripper, m_coralGripper));
         m_helperController.b().onTrue(new InstantCommand(m_coralGripper::toggleSideGripper, m_coralGripper));
+        m_helperController.y().onTrue(m_autoSequences.clampCoral());
     }
 
     public void configureDefaultCommands() {
