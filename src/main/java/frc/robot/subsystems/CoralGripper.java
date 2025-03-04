@@ -6,15 +6,28 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElectricConstants;
 import frc.robot.SmartDashboardWrapper;
+import edu.wpi.first.math.filter.Debouncer; // Import the Debouncer
 
 public class CoralGripper extends SubsystemBase {
 
-    private final Solenoid m_sideGripper = new Solenoid(ElectricConstants.kPneumaticHubCanId, PneumaticsModuleType.REVPH, ElectricConstants.kArmSideGripperChannel);
-    private final Solenoid m_frontGripper = new Solenoid(ElectricConstants.kPneumaticHubCanId, PneumaticsModuleType.REVPH, ElectricConstants.kArmFrontGripperChannel);
+    private final Solenoid m_sideGripper = new Solenoid(
+            ElectricConstants.kPneumaticHubCanId,
+            PneumaticsModuleType.REVPH,
+            ElectricConstants.kArmSideGripperChannel);
+    private final Solenoid m_frontGripper = new Solenoid(
+            ElectricConstants.kPneumaticHubCanId,
+            PneumaticsModuleType.REVPH,
+            ElectricConstants.kArmFrontGripperChannel);
 
-    private final DigitalInput m_gripperProximitySensor = new DigitalInput(ElectricConstants.kArmGripperProximityChannel);
-    private final DigitalInput m_sideGripperLimitSwitch = new DigitalInput(ElectricConstants.kArmSideGripperLimitSwitch);
-    private final DigitalInput m_frontGripperLimitSwitch = new DigitalInput(ElectricConstants.kArmFrontGripperLimitSwitch);
+    private final DigitalInput m_gripperProximitySensor = new DigitalInput(
+            ElectricConstants.kArmGripperProximityChannel);
+    private final DigitalInput m_sideGripperLimitSwitch = new DigitalInput(
+            ElectricConstants.kArmSideGripperLimitSwitch);
+    private final DigitalInput m_frontGripperLimitSwitch = new DigitalInput(
+            ElectricConstants.kArmFrontGripperLimitSwitch);
+
+    // Create a Debouncer with a 50ms debounce period (adjust as needed)
+    private final Debouncer m_proxDebouncer = new Debouncer(0.2);
 
     public CoralGripper() {
     }
@@ -58,8 +71,9 @@ public class CoralGripper extends SubsystemBase {
         return m_frontGripperLimitSwitch.get();
     }
 
+    // Use the debouncer to filter out noise from the proximity sensor.
     public boolean isCoralLoaded() {
-        return m_gripperProximitySensor.get();
+        return m_proxDebouncer.calculate(m_gripperProximitySensor.get());
     }
 
 }

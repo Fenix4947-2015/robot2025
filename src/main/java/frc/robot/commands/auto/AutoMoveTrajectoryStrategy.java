@@ -24,10 +24,10 @@ import static edu.wpi.first.units.Units.*;
 
 public class AutoMoveTrajectoryStrategy extends Command {
     // PID constants for trajectory following (tweak these for your system)
-    public static final double K_PID_P_DISTANCE = 1.0;
+    public static final double K_PID_P_DISTANCE = 10;
     public static final double K_PID_I_DISTANCE = 0.0;
-    public static final double K_PID_D_DISTANCE = 0.03;
-    public static final double K_PID_P_ANGLE = 0.01;
+    public static final double K_PID_D_DISTANCE = 0.0;
+    public static final double K_PID_P_ANGLE = 7;
     public static final double K_PID_I_ANGLE = 0.0;
     public static final double K_PID_D_ANGLE = 0.0;
 
