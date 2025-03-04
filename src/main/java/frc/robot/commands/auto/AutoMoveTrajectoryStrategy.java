@@ -78,6 +78,13 @@ public class AutoMoveTrajectoryStrategy extends Command {
         // If you have your swerve kinematics, set them so the trajectory respects your robot's geometry.
         config.setKinematics(_driveTrain.getKinematics());
 
+        SmartDashboardWrapper.putNumber("startPoseX", startPose.getX());
+        SmartDashboardWrapper.putNumber("startPoseY", startPose.getY());
+        SmartDashboardWrapper.putNumber("startPoseRot", startPose.getRotation().getDegrees());
+        SmartDashboardWrapper.putNumber("_targetX", _target.getX());
+        SmartDashboardWrapper.putNumber("_targetY", _target.getY());
+        SmartDashboardWrapper.putNumber("_targetRot", _target.getRotation().getDegrees());
+
         // Generate a trajectory from the current pose to the target.
         trajectory = TrajectoryGenerator.generateTrajectory(
                 startPose,       // Start at the current pose
@@ -99,6 +106,7 @@ public class AutoMoveTrajectoryStrategy extends Command {
                 _posTolerance.getX(), 
                 _posTolerance.getY(), 
                 _posTolerance.getRotation()));
+        holonomicController.getThetaController().enableContinuousInput(-Math.PI, Math.PI);
 
         // Reset the timer.
         _startTime = Timer.getFPGATimestamp();

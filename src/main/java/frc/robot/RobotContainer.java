@@ -78,6 +78,7 @@ public class RobotContainer {
     private final Command autoDropCoralL4Left = new AutoSequences(this).autoDropCoralL4Left();
     private final Command autoPickupCoralStation1 = new AutoSequences(this).autoPickupCoralStation1();
     private final Command autoDropTrajerctoryCoralL4Left = new AutoSequences(this).autoDropTrajerctoryCoralL4Left();
+    private final Command auto1m = new AutoSequences(this).auto1m();
 
     // Combo commands
     private final Command m_clampCoral = m_autoSequences.clampCoral();
@@ -121,7 +122,7 @@ public class RobotContainer {
         //m_driverController.rightBumper().onTrue(new InstantCommand(logger::stop));
         m_driverController.rightBumper().whileTrue(autoDropCoralL4Right);
         m_driverController.leftBumper().whileTrue(autoDropCoralL4Left);
-        m_driverController.povLeft().whileTrue(autoDropTrajerctoryCoralL4Left);
+        m_driverController.povLeft().whileTrue(auto1m);
         m_driverController.y().whileTrue(autoPickupCoralStation1);
         m_driverController.a().whileTrue(m_moveArmLow);
 

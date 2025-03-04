@@ -20,6 +20,7 @@ import frc.robot.commands.auto.AutoAimPose;
 import frc.robot.commands.auto.AutoAimTrajectoryPose;
 import frc.robot.commands.auto.AutoMoveAbsolute;
 import frc.robot.commands.auto.AutoMoveRelative;
+import frc.robot.commands.auto.AutoTrajectoryPose;
 import frc.robot.commands.coralgripper.CloseFrontGripper;
 import frc.robot.commands.coralgripper.CloseSideGripper;
 import frc.robot.commands.coralgripper.OpenFrontGripper;
@@ -127,6 +128,12 @@ public class AutoSequences {
         );
     }
 
+    public Command auto1m() {
+        return new SequentialCommandGroup(
+            moveTrajerctoryRelativeRough(new Pose2d(1,0, Rotation2d.fromDegrees(90)))
+        );
+    }
+
     public Command armToLowestPosition() {
         return new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kLowestPosition);
     }
@@ -176,16 +183,6 @@ public class AutoSequences {
                         posTolerance);
     }
 
-    public Command moveRelativeRough(Pose2d pose2d) {
-        final Pose2d posTolerance = new Pose2d(0.1,0.1, Rotation2d.fromDegrees(3));
-        return new AutoMoveRelative(
-                        m_robotContainer.drivetrain,
-                        m_robotContainer.smartDashboardSettings,
-                        pose2d,
-                        0,
-                        posTolerance);
-    }
-
     public Command moveTrajerctoryFiducialRelativeRough(Position position, Limelight2025 limelight) {
         final Pose2d posTolerance = new Pose2d(0.1,0.1, Rotation2d.fromDegrees(3));
         return new AutoAimTrajectoryPose(
@@ -193,6 +190,16 @@ public class AutoSequences {
             m_robotContainer.smartDashboardSettings,
             limelight,
             position.getPositionForTeam(m_robotContainer.m_alliance),
+            0,
+            posTolerance);
+    }
+
+    public Command moveTrajerctoryRelativeRough(Pose2d pose) {
+        final Pose2d posTolerance = new Pose2d(0.1,0.1, Rotation2d.fromDegrees(3));
+        return new AutoTrajectoryPose(
+            m_robotContainer.drivetrain,
+            m_robotContainer.smartDashboardSettings,
+            pose,
             0,
             posTolerance);
     }
