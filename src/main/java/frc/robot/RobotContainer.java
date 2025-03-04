@@ -77,6 +77,7 @@ public class RobotContainer {
     private final Command autoDropCoralL4Right = new AutoSequences(this).autoDropCoralL4Right();
     private final Command autoDropCoralL4Left = new AutoSequences(this).autoDropCoralL4Left();
     private final Command autoPickupCoralStation1 = new AutoSequences(this).autoPickupCoralStation1();
+    private final Command autoDropTrajerctoryCoralL4Left = new AutoSequences(this).autoDropTrajerctoryCoralL4Left();
 
     // Combo commands
     private final Command m_clampCoral = m_autoSequences.clampCoral();
@@ -120,11 +121,12 @@ public class RobotContainer {
         //m_driverController.rightBumper().onTrue(new InstantCommand(logger::stop));
         m_driverController.rightBumper().whileTrue(autoDropCoralL4Right);
         m_driverController.leftBumper().whileTrue(autoDropCoralL4Left);
+        m_driverController.povLeft().whileTrue(autoDropTrajerctoryCoralL4Left);
         m_driverController.y().whileTrue(autoPickupCoralStation1);
         m_driverController.a().whileTrue(m_moveArmLow);
 
         // reset the field-centric heading on left bumper press
-        m_driverController.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        m_driverController.back().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
         //m_driverController.rightTrigger().onChange(m_moveArmDirect);
         //m_driverController.leftTrigger().onChange(m_moveArmDirect);
 

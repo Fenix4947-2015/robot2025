@@ -7,6 +7,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.SmartDashboardSettings;
+import frc.robot.SmartDashboardWrapper;
 
 import java.util.List;
 
@@ -38,16 +40,10 @@ public class AutoMoveTrajectoryStrategy extends Command {
     private final CommandSwerveDrivetrain _driveTrain;
     private Pose2d _target;
 
-    // Maximum linear speed as determined by SysId (or your existing system)
-    private final double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
-    // For linear acceleration, use the provided limit
-    private final double MAX_LINEAR_ACCELERATION = 8.5; // m/s²
-
-    // Instead of computing angular speed from chassis dimensions,
-    // we use the provided maximum angular speed (578 deg/s) converted to radians/s.
-    private final double MAX_ANGULAR_SPEED = Math.toRadians(578); // ~10.09 rad/s
-    // Provided maximum angular acceleration (1368 deg/s²) converted to rad/s².
-    private final double MAX_ANGULAR_ACCELERATION = Math.toRadians(1368); // ~23.87 rad/s²
+    private final double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) / 4;
+    private final double MAX_LINEAR_ACCELERATION = 2; // 8.5m/s²
+    private final double MAX_ANGULAR_SPEED = Math.toRadians(150); //578
+    private final double MAX_ANGULAR_ACCELERATION = Math.toRadians(300); //1368
 
     // Trajectory and controller objects
     private Trajectory trajectory;
@@ -122,6 +118,10 @@ public class AutoMoveTrajectoryStrategy extends Command {
             desiredState = trajectory.sample(elapsedTime);
         }
 
+        SmartDashboardWrapper.putNumber("desiredX", desiredState.poseMeters.getX());
+        SmartDashboardWrapper.putNumber("desiredY", desiredState.poseMeters.getY());
+        SmartDashboardWrapper.putNumber("desiredRot", desiredState.poseMeters.getRotation().getDegrees());
+
         // Use the trajectory’s heading for orientation.
         Rotation2d desiredRotation = desiredState.poseMeters.getRotation();
 
@@ -146,7 +146,7 @@ public class AutoMoveTrajectoryStrategy extends Command {
         // Use your drivetrain's method to apply the command.
         _driveTrain.applyRequest(() ->
                 // Convert normalized values back to velocities using our max speed constants.
-                new SwerveRequest.RobotCentric()
+                new SwerveRequest.FieldCentric()
                         .withVelocityX(x)
                         .withVelocityY(y)
                         .withRotationalRate(steer)
@@ -172,5 +172,21 @@ public class AutoMoveTrajectoryStrategy extends Command {
     public void setTarget(Pose2d target) {
         _target = target;
         // You may want to regenerate the trajectory if the target changes significantly.
+    }
+
+    public Pose2d getTarget() {
+        return _target;
+    }
+
+    public CommandSwerveDrivetrain getDrivetrain() {
+        return _driveTrain;
+    }
+
+    protected static Pose2d transform2dAsPose2d(Transform2d transform) {
+        return new Pose2d(transform.getTranslation(), transform.getRotation());
+    }
+
+    protected static Transform2d pose2dAsTransform2d(Pose2d pose) {
+        return new Transform2d(pose.getTranslation(), pose.getRotation());
     }
 }

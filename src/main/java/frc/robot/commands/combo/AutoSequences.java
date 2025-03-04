@@ -7,6 +7,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.TimeUnit;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
@@ -14,6 +17,7 @@ import frc.robot.Position;
 import frc.robot.RobotContainer;
 import frc.robot.commands.arm.MoveArmPosition;
 import frc.robot.commands.auto.AutoAimPose;
+import frc.robot.commands.auto.AutoAimTrajectoryPose;
 import frc.robot.commands.auto.AutoMoveAbsolute;
 import frc.robot.commands.auto.AutoMoveRelative;
 import frc.robot.commands.coralgripper.CloseFrontGripper;
@@ -105,9 +109,21 @@ public class AutoSequences {
             moveFiducialRelativeRough(Position.STATION_1_APPROACH, m_robotContainer.limelightThree),
             moveFiducialRelativeRough(Position.STATION_1, m_robotContainer.limelightThree),
             new WaitForCoral(m_robotContainer.m_coralGripper).withTimeout(Second.of(3)),
-            clampCoral(),
-            moveFiducialRelativeRough(Position.STATION_1_APPROACH, m_robotContainer.limelightThree),
+            new ParallelCommandGroup(
+                clampCoral(),
+                moveFiducialRelativeRough(Position.STATION_1_APPROACH, m_robotContainer.limelightThree)
+            ),
             new ResetTarget(m_robotContainer.limelightThree, m_robotContainer.drivetrain)
+        );
+    }
+
+    public Command autoDropTrajerctoryCoralL4Left() {
+        return new SequentialCommandGroup(
+            new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kCoralL4Position),
+            new OpenSideGripper(m_robotContainer.m_coralGripper),
+            new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+            moveTrajerctoryFiducialRelativeRough(Position.L4_APPROACH_LEFT, m_robotContainer.limelightFour),
+            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain)
         );
     }
 
@@ -168,6 +184,17 @@ public class AutoSequences {
                         pose2d,
                         0,
                         posTolerance);
+    }
+
+    public Command moveTrajerctoryFiducialRelativeRough(Position position, Limelight2025 limelight) {
+        final Pose2d posTolerance = new Pose2d(0.1,0.1, Rotation2d.fromDegrees(3));
+        return new AutoAimTrajectoryPose(
+            m_robotContainer.drivetrain,
+            m_robotContainer.smartDashboardSettings,
+            limelight,
+            position.getPositionForTeam(m_robotContainer.m_alliance),
+            0,
+            posTolerance);
     }
 
     // AUTOS
