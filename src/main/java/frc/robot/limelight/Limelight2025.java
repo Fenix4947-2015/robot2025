@@ -38,16 +38,10 @@ public class Limelight2025 extends Limelight {
   }
   
   public PoseEstimate getPoseEstimate() {
-    if (DriverStation.Alliance.Red.equals(m_robotContainer.m_alliance)) {
-      return LimelightHelpers.getBotPoseEstimate_wpiRed(identifier);
-    }
     return LimelightHelpers.getBotPoseEstimate_wpiBlue(identifier);
   }
 
   public PoseEstimate getPoseEstimateMegaTag2() {
-    if (DriverStation.Alliance.Red.equals(m_robotContainer.m_alliance)) {
-      return LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2(identifier);
-    }
     return LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(identifier);
   }
 
