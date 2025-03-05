@@ -187,11 +187,19 @@ public class Arm extends SubsystemBase {
     }
 
     private double limitOutput(double output) {
+        output = limitOutputWhenLow(output);
         if (armAtLowestPos() || isInGripperDangerZone()) {
             return Math.max(output, 0);
         }
         if (armAtHighestPos()) {
             return Math.min(output, 0);
+        }
+        return output;
+    }
+
+    private double limitOutputWhenLow(double output) {
+        if (getEncoderDistance() < Constants.Arm.kLimitOutputUntilPosition) {
+            return output * 0.5;
         }
         return output;
     }

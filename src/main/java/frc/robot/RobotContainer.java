@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.arm.MoveArmDirect;
 import frc.robot.commands.arm.MoveArmDropPosition;
+import frc.robot.commands.auto.AutoDrop;
 import frc.robot.commands.balls.RollBalls;
 import frc.robot.commands.combo.AutoSequences;
 import frc.robot.commands.drivetrain.DriveSwerveCommand;
@@ -69,8 +70,8 @@ public class RobotContainer {
     private final RollWinchSpeed m_stopWinch = new RollWinchSpeed(m_winch, 0.0);
     private final RollCageGripper m_rollCageGripper = new RollCageGripper(m_cageGripper);
     private final RollCageGripper m_stopCageGripper = new RollCageGripper(m_cageGripper, 0.0);
-    private final Command autoDropCoralRight = new AutoSequences(this).autoDropCoralRight();
-    private final Command autoDropCoralLeft = new AutoSequences(this).autoDropCoralLeft();
+    private final Command autoDropCoralRight = new AutoDrop(new AutoSequences(this), m_arm, AutoDrop.Side.RIGHT);
+    private final Command autoDropCoralLeft = new AutoDrop(new AutoSequences(this), m_arm, AutoDrop.Side.LEFT);
     private final Command autoPickupCoralStation1 = new AutoSequences(this).autoPickupCoralStation1();
     private final Command autoDropTrajerctoryCoralL4Left = new AutoSequences(this).autoDropTrajerctoryCoralL4Left();
     private final Command auto1m = new AutoSequences(this).auto1m();
@@ -104,9 +105,9 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        m_driverController.b().whileTrue(drivetrain.applyRequest(() ->
-                point.withModuleDirection(new Rotation2d(-m_driverController.getLeftY(), -m_driverController.getLeftX()))
-        ));
+        //m_driverController.b().whileTrue(drivetrain.applyRequest(() ->
+        //        point.withModuleDirection(new Rotation2d(-m_driverController.getLeftY(), -m_driverController.getLeftX()))
+        //));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -121,8 +122,8 @@ public class RobotContainer {
         m_driverController.povLeft().whileTrue(auto1m);
         m_driverController.y().whileTrue(autoPickupCoralStation1);
         m_driverController.a().whileTrue(m_moveArmLow);
-        m_helperController.x().whileTrue(m_moveArmL3);
-        m_helperController.b().whileTrue(m_moveArmL4);
+        m_driverController.x().whileTrue(m_moveArmL3);
+        m_driverController.b().whileTrue(m_moveArmL4);
 
         // reset the field-centric heading on left bumper press
         m_driverController.back().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
