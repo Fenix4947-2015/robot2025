@@ -1,23 +1,29 @@
 package frc.robot.commands.auto;
 
-import com.ctre.phoenix6.swerve.SwerveRequest;
-import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.geometry.Pose2d;
+import com.ctre.phoenix6.swerve.SwerveRequest;
 import frc.robot.SmartDashboardWrapper;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 /**
- * AutoTrajectoryStrategy generates and follows a trajectory from a start pose to an end pose.
- * The trajectory is generated using a UARM (Uniformly Accelerated/Decelerated Motion) profile
- * for both translation and rotation. The command samples the trajectory based on elapsed time
- * and commands the drivetrain with the desired linear and angular velocities.
+ * AutoTrajectoryStrategy generates and follows a trajectory from a start pose to an end pose
+ * using a UARM (Uniformly Accelerated/Decelerated Motion) profile. This command uses the FPGA
+ * timestamp for timing and a HolonomicDriveController to compute the required chassis speeds.
  */
 public class AutoTrajectoryStrategy extends Command {
     private final CommandSwerveDrivetrain driveTrain;
     private final Pose2d startPose;
     private final Pose2d endPose;
     private final UARMTrajectory trajectory;
-    private long startTimeMs;
+    private double startTime;
+    private final HolonomicDriveController controller;
 
     /**
      * Constructs an AutoTrajectoryStrategy.
@@ -38,56 +44,67 @@ public class AutoTrajectoryStrategy extends Command {
         this.driveTrain = driveTrain;
         this.startPose = startPose;
         this.endPose = endPose;
-        this.trajectory = new UARMTrajectory(startPose, endPose, maxLinearSpeed, maxLinearAccel, maxAngularSpeed, maxAngularAccel);
+        this.trajectory = new UARMTrajectory(startPose, endPose,
+                                               maxLinearSpeed, maxLinearAccel,
+                                               maxAngularSpeed, maxAngularAccel);
+
+        // Initialize PID controllers for X and Y directions.
+        PIDController xController = new PIDController(1.0, 0.0, 0.0);
+        PIDController yController = new PIDController(1.0, 0.0, 0.0);
+        // For rotation, use a ProfiledPIDController with continuous input.
+        ProfiledPIDController thetaController = new ProfiledPIDController(1.0, 0.0, 0.0,
+                new TrapezoidProfile.Constraints(2 * Math.PI, 2 * Math.PI));
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+        // Create the HolonomicDriveController with the PID controllers.
+        this.controller = new HolonomicDriveController(xController, yController, thetaController);
+
         addRequirements(driveTrain);
     }
 
-    // Called once when the command is initially scheduled.
     @Override
     public void initialize() {
-        startTimeMs = System.currentTimeMillis();
+        // Use the FPGA timestamp for timing.
+        startTime = Timer.getFPGATimestamp();
     }
 
-    // Called repeatedly while the command is scheduled.
     @Override
     public void execute() {
-        double elapsedSec = (System.currentTimeMillis() - startTimeMs) / 1000.0;
-        UARMTrajectory.State state = trajectory.sample(elapsedSec);
+        double currentTime = Timer.getFPGATimestamp();
+        double elapsedTime = currentTime - startTime;
 
-        // Decompose the linear velocity along the vector from startPose to endPose.
-        double dx = endPose.getX() - startPose.getX();
-        double dy = endPose.getY() - startPose.getY();
-        double norm = Math.hypot(dx, dy);
-        double unitX = (norm > 0) ? dx / norm : 0;
-        double unitY = (norm > 0) ? dy / norm : 0;
-        double commandedVx = state.linearVelocity * unitX;
-        double commandedVy = state.linearVelocity * unitY;
+        // Sample the UARM trajectory to get the desired state at this time.
+        UARMTrajectory.State state = trajectory.sample(elapsedTime);
 
-        // Log trajectory information to the dashboard.
-        SmartDashboardWrapper.putNumber("TrajectoryTime", elapsedSec);
-        SmartDashboardWrapper.putNumber("TrajectoryX", state.pose.getX());
-        SmartDashboardWrapper.putNumber("TrajectoryY", state.pose.getY());
-        SmartDashboardWrapper.putNumber("TrajectoryRot", state.pose.getRotation().getDegrees());
-        SmartDashboardWrapper.putNumber("TrajectoryLinearVel", state.linearVelocity);
-        SmartDashboardWrapper.putNumber("TrajectoryAngularVel", state.angularVelocity);
+        // Get the current robot pose from the drivetrain.
+        Pose2d currentPose = driveTrain.getState().Pose;
 
-        // Apply the trajectory commands to the drivetrain.
+        // Compute the desired chassis speeds using the HolonomicDriveController.
+        ChassisSpeeds chassisSpeeds = controller.calculate(currentPose, state.pose, state.linearVelocity, state.pose.getRotation());
+
+        // Log trajectory information.
+        SmartDashboardWrapper.putNumber("TrajectoryTime", elapsedTime);
+        SmartDashboardWrapper.putNumber("DesiredX", state.pose.getX());
+        SmartDashboardWrapper.putNumber("DesiredY", state.pose.getY());
+        SmartDashboardWrapper.putNumber("DesiredRot", state.pose.getRotation().getDegrees());
+        SmartDashboardWrapper.putNumber("DesiredLinearVel", state.linearVelocity);
+        SmartDashboardWrapper.putNumber("DesiredAngularVel", state.angularVelocity);
+
+        // Command the drivetrain with the calculated speeds.
         driveTrain.applyRequest(() ->
             new SwerveRequest.RobotCentric()
-                .withVelocityX(commandedVx)
-                .withVelocityY(commandedVy)
-                .withRotationalRate(state.angularVelocity)
+                .withVelocityX(chassisSpeeds.vxMetersPerSecond)
+                .withVelocityY(chassisSpeeds.vyMetersPerSecond)
+                .withRotationalRate(chassisSpeeds.omegaRadiansPerSecond)
         ).execute();
     }
 
-    // Returns true when the trajectory is complete.
     @Override
     public boolean isFinished() {
-        double elapsedSec = (System.currentTimeMillis() - startTimeMs) / 1000.0;
-        return elapsedSec >= trajectory.getDuration();
+        double elapsedTime = Timer.getFPGATimestamp() - startTime;
+        return elapsedTime >= trajectory.getDuration();
     }
 
-    // Called once after isFinished returns true.
     @Override
     public void end(boolean interrupted) {
         // Stop the drivetrain.
@@ -99,4 +116,3 @@ public class AutoTrajectoryStrategy extends Command {
         ).execute();
     }
 }
-
