@@ -3,7 +3,8 @@
   "robotLength": 0.94,
   "holonomicMode": true,
   "pathFolders": [
-    "Auto 2 corail"
+    "Auto 2 corail",
+    "New Folder"
   ],
   "autoFolders": [],
   "defaultMaxVel": 2.5,
