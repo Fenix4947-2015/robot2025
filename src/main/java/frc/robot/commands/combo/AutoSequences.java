@@ -59,6 +59,17 @@ public class AutoSequences {
         );
     }
 
+    public Command dropCoralSlow() {
+        return new SequentialCommandGroup(
+                new CloseSideGripper(m_robotContainer.m_coralGripper),
+                new WaitCommand(0.5),
+                new OpenFrontGripper(m_robotContainer.m_coralGripper),
+                new WaitCommand(1.0),
+                new OpenSideGripper(m_robotContainer.m_coralGripper),
+                new WaitCommand(0.25)
+        );
+    }
+
     public Command autoDropCoralL3Right() {
         return new SequentialCommandGroup(
                 new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L3),
@@ -67,7 +78,7 @@ public class AutoSequences {
                 moveFiducialRelativeRough(Position.L3_APPROACH_RIGHT, m_robotContainer.limelightFour),
                 new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 moveFiducialRelative(Position.CORAL_L3_RIGHT, m_robotContainer.limelightFour),
-                dropCoral(),
+                dropCoralSlow(),
                 moveFiducialRelativeRough(Position.L3_APPROACH_RIGHT, m_robotContainer.limelightFour),
                 new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain)
         );
@@ -95,7 +106,7 @@ public class AutoSequences {
                 moveFiducialRelativeRough(Position.L3_APPROACH_LEFT, m_robotContainer.limelightFour),
                 new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 moveFiducialRelative(Position.CORAL_L3_LEFT, m_robotContainer.limelightFour),
-                dropCoral(),
+                dropCoralSlow(),
                 moveFiducialRelativeRough(Position.L3_APPROACH_LEFT, m_robotContainer.limelightFour),
                 new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain)
         );

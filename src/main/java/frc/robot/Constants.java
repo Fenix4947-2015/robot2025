@@ -45,17 +45,17 @@ public final class Constants {
     }
 
     public static class Arm {
-        public static final double kP = 3.0;
+        public static final double kP = 3.5;
         public static final double kI = 0;
         public static final double kD = 0;
-        public static final double kS = 0.025;
+        public static final double kS = 0.03;
         public static final double kV = 0;
         public static final double kToleranceDistance = 0.005;
         public static final double kLowestPosition = 0.235;
         public static final double kLimitOutputUntilPosition = 0.394;
         public static final double kHighestPosition = 1.25;
-        public static final double kCoralL4Position = 1.065;
-        public static final double kCoralL3Position = 0.771;
+        public static final double kCoralL4Position = 1.07;
+        public static final double kCoralL3Position = 0.775;
         public static final double kCoralL2Position = 0.650;
         public static final double lowestRetractedPosition = 0.640;
         public static final double gripperDangerZonePosition = 0.3;
