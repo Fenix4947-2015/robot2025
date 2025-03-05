@@ -52,6 +52,7 @@ public final class Constants {
         public static final double kV = 0;
         public static final double kToleranceDistance = 0.005;
         public static final double kLowestPosition = 0.235;
+        public static final double kLimitOutputUntilPosition = 0.394;
         public static final double kHighestPosition = 1.25;
         public static final double kCoralL4Position = 1.065;
         public static final double kCoralL3Position = 0.771;

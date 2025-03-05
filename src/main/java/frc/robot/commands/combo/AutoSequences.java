@@ -59,13 +59,6 @@ public class AutoSequences {
         );
     }
 
-    public Command autoDropCoralRight() {
-        if (m_robotContainer.m_arm.isArmRetracted()) {
-            return autoDropCoralL3Right();
-        }
-        return autoDropCoralL4Right();
-    }
-
     public Command autoDropCoralL3Right() {
         return new SequentialCommandGroup(
                 new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L3),
@@ -92,13 +85,6 @@ public class AutoSequences {
                 moveFiducialRelativeRough(Position.L4_APPROACH_RIGHT, m_robotContainer.limelightFour),
                 new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain)
         );
-    }
-
-    public Command autoDropCoralLeft() {
-        if (m_robotContainer.m_arm.isArmRetracted()) {
-            return autoDropCoralL3Left();
-        }
-        return autoDropCoralL4Left();
     }
 
     public Command autoDropCoralL3Left() {
