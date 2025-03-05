@@ -18,12 +18,12 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
  * timestamp for timing and a HolonomicDriveController to compute the required chassis speeds.
  */
 public class AutoTrajectoryStrategy extends Command {
-    private final CommandSwerveDrivetrain driveTrain;
-    private final Pose2d startPose;
-    private final Pose2d endPose;
-    private final UARMTrajectory trajectory;
-    private double startTime;
-    private final HolonomicDriveController controller;
+    protected CommandSwerveDrivetrain driveTrain;
+    protected Pose2d startPose;
+    protected Pose2d endPose;
+    protected UARMTrajectory trajectory;
+    protected double startTime;
+    protected HolonomicDriveController controller;
 
     /**
      * Constructs an AutoTrajectoryStrategy.
