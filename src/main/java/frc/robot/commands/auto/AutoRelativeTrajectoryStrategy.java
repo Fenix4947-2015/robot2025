@@ -52,7 +52,7 @@ public class AutoRelativeTrajectoryStrategy extends AutoTrajectoryStrategy {
         Transform2d relativeTransform = new Transform2d(
                 new Translation2d(relativeOffset.getX(), relativeOffset.getY()),
                 relativeOffset.getRotation());
-        Pose2d targetPose = currentPose.transformBy(relativeTransform);
+        Pose2d targetPose = currentPose.plus(relativeTransform);
 
         // Update the parent's fields with the actual start and target poses.
         this.startPose = currentPose;
@@ -62,5 +62,6 @@ public class AutoRelativeTrajectoryStrategy extends AutoTrajectoryStrategy {
                 maxLinearSpeed, maxLinearAccel, maxAngularSpeed, maxAngularAccel);
         // Reset the start time using the FPGA timestamp.
         this.startTime = Timer.getFPGATimestamp();
+        super.initialize();
     }
 }

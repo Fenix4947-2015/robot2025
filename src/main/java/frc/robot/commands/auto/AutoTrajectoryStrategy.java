@@ -49,10 +49,10 @@ public class AutoTrajectoryStrategy extends Command {
                                                maxAngularSpeed, maxAngularAccel);
 
         // Initialize PID controllers for X and Y directions.
-        PIDController xController = new PIDController(1.0, 0.0, 0.0);
-        PIDController yController = new PIDController(1.0, 0.0, 0.0);
+        PIDController xController = new PIDController(10.0, 0.0, 0.0);
+        PIDController yController = new PIDController(10.0, 0.0, 0.0);
         // For rotation, use a ProfiledPIDController with continuous input.
-        ProfiledPIDController thetaController = new ProfiledPIDController(1.0, 0.0, 0.0,
+        ProfiledPIDController thetaController = new ProfiledPIDController(7.0, 0.0, 0.0,
                 new TrapezoidProfile.Constraints(2 * Math.PI, 2 * Math.PI));
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -74,7 +74,13 @@ public class AutoTrajectoryStrategy extends Command {
         double elapsedTime = currentTime - startTime;
 
         // Sample the UARM trajectory to get the desired state at this time.
-        UARMTrajectory.State state = trajectory.sample(elapsedTime);
+        UARMTrajectory.State state;
+        if (elapsedTime >= trajectory.getDuration()) {
+            state = trajectory.sample(trajectory.getDuration());
+        } else {
+            state = trajectory.sample(elapsedTime);
+        }
+        
 
         // Get the current robot pose from the drivetrain.
         Pose2d currentPose = driveTrain.getState().Pose;
@@ -100,9 +106,8 @@ public class AutoTrajectoryStrategy extends Command {
     }
 
     @Override
-    public boolean isFinished() {
-        double elapsedTime = Timer.getFPGATimestamp() - startTime;
-        return elapsedTime >= trajectory.getDuration();
+    public boolean isFinished() {        
+        return controller.atReference();
     }
 
     @Override

@@ -77,7 +77,7 @@ public class RobotContainer {
     private final Command autoDropCoralRight = new AutoDrop(new AutoSequences(this), m_arm, AutoDrop.Side.RIGHT);
     private final Command autoDropCoralLeft = new AutoDrop(new AutoSequences(this), m_arm, AutoDrop.Side.LEFT);
     private final Command autoPickupCoralStation1 = new AutoSequences(this).autoPickupCoralStation1();
-    private final Command auto1m = new AutoRelativeTrajectoryStrategy(drivetrain, new Pose2d(1, 0, Rotation2d.fromDegrees(0)), 2.5, 4, 150, 300);
+    private final Command auto1m = new AutoRelativeTrajectoryStrategy(drivetrain, new Pose2d(1, 0, Rotation2d.fromDegrees(90)), 2.5, 4, 2.6, 5.2);
 
     // Combo commands
     private final Command m_clampCoral = m_autoSequences.clampCoral();
