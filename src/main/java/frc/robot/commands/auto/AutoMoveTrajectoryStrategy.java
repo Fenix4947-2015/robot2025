@@ -26,16 +26,17 @@ import static edu.wpi.first.units.Units.*;
 
 public class AutoMoveTrajectoryStrategy extends Command {
     // PID constants for trajectory following (tweak these for your system)
-    public static final double K_PID_P_DISTANCE = 10;
+    public static final double K_PID_P_DISTANCE = 1;
     public static final double K_PID_I_DISTANCE = 0.0;
     public static final double K_PID_D_DISTANCE = 0.0;
-    public static final double K_PID_P_ANGLE = 7;
+    public static final double K_PID_P_ANGLE = 0.7;
     public static final double K_PID_I_ANGLE = 0.0;
     public static final double K_PID_D_ANGLE = 0.0;
 
     // Tolerance for considering the motion “complete”
     private final Pose2d _posTolerance;
     public static final Pose2d DEFAULT_POS_TOLERANCE = new Pose2d(0.05, 0.05, Rotation2d.fromDegrees(0.5));
+
 
     private final CommandSwerveDrivetrain _driveTrain;
     private Pose2d _target;
@@ -78,6 +79,7 @@ public class AutoMoveTrajectoryStrategy extends Command {
         // If you have your swerve kinematics, set them so the trajectory respects your robot's geometry.
         // config.setKinematics(_driveTrain.getKinematics());
 
+        Pose2d midPose = startPose.interpolate(_target, 0.5);
         SmartDashboardWrapper.putNumber("startPoseX", startPose.getX());
         SmartDashboardWrapper.putNumber("startPoseY", startPose.getY());
         SmartDashboardWrapper.putNumber("startPoseRot", startPose.getRotation().getDegrees());
@@ -87,9 +89,7 @@ public class AutoMoveTrajectoryStrategy extends Command {
 
         // Generate a trajectory from the current pose to the target.
         trajectory = TrajectoryGenerator.generateTrajectory(
-                startPose,       // Start at the current pose
-                List.of(),       // No interior waypoints (straight line path)
-                _target,         // End at the target pose
+                List.of(startPose, midPose, _target),
                 config);
 
         // Initialize the HolonomicDriveController with PID controllers.
