@@ -111,6 +111,14 @@ public class Arm extends SubsystemBase {
         return armMode;
     }
 
+    public void setNoDropPosition() {
+        currDropPosition = null;
+    }
+
+    public DropPosition getCurrDropPosition() {
+        return currDropPosition;
+    }
+
     public void goToDropPosition(DropPosition dropPosition) {
         this.currDropPosition = dropPosition;
         setPidMode();
@@ -202,5 +210,9 @@ public class Arm extends SubsystemBase {
 
     public void toggleExtender() {
         armRetracted = !armRetracted;
+    }
+
+    public boolean isArmRetracted() {
+        return armRetracted;
     }
 }
