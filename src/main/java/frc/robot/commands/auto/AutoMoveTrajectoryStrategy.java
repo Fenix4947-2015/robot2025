@@ -76,7 +76,7 @@ public class AutoMoveTrajectoryStrategy extends Command {
         // Create a trajectory configuration with our given max speed and acceleration.
         TrajectoryConfig config = new TrajectoryConfig(MaxSpeed, MAX_LINEAR_ACCELERATION);
         // If you have your swerve kinematics, set them so the trajectory respects your robot's geometry.
-        config.setKinematics(_driveTrain.getKinematics());
+        // config.setKinematics(_driveTrain.getKinematics());
 
         SmartDashboardWrapper.putNumber("startPoseX", startPose.getX());
         SmartDashboardWrapper.putNumber("startPoseY", startPose.getY());
