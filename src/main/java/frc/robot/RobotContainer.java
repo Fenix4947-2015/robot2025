@@ -9,6 +9,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,6 +21,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.arm.MoveArmDirect;
 import frc.robot.commands.arm.MoveArmDropPosition;
 import frc.robot.commands.auto.AutoDrop;
+import frc.robot.commands.auto.AutoTrajectoryStrategy;
 import frc.robot.commands.balls.RollBalls;
 import frc.robot.commands.combo.AutoSequences;
 import frc.robot.commands.drivetrain.DriveSwerveCommand;
@@ -73,8 +75,7 @@ public class RobotContainer {
     private final Command autoDropCoralRight = new AutoDrop(new AutoSequences(this), m_arm, AutoDrop.Side.RIGHT);
     private final Command autoDropCoralLeft = new AutoDrop(new AutoSequences(this), m_arm, AutoDrop.Side.LEFT);
     private final Command autoPickupCoralStation1 = new AutoSequences(this).autoPickupCoralStation1();
-    private final Command autoDropTrajerctoryCoralL4Left = new AutoSequences(this).autoDropTrajerctoryCoralL4Left();
-    private final Command auto1m = new AutoSequences(this).auto1m();
+    private final Command auto1m = new AutoTrajectoryStrategy(drivetrain, drivetrain.getState().Pose, drivetrain.getState().Pose.plus(new Transform2d(1, 0, Rotation2d.fromDegrees(0))), 2.5, 4, 150, 300);
 
     // Combo commands
     private final Command m_clampCoral = m_autoSequences.clampCoral();
