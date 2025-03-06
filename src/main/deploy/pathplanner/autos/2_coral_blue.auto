@@ -5,19 +5,38 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Grip Coral"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "corail_1"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Grip Coral"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Arm L4"
+                      }
+                    }
+                  ]
                 }
               },
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "Arm L4"
+                  "pathName": "corail_1"
                 }
               }
             ]

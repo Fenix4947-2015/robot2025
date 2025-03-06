@@ -9,15 +9,28 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "start_to_reef_red"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Grip Coral"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Arm L4"
+                      }
+                    }
+                  ]
                 }
               },
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "Arm L4"
+                  "pathName": "start_to_reef_red"
                 }
               }
             ]

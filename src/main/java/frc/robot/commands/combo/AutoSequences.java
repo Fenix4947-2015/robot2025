@@ -39,6 +39,13 @@ public class AutoSequences {
         );
     }
 
+    public Command gripCoral() {
+        return new SequentialCommandGroup(
+                new CloseFrontGripper(m_robotContainer.m_coralGripper),
+                new WaitCommand(0.25)
+        );
+    }
+
     public Command freeCoral() {
         return new SequentialCommandGroup(
                 new OpenFrontGripper(m_robotContainer.m_coralGripper),
@@ -70,6 +77,7 @@ public class AutoSequences {
 
     public Command autoDropCoralL3Right() {
         return new SequentialCommandGroup(
+            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L3),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
                 new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
@@ -84,6 +92,7 @@ public class AutoSequences {
 
     public Command autoDropCoralL4Right() {
         return new SequentialCommandGroup(
+            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L4),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
                 new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
@@ -98,6 +107,7 @@ public class AutoSequences {
 
     public Command autoDropCoralL3Left() {
         return new SequentialCommandGroup(
+            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L3),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
                 new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
@@ -112,6 +122,7 @@ public class AutoSequences {
 
     public Command autoDropCoralL4Left() {
         return new SequentialCommandGroup(
+            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L4),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
                 new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
@@ -133,6 +144,7 @@ public class AutoSequences {
 
     public Command autoPickupCoralStation1() {
         return new SequentialCommandGroup(
+            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kLowestPosition),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
                 new OpenFrontGripper(m_robotContainer.m_coralGripper),
