@@ -26,13 +26,13 @@ public class MoveArmDirect extends Command {
     public void execute() {
         double speed_helper = -m_controller.getLeftY();
         double speed_driver =  m_controllerDriver.getRightTriggerAxis() - m_controllerDriver.getLeftTriggerAxis();
-        double speed;
+        double speed = 0;
 
         if (Math.abs(speed_driver) > 0.1) {
             speed = speed_driver;
-        } else {
+        } else if (Math.abs(speed_helper) > 0.2){
             speed = speed_helper;
-        }	
+        }
 
         double realSpeed = MathUtil.applyDeadband(speed, 0.1);
 

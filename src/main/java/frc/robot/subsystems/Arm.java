@@ -133,7 +133,7 @@ public class Arm extends SubsystemBase {
     private void movePid() {
         double rawOutput = m_pidController.calculate(getEncoderDistance());
         // disable feedforward when arm is at lowest position
-        double ffOutput = rawOutput + (armAtLowestPos() ? 0.0 : feedForward.calculate(rawOutput));
+        double ffOutput = rawOutput + (armAtLimitOutputUntilPosition() ? 0.0 : feedForward.calculate(rawOutput));
         double output = limitOutput(ffOutput);
         log(output);
         m_motor1.set(output);
@@ -182,6 +182,10 @@ public class Arm extends SubsystemBase {
         return getEncoderDistance() < Constants.Arm.kLowestPosition || lowLimitSwitchPushed();
     }
 
+    private boolean armAtLimitOutputUntilPosition() {
+        return getEncoderDistance() < Constants.Arm.kLimitOutputUntilPosition || lowLimitSwitchPushed();
+    }
+
     private boolean armAtHighestPos() {
         return getEncoderDistance() > Constants.Arm.kHighestPosition;
     }
@@ -199,7 +203,7 @@ public class Arm extends SubsystemBase {
 
     private double limitOutputWhenLow(double output) {
         if (getEncoderDistance() < Constants.Arm.kLimitOutputUntilPosition) {
-            return output * 0.5;
+            return output > 0 ? Math.min(output, 0.5) : Math.max(output, -0.5);
         }
         return output;
     }
