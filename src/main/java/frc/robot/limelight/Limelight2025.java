@@ -64,10 +64,6 @@ public class Limelight2025 extends Limelight {
     }
 
     Pose2d robotPose = robotPoseEstimate.pose;
-    SmartDashboardWrapper.putString("Limelight2025/identifier", identifier);
-    SmartDashboardWrapper.putNumber("Limelight2025/robotPoseX", robotPose.getX());
-    SmartDashboardWrapper.putNumber("Limelight2025/robotPoseY", robotPose.getY());
-    SmartDashboardWrapper.putNumber("Limelight2025/robotPoseRot", robotPose.getRotation().getDegrees());
     
     if (fiducialId == -1 || robotPose == null || robotPoseEstimate.tagCount < 1) {
       return null;

@@ -101,7 +101,6 @@ public class AutoMoveStrategy extends Command {
         _setpointDelayMs = setpointDelayMs;
         _posTolerance = posTolerance;
         addRequirements(driveTrain);
-        _smartDashboardSettings.setPidValues(_pidAngle.getP(), _pidAngle.getI(), _pidAngle.getD(), 0.0, PIDTYPE_AUTOAIM);
         _pidAngle.enableContinuousInput(-180, 180);
     }
 
@@ -126,9 +125,6 @@ public class AutoMoveStrategy extends Command {
 
         refreshAtSetpointSince();
 
-        SmartDashboardWrapper.putNumber("AutoAimDriveCommandX", _driveCommandX);
-        SmartDashboardWrapper.putNumber("AutoAimDriveCommandY", _driveCommandY);
-        SmartDashboardWrapper.putNumber("AutoAimDriveCommandRot", _steerCommand);
         // _driveTrain.drive(_driveCommandX, _driveCommandY, _steerCommand, false);
         //_driveTrain.driveNormalized(_driveCommandX, _driveCommandY, _steerCommand, false);
         drive(_driveCommandX, _driveCommandY, _steerCommand);
@@ -177,9 +173,6 @@ public class AutoMoveStrategy extends Command {
 
     public Pose2d updateRobotPosition() {
         Pose2d pose = _driveTrain.getState().Pose;
-        SmartDashboardWrapper.putNumber("poseX", pose.getX());
-        SmartDashboardWrapper.putNumber("poseY", pose.getY());
-        SmartDashboardWrapper.putNumber("poseRot", pose.getRotation().getDegrees());
         return pose;
         
     }
@@ -190,14 +183,6 @@ public class AutoMoveStrategy extends Command {
     
     
     public void updateTracking(Pose2d current, Pose2d destination) {
-
-        SmartDashboardWrapper.putNumber("currentX", current.getX());
-        SmartDashboardWrapper.putNumber("currentY", current.getY());
-        SmartDashboardWrapper.putNumber("currentRot", current.getRotation().getDegrees());
-
-        SmartDashboardWrapper.putNumber("destinationX", destination.getX());
-        SmartDashboardWrapper.putNumber("destinationY", destination.getY());
-        SmartDashboardWrapper.putNumber("destinationeRot", destination.getRotation().getDegrees());
 
         Transform2d movePose = new Transform2d(current, destination);
 
@@ -218,10 +203,6 @@ public class AutoMoveStrategy extends Command {
         double dy = twist.dy;
         double dtheta = twist.dtheta * 180 / Math.PI;
 
-        SmartDashboardWrapper.putNumber("dx", dx);
-        SmartDashboardWrapper.putNumber("dy", dy);
-        SmartDashboardWrapper.putNumber("dtheta", dtheta);
-
         _pidAngle.setSetpoint(0);
         _pidAngle.setTolerance(_posTolerance.getRotation().getDegrees());
         double steerCommand = -_pidAngle.calculate(dtheta);
@@ -233,9 +214,6 @@ public class AutoMoveStrategy extends Command {
         _pidDistanceY.setSetpoint(0);
         _pidDistanceY.setTolerance(_posTolerance.getY());
         double drive_y_cmd = -_pidDistanceY.calculate(dy);
-
-        SmartDashboardWrapper.putNumber("drive_x_cmd", drive_x_cmd);
-        SmartDashboardWrapper.putNumber("drive_y_cmd", drive_y_cmd);
 
         _steerCommand = clipValue(steerCommand, -0.7, 0.7);
         _driveCommandX = normaliseX(drive_x_cmd, drive_y_cmd, 0.9);

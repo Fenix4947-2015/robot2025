@@ -89,12 +89,6 @@ public class AutoTrajectoryStrategy extends Command {
         ChassisSpeeds chassisSpeeds = controller.calculate(currentPose, state.pose, state.linearVelocity, state.pose.getRotation());
 
         // Log trajectory information.
-        SmartDashboardWrapper.putNumber("TrajectoryTime", elapsedTime);
-        SmartDashboardWrapper.putNumber("DesiredX", state.pose.getX());
-        SmartDashboardWrapper.putNumber("DesiredY", state.pose.getY());
-        SmartDashboardWrapper.putNumber("DesiredRot", state.pose.getRotation().getDegrees());
-        SmartDashboardWrapper.putNumber("DesiredLinearVel", state.linearVelocity);
-        SmartDashboardWrapper.putNumber("DesiredAngularVel", state.angularVelocity);
 
         // Command the drivetrain with the calculated speeds.
         driveTrain.applyRequest(() ->
