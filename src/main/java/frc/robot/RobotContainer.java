@@ -85,6 +85,7 @@ public class RobotContainer {
     public Alliance m_alliance = Alliance.Red;
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
+    public double auto_delay = 0.0;
 
     public RobotContainer() {
         autoChooser = buildAutoChooser();
@@ -102,6 +103,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Arm Lowest",m_moveArmLow);
         autoChooser = AutoBuilder.buildAutoChooser("auto_path");
         SmartDashboard.putData("Auto Mode", autoChooser);
+        SmartDashboard.putNumber("Auto Delay", auto_delay);
         return autoChooser;
     }
 
