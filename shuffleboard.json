@@ -223,6 +223,32 @@
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
+          },
+          "3,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///PathPlanner",
+              "_title": "/PathPlanner",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Auto Mode",
+              "_title": "/SmartDashboard/Auto Mode",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -239,12 +265,86 @@
         "titleType": 0,
         "tiles": {}
       }
+    },
+    {
+      "title": "Tab 3",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "7,1": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/desiredRot",
+              "_title": "/SmartDashboard/desiredRot",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Graph/Visible time": 5.0,
+              "Graph/X-axis auto scrolling": true,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0,
+              "Y-axis/Unit": "ul",
+              "Visible data//SmartDashboard/desiredRot": true
+            }
+          },
+          "1,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/desiredX",
+              "_title": "/SmartDashboard/desiredX",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Graph/Visible time": 5.0,
+              "Graph/X-axis auto scrolling": true,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0,
+              "Y-axis/Unit": "ul",
+              "Visible data//SmartDashboard/desiredX": true
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/desiredY",
+              "_title": "/SmartDashboard/desiredY",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Graph/Visible time": 5.0,
+              "Graph/X-axis auto scrolling": true,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0,
+              "Y-axis/Unit": "ul",
+              "Visible data//SmartDashboard/desiredY": true
+            }
+          }
+        }
+      }
     }
   ],
   "windowGeometry": {
-    "x": -6.666666507720947,
-    "y": 0.0,
-    "width": 1517.3333740234375,
-    "height": 690.0
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 830.4000244140625
   }
 }
