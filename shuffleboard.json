@@ -11,19 +11,6 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "3,0": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Autonomous Command",
-              "_title": "/SmartDashboard/Autonomous Command",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "5,0": {
             "size": [
               2,
@@ -45,7 +32,7 @@
             "content": {
               "_type": "Camera Stream",
               "_source0": "camera_server://limelight",
-              "_title": "limelight",
+              "_title": "limelight-four",
               "_glyph": 148,
               "_showGlyph": false,
               "Crosshair/Show crosshair": true,
@@ -237,7 +224,7 @@
               "_showGlyph": false
             }
           },
-          "0,2": {
+          "3,0": {
             "size": [
               2,
               1
@@ -264,77 +251,6 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {}
-      }
-    },
-    {
-      "title": "Tab 3",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "titleType": 0,
-        "tiles": {
-          "7,1": {
-            "size": [
-              3,
-              3
-            ],
-            "content": {
-              "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/desiredRot",
-              "_title": "/SmartDashboard/desiredRot",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Graph/Visible time": 5.0,
-              "Graph/X-axis auto scrolling": true,
-              "Y-axis/Automatic bounds": true,
-              "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul"
-            }
-          },
-          "1,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/desiredX",
-              "_title": "/SmartDashboard/desiredX",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Graph/Visible time": 5.0,
-              "Graph/X-axis auto scrolling": true,
-              "Y-axis/Automatic bounds": true,
-              "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul"
-            }
-          },
-          "5,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/desiredY",
-              "_title": "/SmartDashboard/desiredY",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Graph/Visible time": 5.0,
-              "Graph/X-axis auto scrolling": true,
-              "Y-axis/Automatic bounds": true,
-              "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul"
-            }
-          }
-        }
       }
     }
   ],

@@ -104,7 +104,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Arm L4",m_moveArmL4);
         NamedCommands.registerCommand("Arm Lowest",m_moveArmLow);
         NamedCommands.registerCommand("Auto Delay",new WaitSmartDashBoard(smartDashboardSettings));
-        autoChooser = AutoBuilder.buildAutoChooser("auto_path");
+        autoChooser = AutoBuilder.buildAutoChooser("2_coral_blue");
         SmartDashboard.putData("Auto Mode", autoChooser);
         SmartDashboard.putNumber("Auto Delay", auto_delay);
         return autoChooser;
