@@ -8,11 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.01138193418155,
-        "y": 1.9500673125626609
+        "x": 3.0794058793063153,
+        "y": 1.7969212410787032
       },
       "isLocked": false,
-      "linkedName": "end_corail_1"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,15 +20,20 @@
         "y": 1.14875
       },
       "prevControl": {
-        "x": 2.3694472467349783,
-        "y": 2.3713745249388003
+        "x": 1.8758952697149895,
+        "y": 1.2509739497704657
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "end_retour_1"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.24946695095949,
+      "rotationDegrees": -21.195740083364146
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
