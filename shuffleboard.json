@@ -293,8 +293,7 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul",
-              "Visible data//SmartDashboard/desiredRot": true
+              "Y-axis/Unit": "ul"
             }
           },
           "1,1": {
@@ -313,8 +312,7 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul",
-              "Visible data//SmartDashboard/desiredX": true
+              "Y-axis/Unit": "ul"
             }
           },
           "5,1": {
@@ -333,8 +331,7 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul",
-              "Visible data//SmartDashboard/desiredY": true
+              "Y-axis/Unit": "ul"
             }
           }
         }

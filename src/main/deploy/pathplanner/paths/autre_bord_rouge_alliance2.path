@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 14.03025,
-        "y": 5.8775
+        "x": 14.301331967213114,
+        "y": 6.1648053278688515
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.393824212278275,
-        "y": 5.837257963762562
+        "x": 14.664906179491389,
+        "y": 6.124563291631413
       },
       "isLocked": false,
       "linkedName": "autre_bord_rouge_corail2"

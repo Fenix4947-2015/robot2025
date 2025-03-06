@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.65625,
-        "y": 5.78
+        "x": 3.2846311475409835,
+        "y": 6.06890368852459
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.3848176858151913,
-        "y": 5.827786972322164
+        "x": 2.6013319672131145,
+        "y": 6.8481045081967205
       },
       "isLocked": false,
       "linkedName": "autre_bord_corail2"
     },
     {
       "anchor": {
-        "x": 1.6380000000000001,
-        "y": 6.6282499999999995
+        "x": 1.7022540983606556,
+        "y": 6.644313524590164
       },
       "prevControl": {
-        "x": 3.1838552334134125,
-        "y": 5.68900909577737
+        "x": 2.133811475409836,
+        "y": 6.80015368852459
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 125.00000000000001
   },
   "reversed": false,
   "folder": "autre_bord",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -70.0
+    "rotation": -59.99999999999999
   },
   "useDefaultConstraints": true
 }

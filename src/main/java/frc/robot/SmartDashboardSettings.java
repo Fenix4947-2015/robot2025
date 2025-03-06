@@ -62,6 +62,10 @@ public class SmartDashboardSettings {
         return _pidF;
     }
 
+    public double getWaitDelay() {
+        return SmartDashboard.getNumber("Auto Delay", 0);
+    }
+
 //  public double getkMotor() {
 //    return _kMotor;
 //  }
