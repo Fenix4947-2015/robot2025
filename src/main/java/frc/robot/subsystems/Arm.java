@@ -213,11 +213,11 @@ public class Arm extends SubsystemBase {
     }
 
     public void extendExtender() {
-        armRetracted = true;
+        armRetracted = false;
     }
 
     public void retractExtender() {
-        armRetracted = false;
+        armRetracted = true;
     }
 
     public void toggleExtender() {

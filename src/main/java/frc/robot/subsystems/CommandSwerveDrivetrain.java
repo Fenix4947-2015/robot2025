@@ -381,7 +381,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             llMeasurement = getActiveLimelight().getPoseEstimateMegaTag2();
         }
         
-        if (llMeasurement != null && llMeasurement.tagCount > 0 && Math.abs(omegaRps) < 2.0) {
+        if (llMeasurement != null && llMeasurement.tagCount > 0 && Math.abs(omegaRps) < 0.5) {
             setPoseEstimate(llMeasurement);
         }
     }
