@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4934426229508198,
-        "y": 6.356608606557376
+        "x": 2.4454918032786885,
+        "y": 6.4345286885245905
       },
       "isLocked": false,
       "linkedName": "autre_bord_alliance"
@@ -20,15 +20,20 @@
         "y": 6.06890368852459
       },
       "prevControl": {
-        "x": 3.020901639344262,
-        "y": 6.128842213114754
+        "x": 2.62530737704918,
+        "y": 6.470491803278688
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.10021321961620668,
+      "rotationDegrees": 100.4245227499098
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
