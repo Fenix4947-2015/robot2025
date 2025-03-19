@@ -7,6 +7,8 @@ import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -32,7 +34,7 @@ public class Arm extends SubsystemBase {
     private final Solenoid m_extender = new Solenoid(ElectricConstants.kPneumaticHubCanId, PneumaticsModuleType.REVPH, ElectricConstants.kArmExtenderChannel);
 
     private final PIDController m_pidController = new PIDController(Constants.Arm.kP, Constants.Arm.kI, Constants.Arm.kD);
-    private final SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.Arm.kS, Constants.Arm.kV);
+    private final ArmFeedforward feedForward = new ArmFeedforward(Constants.Arm.kS, Constants.Arm.kG, Constants.Arm.kV);
     private double directOutput = 0;
     private ArmMode armMode = ArmMode.DIRECT;
 
@@ -131,10 +133,11 @@ public class Arm extends SubsystemBase {
     }
 
     private void movePid() {
+        double armPositionRadians = getArmPositionRadians();
+        double armVelocityRadiansPerSecond = getArmVelocityRadiansPerSecond();
         double rawOutput = m_pidController.calculate(getEncoderDistance());
-        // disable feedforward when arm is at lowest position
-        double ffOutput = rawOutput + (armAtLimitOutputUntilPosition() ? 0.0 : feedForward.calculate(rawOutput));
-        double output = limitOutput(ffOutput);
+        double ffOutput = feedForward.calculate(armPositionRadians, armVelocityRadiansPerSecond);
+        double output = limitOutput(rawOutput + ffOutput);
         log(output);
         m_motor1.set(output);
     }
