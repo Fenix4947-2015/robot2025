@@ -35,7 +35,7 @@ public class CoralGripper extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboardWrapper.putBoolean("CoralGripper / sideGripperOpen", isSideGripperOpen());
-        SmartDashboardWrapper.putBoolean("CoralGripper / frontGripperOpen", isFrontGripperOpen());
+        SmartDashboardWrapper.putBoolean("FrontGripperOpen", isFrontGripperOpen());
         SmartDashboardWrapper.putBoolean("CoralGripper / coralLoaded", isCoralLoaded());
     }
 
@@ -52,11 +52,11 @@ public class CoralGripper extends SubsystemBase {
     }
 
     public void openFrontGripper() {
-        m_frontGripper.set(false);
+        m_frontGripper.set(true);
     }
 
     public void closeFrontGripper() {
-        m_frontGripper.set(true);
+        m_frontGripper.set(false);
     }
 
     public void toggleFrontGripper() {
@@ -68,7 +68,7 @@ public class CoralGripper extends SubsystemBase {
     }
 
     public boolean isFrontGripperOpen() {
-        return m_frontGripperLimitSwitch.get();
+        return !m_frontGripperLimitSwitch.get();
     }
 
     // Use the debouncer to filter out noise from the proximity sensor.

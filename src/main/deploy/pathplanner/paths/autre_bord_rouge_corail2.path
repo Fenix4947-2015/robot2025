@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 15.853499999999999,
-        "y": 6.7452499999999995
+        "x": 15.70389344262295,
+        "y": 6.410553278688525
       },
       "prevControl": null,
       "nextControl": {
-        "x": 15.346372259756212,
-        "y": 6.118396962534629
+        "x": 15.49540620426037,
+        "y": 6.272592880602899
       },
       "isLocked": false,
-      "linkedName": "autre_bord_rouge_alliance"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,15 +20,20 @@
         "y": 6.1648053278688515
       },
       "prevControl": {
-        "x": 15.816206349497548,
-        "y": 6.579909507888191
+        "x": 14.547438861090235,
+        "y": 6.208752987489767
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "autre_bord_rouge_corail2"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.1044776119402986,
+      "rotationDegrees": 61.881598481278544
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -48,7 +53,7 @@
   "folder": "autre_bord_red",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 55.0
+    "rotation": 46.02915480430598
   },
   "useDefaultConstraints": true
 }

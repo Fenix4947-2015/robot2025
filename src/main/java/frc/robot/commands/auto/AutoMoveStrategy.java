@@ -56,12 +56,13 @@ public class AutoMoveStrategy extends Command {
     private final long _setpointDelayMs;
     public static final long DEFAULT_SETPOINT_DELAY_MS = 100;
     private final Pose2d _posTolerance;
-    public static final Pose2d DEFAULT_POS_TOLERANCE = new Pose2d(0.05, 0.05, Rotation2d.fromDegrees(0.5));
+    public static final Pose2d DEFAULT_POS_TOLERANCE = new Pose2d(0.05, 0.05, Rotation2d.fromDegrees(1));
      private final double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private final double RobotRadius = Math.sqrt(TunerConstants.BackLeft.LocationX * TunerConstants.BackLeft.LocationX +
             TunerConstants.BackLeft.LocationY * TunerConstants.BackLeft.LocationY); // Distance from center of rotation to wheel
     private final double MaxAngularRate = RadiansPerSecond.of(MaxSpeed / RobotRadius).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     private final SwerveRequest.RobotCentric drive = new SwerveRequest.RobotCentric();
+    private final double MAX_SPEED_LIMITER = 1;
 
     private boolean _isAtSetPoint = false;
     private Optional<Instant> _atSetpointSince = Optional.empty();
@@ -272,9 +273,9 @@ public class AutoMoveStrategy extends Command {
 
     private void drive(double x, double y, double steer) {
         _driveTrain.applyRequest(() ->
-                drive.withVelocityX(x * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(y * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(steer * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX(x * MaxSpeed * MAX_SPEED_LIMITER) // Drive forward with negative Y (forward)
+                    .withVelocityY(y * MaxSpeed * MAX_SPEED_LIMITER) // Drive left with negative X (left)
+                    .withRotationalRate(steer * MaxAngularRate * MAX_SPEED_LIMITER) // Drive counterclockwise with negative X (left)
             )
             .execute();
     }

@@ -8,27 +8,32 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 15.575929570085957,
-        "y": 6.0614513839501525
+        "x": 14.636987704918031,
+        "y": 6.254713114754098
       },
       "isLocked": false,
       "linkedName": "autre_bord_rouge_corail1"
     },
     {
       "anchor": {
-        "x": 15.853499999999999,
-        "y": 6.7452499999999995
+        "x": 15.70389344262295,
+        "y": 6.410553278688525
       },
       "prevControl": {
-        "x": 14.677636896616605,
-        "y": 5.991436190383066
+        "x": 15.41043442622951,
+        "y": 6.327598360655738
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "autre_bord_rouge_alliance"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.0959488272921106,
+      "rotationDegrees": -143.7560995244835
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,7 +47,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 55.0
+    "rotation": 46.02915480430598
   },
   "reversed": false,
   "folder": "autre_bord_red",
