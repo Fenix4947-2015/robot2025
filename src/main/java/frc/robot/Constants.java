@@ -45,13 +45,12 @@ public final class Constants {
     }
 
     public static class Arm {
-        public static final double kP = 3.5;
+        public static final double kP = 5.0;//3.5;
         public static final double kI = 0;
         public static final double kD = 0;
-        public static final double kS = 0.03;
-        public static final double kG = 0.00;
+        public static final double kS = 0.02;
+        public static final double kG = 0.02;
         public static final double kV = 0;
-        public static final double kEncoderRatio = 36/14;
         public static final double kToleranceDistance = 0.005;
         public static final double kLowestPosition = 0.232;
         public static final double kLimitOutputUntilPosition = 0.394;
@@ -61,6 +60,8 @@ public final class Constants {
         public static final double kCoralL2Position = 0.650;
         public static final double lowestRetractedPosition = 0.640;
         public static final double gripperDangerZonePosition = 0.3;
+        public static final double horizontalPosition = 0.752;
+        public static final double encoderToArmGearRatio = 12.0 / 36.0;
     }
 
     public static class Limelight {

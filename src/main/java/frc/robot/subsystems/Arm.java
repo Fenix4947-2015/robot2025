@@ -11,6 +11,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.units.AngleUnit;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -18,6 +20,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ElectricConstants;
 import frc.robot.SmartDashboardWrapper;
+
+import static edu.wpi.first.units.Units.*;
+import static frc.robot.Constants.Arm.encoderToArmGearRatio;
+import static frc.robot.Constants.Arm.horizontalPosition;
 
 public class Arm extends SubsystemBase {
 
@@ -132,11 +138,27 @@ public class Arm extends SubsystemBase {
         return -m_encoder.getPosition().getValueAsDouble();
     }
 
+    public double getEncoderDistanceHorizontalZero() {
+        return getEncoderDistance() - horizontalPosition;
+    }
+
+    public double getEncoderAngleRad() {
+        return Rotations.of(getEncoderDistance() * encoderToArmGearRatio).in(Radians);
+    }
+
+    public double getEncoderAngleRadHorizontalZero() {
+        return Rotations.of(getEncoderDistanceHorizontalZero() * encoderToArmGearRatio).in(Radians);
+    }
+
+    public double getEncoderVelocityRad() {
+        return Rotations.of(m_encoder.getVelocity().getValueAsDouble()).in(Radians);
+    }
+
     private void movePid() {
-        double armPositionRadians = getArmPositionRadians();
-        double armVelocityRadiansPerSecond = getArmVelocityRadiansPerSecond();
+        double armPositionRadians = getEncoderAngleRadHorizontalZero();
+        double armVelocityRadiansPerSecond = getEncoderVelocityRad();
         double rawOutput = m_pidController.calculate(getEncoderDistance());
-        double ffOutput = feedForward.calculate(armPositionRadians, armVelocityRadiansPerSecond);
+        double ffOutput = feedForward.calculate(armPositionRadians, rawOutput);//armVelocityRadiansPerSecond);
         double output = limitOutput(rawOutput + ffOutput);
         log(output);
         m_motor1.set(output);
@@ -172,6 +194,8 @@ public class Arm extends SubsystemBase {
     private void log(double output) {
         SmartDashboardWrapper.putNumber("Arm / Output", output);
         SmartDashboardWrapper.putNumberImportant("Arm / Distance", getEncoderDistance());
+        SmartDashboardWrapper.putNumberImportant("Arm / Angle (Rad)", getEncoderAngleRad());
+        SmartDashboardWrapper.putNumberImportant("Arm / Angle (Deg)", Radians.of(getEncoderAngleRad()).in(Degrees));
         SmartDashboardWrapper.putNumber("Arm / Setpoint", m_pidController.getSetpoint());
         SmartDashboardWrapper.putBoolean("Arm / Low limit switch", lowLimitSwitchPushed());
         SmartDashboardWrapper.putBoolean("Arm / At setpoint", atSetpoint());
