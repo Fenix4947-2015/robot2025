@@ -46,11 +46,11 @@ public final class Constants {
     }
 
     public static class Arm {
-        public static final double kP = 5.0;//3.5;
+        public static final double kP = 5.0;//5.0;//3.5;
         public static final double kI = 0;
         public static final double kD = 0;
-        public static final double kS = 0.02;
-        public static final double kG = 0.02;
+        public static final double kS = 0.01;//0.02;
+        public static final double kG = 0.025;///0.02;
         public static final double kV = 0;
         public static final double kToleranceDistance = 0.005;
         public static final double kLowestPosition = 0.232;
