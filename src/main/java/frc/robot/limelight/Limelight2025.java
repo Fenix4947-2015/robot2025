@@ -54,7 +54,7 @@ public class Limelight2025 extends Limelight {
     return (int) LimelightHelpers.getFiducialID(identifier);
   }
 
-  public Transform2d getClosestFiducial(LimelightMegaTagType limelightMegaTagType) {
+  public Transform2d getFiducialRobotRelative(LimelightMegaTagType limelightMegaTagType) {
     int fiducialId = getFiducialId();
     PoseEstimate robotPoseEstimate;
     if (limelightMegaTagType == LimelightMegaTagType.MEGA_TAG) {
@@ -72,7 +72,19 @@ public class Limelight2025 extends Limelight {
     if (fiducial == null) {
       return null;
     }
+
     return new Transform2d(robotPose, fiducial.getPose2d());
+    
+  }
+
+  public Fiducial getClosestFiducial() {
+    int fiducialId = getFiducialId();
+    if (fiducialId == -1) {
+      return null;
+    }
+
+    return Fiducial.getFiducialById(fiducialId);
+
   }
 
   public void setRotation(double robotYawInDegrees) {

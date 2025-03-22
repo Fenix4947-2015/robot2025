@@ -178,6 +178,15 @@ public enum Fiducial {
         return new Pose2d(new Translation2d(x, y), new Rotation2d(theta));
     }
 
+    public Pose2d getPose2dfromBlue() {
+        double x = transform[3] + FIELD_LENGTH / 2;
+        double y = transform[7] + FIELD_WIDTH / 2;
+        // Calculate the rotation angle from the rotation matrix:
+        // cos(theta) is at transform[0] and sin(theta) is at transform[4]
+        double theta = Math.atan2(transform[4], transform[0]);
+        return new Pose2d(new Translation2d(x, y), new Rotation2d(theta));
+    }
+
     public static Fiducial getFiducialById(int id) {
         for (Fiducial fiducial : Fiducial.values()) {
             if (fiducial.getId() == id) {

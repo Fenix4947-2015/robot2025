@@ -13,7 +13,7 @@ public class ClosePusher extends Command {
 
     @Override
     public void initialize() {
-        m_coralGripper.closeSideGripper();
+        m_coralGripper.closePusher();
     }
 
     @Override

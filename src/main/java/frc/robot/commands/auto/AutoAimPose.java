@@ -61,7 +61,7 @@ public class AutoAimPose extends AutoMoveStrategy {
 
     @Override
     public Pose2d updateDestination() {
-        Transform2d closestFiducial = _limelight.getClosestFiducial(LimelightMegaTagType.MEGA_TAG);
+        Transform2d closestFiducial = _limelight.getFiducialRobotRelative(LimelightMegaTagType.MEGA_TAG);
         if (closestFiducial == null || _limelight.getFiducialId() != _activeFiducialId) {
             return _currentTarget;
         }

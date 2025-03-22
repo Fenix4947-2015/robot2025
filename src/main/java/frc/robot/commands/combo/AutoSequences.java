@@ -33,7 +33,7 @@ public class AutoSequences {
     public Command clampCoral() {
         return new SequentialCommandGroup(
                 new OpenFrontGripper(m_robotContainer.m_coralGripper),
-                new ClosePusher(null),
+                new ClosePusher(m_robotContainer.m_coralGripper),
                 new WaitCommand(0.5),
                 new CloseFrontGripper(m_robotContainer.m_coralGripper)
         );
@@ -68,6 +68,7 @@ public class AutoSequences {
 
     public Command dropCoralSlow() {
         return new SequentialCommandGroup(
+                new OpenPusher(m_robotContainer.m_coralGripper),
                 new CloseSideGripper(m_robotContainer.m_coralGripper),
                 new WaitCommand(0.5),
                 new OpenFrontGripper(m_robotContainer.m_coralGripper),

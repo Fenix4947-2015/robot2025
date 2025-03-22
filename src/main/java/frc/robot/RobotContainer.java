@@ -23,8 +23,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.arm.MoveArmDirect;
 import frc.robot.commands.arm.MoveArmDropPosition;
 import frc.robot.commands.auto.AutoDrop;
-import frc.robot.commands.auto.AutoRelativeTrajectoryStrategy;
-import frc.robot.commands.auto.AutoTrajectoryStrategy;
+import frc.robot.commands.auto.DrivetrainPathFollower;
 import frc.robot.commands.balls.RollBalls;
 import frc.robot.commands.combo.AutoSequences;
 import frc.robot.commands.drivetrain.DriveSwerveCommand;
@@ -80,7 +79,11 @@ public class RobotContainer {
     private final Command autoDropCoralLeft = new AutoDrop(new AutoSequences(this), m_arm, AutoDrop.Side.LEFT);
     private final Command autoPickupCoralStation1 = new AutoSequences(this).autoPickupCoralStation1();
     private final Command gripCoral = new AutoSequences(this).gripCoral();
-    private final Command auto1m = new AutoRelativeTrajectoryStrategy(drivetrain, new Pose2d(1, 0, Rotation2d.fromDegrees(90)), 2.5, 4, 2.6, 5.2);
+    private final Command autoPathPlanner = new DrivetrainPathFollower(
+        drivetrain, 
+        Position.L4_APPROACH_LEFT.getPositionForTeam(Alliance.Blue), 
+        Position.CORAL_L4_LEFT.getPositionForTeam(Alliance.Blue), 
+        limelightFour);
 
     // Combo commands
     private final Command m_clampCoral = m_autoSequences.clampCoral();
@@ -129,7 +132,7 @@ public class RobotContainer {
 
         m_driverController.rightBumper().whileTrue(autoDropCoralRight);
         m_driverController.leftBumper().whileTrue(autoDropCoralLeft);
-        m_driverController.povLeft().whileTrue(auto1m);
+        m_driverController.povLeft().whileTrue(autoPathPlanner);
         m_driverController.y().whileTrue(autoPickupCoralStation1);
         m_driverController.a().whileTrue(m_moveArmLow);
         m_driverController.x().whileTrue(m_moveArmL3);
