@@ -13,6 +13,9 @@ import frc.robot.limelight.Limelight2025;
 import frc.robot.limelight.LimelightMegaTagType;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Radians;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +26,7 @@ public class DrivetrainPathFollower extends Command {
     private final Limelight2025 limelight;
     private int activeFiducialId;
     private Command followPathCommand;
+    private double MAX_RATIO = 0.3;
 
     public DrivetrainPathFollower(
         CommandSwerveDrivetrain drivetrain, 
@@ -59,7 +63,12 @@ public class DrivetrainPathFollower extends Command {
 
         List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(poses);
 
-        PathConstraints constraints = new PathConstraints(2.0, 3.0, 2 * Math.PI, 4 * Math.PI);
+        PathConstraints constraints = new PathConstraints(
+            5.0 * MAX_RATIO, 
+            8.5 * MAX_RATIO, 
+            Degrees.of(550).in(Radians) * MAX_RATIO, 
+            Degrees.of(1000).in(Radians) * MAX_RATIO
+            );
 
         PathPlannerPath generatedPath = new PathPlannerPath(
             waypoints,

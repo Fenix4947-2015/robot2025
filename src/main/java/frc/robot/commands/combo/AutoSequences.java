@@ -142,6 +142,19 @@ public class AutoSequences {
         );
     }
 
+    public Command autoDropCoralL4LeftPP() {
+        return new SequentialCommandGroup(
+            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+            new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L4),
+            new OpenSideGripper(m_robotContainer.m_coralGripper),
+            new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+            moveFiducialRelativePP(Position.L4_APPROACH_LEFT, Position.CORAL_L4_LEFT, m_robotContainer.limelightFour),
+            dropCoral(),
+            moveFiducialRelativeRough(Position.L4_APPROACH_LEFT, m_robotContainer.limelightFour),
+            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain)
+        );
+    }
+
     public Command autoMoveCoralL4Right() {
         return new SequentialCommandGroup(
                 new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kCoralL4Position),
@@ -226,6 +239,15 @@ public class AutoSequences {
                 position.getPositionForTeam(m_robotContainer.m_alliance),
                 0,
                 posTolerance);
+    }
+
+    public Command moveFiducialRelativePP(Position approach, Position target, Limelight2025 limelight) {
+        return new DrivetrainPathFollower(
+            m_robotContainer.drivetrain, 
+            approach.getPositionForTeam(Alliance.Blue), 
+            target.getPositionForTeam(Alliance.Blue), 
+            m_robotContainer.limelightFour
+            );
     }
 
     // AUTOS
