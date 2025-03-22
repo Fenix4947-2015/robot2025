@@ -18,6 +18,10 @@ public class CoralGripper extends SubsystemBase {
             ElectricConstants.kPneumaticHubCanId,
             PneumaticsModuleType.REVPH,
             ElectricConstants.kArmFrontGripperChannel);
+    private final Solenoid m_pusher = new Solenoid(
+            ElectricConstants.kPneumaticHubCanId,
+            PneumaticsModuleType.REVPH,
+            ElectricConstants.kArmPusherChannel);
 
     private final DigitalInput m_gripperProximitySensor = new DigitalInput(
             ElectricConstants.kArmGripperProximityChannel);
@@ -61,6 +65,18 @@ public class CoralGripper extends SubsystemBase {
 
     public void toggleFrontGripper() {
         m_frontGripper.toggle();
+    }
+
+    public void openPusher() {
+        m_pusher.set(false);
+    }
+
+    public void closePusher() {
+        m_pusher.set(true);
+    }
+
+    public void togglePusher() {
+        m_pusher.toggle();
     }
 
     public boolean isSideGripperOpen() {

@@ -156,7 +156,7 @@ public class RobotContainer {
         m_helperController.back().whileTrue(m_moveArmLow);
         m_helperController.a().onTrue(new InstantCommand(m_coralGripper::toggleFrontGripper, m_coralGripper));
         m_helperController.b().onTrue(new InstantCommand(m_coralGripper::toggleSideGripper, m_coralGripper));
-        m_helperController.y().onTrue(m_autoSequences.clampCoral());
+        m_helperController.y().onTrue(new InstantCommand(m_coralGripper::togglePusher, m_coralGripper));
     }
 
     public void configureDefaultCommands() {
