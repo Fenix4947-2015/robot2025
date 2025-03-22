@@ -7,12 +7,8 @@ import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.units.AngleUnit;
-import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -22,8 +18,7 @@ import frc.robot.Constants.ElectricConstants;
 import frc.robot.SmartDashboardWrapper;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.Constants.Arm.encoderToArmGearRatio;
-import static frc.robot.Constants.Arm.horizontalPosition;
+import static frc.robot.Constants.Arm.*;
 
 public class Arm extends SubsystemBase {
 
@@ -159,7 +154,8 @@ public class Arm extends SubsystemBase {
         double armVelocityRadiansPerSecond = getEncoderVelocityRad();
         double rawOutput = m_pidController.calculate(getEncoderDistance());
         double ffOutput = feedForward.calculate(armPositionRadians, rawOutput);//armVelocityRadiansPerSecond);
-        double output = limitOutput(rawOutput + ffOutput);
+        double limitedOutput = limitOutput(rawOutput + ffOutput);
+        double output = applyStabilizingWhenLow(limitedOutput);
         log(output);
         m_motor1.set(output);
     }
@@ -199,6 +195,7 @@ public class Arm extends SubsystemBase {
         SmartDashboardWrapper.putNumber("Arm / Setpoint", m_pidController.getSetpoint());
         SmartDashboardWrapper.putBoolean("Arm / Low limit switch", lowLimitSwitchPushed());
         SmartDashboardWrapper.putBoolean("Arm / At setpoint", atSetpoint());
+        SmartDashboardWrapper.putString("Arm / ArmMode", armMode.name());
     }
 
     private boolean lowLimitSwitchPushed() {
@@ -230,7 +227,15 @@ public class Arm extends SubsystemBase {
 
     private double limitOutputWhenLow(double output) {
         if (getEncoderDistance() < Constants.Arm.kLimitOutputUntilPosition) {
-            return output > 0 ? Math.min(output, 0.5) : Math.max(output, -0.5);
+            return output = output > 0 ? Math.min(output, 0.5) : Math.max(output, -0.5);
+        }
+        return output;
+    }
+
+    private double applyStabilizingWhenLow(double output) {
+        if (getEncoderDistance() < Constants.Arm.applyDownwardStabilizingPosition && Math.abs(output) < 0.1) {
+            setTargetPosition(kLowestPosition);
+            return kDownwardStablizingOutput;
         }
         return output;
     }
