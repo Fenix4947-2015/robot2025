@@ -2,6 +2,7 @@ package frc.robot.commands.combo;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -14,6 +15,7 @@ import frc.robot.commands.arm.MoveArmDropPosition;
 import frc.robot.commands.arm.MoveArmPosition;
 import frc.robot.commands.auto.AutoAimPose;
 import frc.robot.commands.auto.AutoMoveAbsolute;
+import frc.robot.commands.auto.DrivetrainPathFollower;
 import frc.robot.commands.coralgripper.*;
 import frc.robot.commands.limelight.FindTarget;
 import frc.robot.commands.limelight.ResetTarget;
@@ -162,6 +164,18 @@ public class AutoSequences {
                         moveFiducialRelativeRough(Position.STATION_1_APPROACH, m_robotContainer.limelightThree)
                 ),
                 new ResetTarget(m_robotContainer.limelightThree, m_robotContainer.drivetrain)
+        );
+    }
+
+    public Command autoMoveCoralL4LeftPPTest() {
+        return new SequentialCommandGroup(
+            new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+            new DrivetrainPathFollower(
+                m_robotContainer.drivetrain, 
+                Position.L4_APPROACH_LEFT.getPositionForTeam(Alliance.Blue), 
+                Position.CORAL_L4_LEFT.getPositionForTeam(Alliance.Blue), 
+                m_robotContainer.limelightFour
+                )
         );
     }
 

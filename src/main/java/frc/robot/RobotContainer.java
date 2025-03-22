@@ -79,11 +79,7 @@ public class RobotContainer {
     private final Command autoDropCoralLeft = new AutoDrop(new AutoSequences(this), m_arm, AutoDrop.Side.LEFT);
     private final Command autoPickupCoralStation1 = new AutoSequences(this).autoPickupCoralStation1();
     private final Command gripCoral = new AutoSequences(this).gripCoral();
-    private final Command autoPathPlanner = new DrivetrainPathFollower(
-        drivetrain, 
-        Position.L4_APPROACH_LEFT.getPositionForTeam(Alliance.Blue), 
-        Position.CORAL_L4_LEFT.getPositionForTeam(Alliance.Blue), 
-        limelightFour);
+    private final Command autoPathPlanner = new AutoSequences(this).autoMoveCoralL4LeftPPTest();
 
     // Combo commands
     private final Command m_clampCoral = m_autoSequences.clampCoral();

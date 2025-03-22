@@ -50,6 +50,8 @@ public class DrivetrainPathFollower extends Command {
             return;
         }
 
+        Pose2d finalPose = closestFiducialBlueRelative.plus(new Transform2d(new Pose2d(), targetPose));
+
         List<Pose2d> poses = new ArrayList<>();
         poses.add(currentPose);
         poses.add(closestFiducialBlueRelative.plus(new Transform2d(new Pose2d(), approachPose)));
@@ -57,13 +59,13 @@ public class DrivetrainPathFollower extends Command {
 
         List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(poses);
 
-        PathConstraints constraints = new PathConstraints(1.0, 3.0, 2 * Math.PI, 4 * Math.PI);
+        PathConstraints constraints = new PathConstraints(2.0, 3.0, 2 * Math.PI, 4 * Math.PI);
 
         PathPlannerPath generatedPath = new PathPlannerPath(
             waypoints,
             constraints,
             null,  
-            new GoalEndState(0.0, targetPose.getRotation())
+            new GoalEndState(0.0, finalPose.getRotation())
         );
 
         generatedPath.preventFlipping = true;
