@@ -29,7 +29,7 @@ public final class Constants {
         public static final int kArmSideGripperLimitSwitch = 7;
         public static final int kArmFrontGripperLimitSwitch = 6;
         public static final int kArmExtenderChannel = 4;
-        public static final int kArmSideGripperChannel = 0;
+        public static final int kArmSideGripperChannel = 15; //0;
         public static final int kArmFrontGripperChannel = 2;
         public static final int kArmPusherChannel = 11;
 
