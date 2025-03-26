@@ -52,8 +52,8 @@ public final class Constants {
         public static final double kS = 0.01;
         public static final double kG = 0.025;
         public static final double kV = 0;
-        public static final double kToleranceDistance = 0.005;
-        public static final double kLowestPosition = 0.22;
+        public static final double kToleranceDistance = 0.01;
+        public static final double kLowestPosition = 0.215;
         public static final double kLimitOutputUntilPosition = 0.394;
         public static final double applyDownwardStabilizingPosition = 0.25;
         public static final double kHighestPosition = 1.25;
