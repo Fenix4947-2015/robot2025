@@ -26,7 +26,7 @@ public class DrivetrainPathFollower extends Command {
     private final Limelight2025 limelight;
     private int activeFiducialId;
     private Command followPathCommand;
-    private double MAX_RATIO = 0.3;
+    private double MAX_RATIO = 0.5;
 
     public DrivetrainPathFollower(
         CommandSwerveDrivetrain drivetrain, 

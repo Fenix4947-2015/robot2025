@@ -45,19 +45,6 @@
               "imageHeight": 0
             }
           },
-          "3,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Arm / Distance",
-              "_title": "/SmartDashboard/Arm / Distance",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "4,1": {
             "size": [
               1,
@@ -71,19 +58,6 @@
               "_showGlyph": false,
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "3,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Arm / Output",
-              "_title": "/SmartDashboard/Arm / Output",
-              "_glyph": 148,
-              "_showGlyph": false
             }
           },
           "5,1": {
@@ -233,6 +207,56 @@
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/Auto Mode",
               "_title": "/SmartDashboard/Auto Mode",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///SmartDashboard/Arm / Output",
+              "_title": "/SmartDashboard/Arm / Output",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Grid Layout",
+              "_title": "Grid Layout",
+              "_glyph": 149,
+              "_showGlyph": false,
+              "Layout/Number of columns": 3,
+              "Layout/Number of rows": 3,
+              "Layout/Label position": "BOTTOM",
+              "_children": {
+                "0,0": {
+                  "_type": "Network Table Tree",
+                  "_source0": "network_table:///SmartDashboard/Arm / Distance",
+                  "_title": "/SmartDashboard/Arm / Distance",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                }
+              }
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///SmartDashboard/Arm / Distance",
+              "_title": "/SmartDashboard/Arm / Distance",
               "_glyph": 148,
               "_showGlyph": false
             }

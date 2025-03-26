@@ -29,7 +29,7 @@ public final class Constants {
         public static final int kArmSideGripperLimitSwitch = 7;
         public static final int kArmFrontGripperLimitSwitch = 6;
         public static final int kArmExtenderChannel = 4;
-        public static final int kArmSideGripperChannel = 0;
+        public static final int kArmSideGripperChannel = 15; //0
         public static final int kArmFrontGripperChannel = 2;
         public static final int kArmPusherChannel = 11;
 
@@ -57,7 +57,7 @@ public final class Constants {
         public static final double kLimitOutputUntilPosition = 0.394;
         public static final double applyDownwardStabilizingPosition = 0.25;
         public static final double kHighestPosition = 1.25;
-        public static final double kCoralL4Position = 1.11;
+        public static final double kCoralL4Position = 1.09;
         public static final double kCoralL3Position = 0.775;
         public static final double kCoralL2Position = 0.650;
         public static final double lowestRetractedPosition = 0.640;

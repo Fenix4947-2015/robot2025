@@ -155,6 +155,19 @@ public class AutoSequences {
         );
     }
 
+    public Command autoDropCoralL4RightPP() {
+        return new SequentialCommandGroup(
+            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+            new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L4),
+            new OpenSideGripper(m_robotContainer.m_coralGripper),
+            new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+            moveFiducialRelativePP(Position.L4_APPROACH_RIGHT, Position.CORAL_L4_RIGHT, m_robotContainer.limelightFour),
+            dropCoral(),
+            moveFiducialRelativeRough(Position.L4_APPROACH_RIGHT, m_robotContainer.limelightFour),
+            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain)
+        );
+    }
+
     public Command autoMoveCoralL4Right() {
         return new SequentialCommandGroup(
                 new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kCoralL4Position),
@@ -163,6 +176,23 @@ public class AutoSequences {
     }
 
     public Command autoPickupCoralStation1() {
+        return new SequentialCommandGroup(
+            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+                new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kLowestPosition),
+                new OpenSideGripper(m_robotContainer.m_coralGripper),
+                new OpenFrontGripper(m_robotContainer.m_coralGripper),
+                new FindTarget(m_robotContainer.limelightThree, m_robotContainer.drivetrain),
+                moveFiducialRelativePP(Position.STATION_1_APPROACH, Position.STATION_1, m_robotContainer.limelightThree),
+                new WaitForCoral(m_robotContainer.m_coralGripper).withTimeout(Second.of(3)),
+                new ParallelCommandGroup(
+                        clampCoral(),
+                        moveFiducialRelativeRough(Position.STATION_1_APPROACH, m_robotContainer.limelightThree)
+                ),
+                new ResetTarget(m_robotContainer.limelightThree, m_robotContainer.drivetrain)
+        );
+    }
+
+    public Command autoPickupCoralStation1PP() {
         return new SequentialCommandGroup(
             new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kLowestPosition),
@@ -246,7 +276,7 @@ public class AutoSequences {
             m_robotContainer.drivetrain, 
             approach.getPositionForTeam(Alliance.Blue), 
             target.getPositionForTeam(Alliance.Blue), 
-            m_robotContainer.limelightFour
+            limelight
             );
     }
 

@@ -31,7 +31,7 @@ public class CoralGripper extends SubsystemBase {
             ElectricConstants.kArmFrontGripperLimitSwitch);
 
     // Create a Debouncer with a 50ms debounce period (adjust as needed)
-    private final Debouncer m_proxDebouncer = new Debouncer(0.5);
+    private final Debouncer m_proxDebouncer = new Debouncer(0.1);
 
     public CoralGripper() {
     }
