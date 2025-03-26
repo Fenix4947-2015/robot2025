@@ -36,42 +36,42 @@ public enum Position {
     },
     CORAL_L3_RIGHT {
         public Pose2d getPositionForTeam(Alliance team) {
-            return new Pose2d(0.52, 0.17, Rotation2d.fromDegrees(180));
+            return new Pose2d(0.52, 0.23, Rotation2d.fromDegrees(180));
         }
     },
     L3_APPROACH_RIGHT {
         public Pose2d getPositionForTeam(Alliance team) {
-            return new Pose2d(1.2, 0.17, Rotation2d.fromDegrees(180));
+            return new Pose2d(1.2, 0.23, Rotation2d.fromDegrees(180));
         }
     },
     CORAL_L4_RIGHT {
         public Pose2d getPositionForTeam(Alliance team) {
-            return new Pose2d(0.48, 0.17, Rotation2d.fromDegrees(180));
+            return new Pose2d(0.48, 0.23, Rotation2d.fromDegrees(180));
         }
     },
     L4_APPROACH_RIGHT {
         public Pose2d getPositionForTeam(Alliance team) {
-            return new Pose2d(1, 0.17, Rotation2d.fromDegrees(180));
+            return new Pose2d(1, 0.23, Rotation2d.fromDegrees(180));
         }
     },
     CORAL_L3_LEFT {
         public Pose2d getPositionForTeam(Alliance team) {
-            return new Pose2d(0.52, -0.17, Rotation2d.fromDegrees(180));
+            return new Pose2d(0.52, -0.11, Rotation2d.fromDegrees(180));
         }
     },
     L3_APPROACH_LEFT {
         public Pose2d getPositionForTeam(Alliance team) {
-            return new Pose2d(1.2, -0.17, Rotation2d.fromDegrees(180));
+            return new Pose2d(1.2, -0.11, Rotation2d.fromDegrees(180));
         }
     },
     CORAL_L4_LEFT {
         public Pose2d getPositionForTeam(Alliance team) {
-            return new Pose2d(0.48, -0.17, Rotation2d.fromDegrees(180));
+            return new Pose2d(0.48, -0.11, Rotation2d.fromDegrees(180));
         }
     },
     L4_APPROACH_LEFT {
         public Pose2d getPositionForTeam(Alliance team) {
-            return new Pose2d(1, -0.17, Rotation2d.fromDegrees(180));
+            return new Pose2d(1, -0.11, Rotation2d.fromDegrees(180));
         }
     },
     STATION_1_APPROACH {

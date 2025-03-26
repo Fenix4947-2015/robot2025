@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Fiducial;
 import frc.robot.limelight.Limelight2025;
 import frc.robot.limelight.LimelightMegaTagType;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -27,6 +28,7 @@ public class DrivetrainPathFollower extends Command {
     private final Pose2d approachPose;
     private final Pose2d targetPose;
     private final Limelight2025 limelight;
+    private final double endSpeed;
     private int activeFiducialId;
     private Command followPathCommand;
     private double MAX_RATIO = 0.5;
@@ -36,6 +38,7 @@ public class DrivetrainPathFollower extends Command {
             this.approachPose = builder.approachPose;
             this.targetPose = builder.targetPose;
             this.limelight = builder.limelight;
+            this.endSpeed = builder.endSpeed;
             this.activeFiducialId = this.limelight.getActiveFiducialId();
             this.followPathCommand = Commands.none();
             addRequirements(drivetrain);
@@ -46,6 +49,7 @@ public class DrivetrainPathFollower extends Command {
             private Pose2d approachPose;
             private Pose2d targetPose;
             private Limelight2025 limelight;
+            private double endSpeed = 0;
     
             public Builder drivetrain(CommandSwerveDrivetrain drivetrain) {
                 this.drivetrain = drivetrain;
@@ -66,6 +70,11 @@ public class DrivetrainPathFollower extends Command {
                 this.limelight = limelight;
                 return this;
             }
+
+            public Builder endSpeed(double endSpeed) {
+                this.endSpeed = endSpeed;
+                return this;
+            }
             
             public DrivetrainPathFollower build() {
                 return new DrivetrainPathFollower(this);
@@ -80,8 +89,12 @@ public class DrivetrainPathFollower extends Command {
         drivetrain.setLimelightToUse(limelight.getLimelightToUse());
         Pose2d currentPose = drivetrain.getState().Pose;
 
-        Pose2d closestFiducialBlueRelative = limelight.getClosestFiducial().getPose2dfromBlue();
-        if (closestFiducialBlueRelative == null || limelight.getFiducialId() != activeFiducialId) {
+        Fiducial closestFiducial = limelight.getClosestFiducial();
+        if (closestFiducial == null) {
+            closestFiducial = Fiducial.getFiducialById(activeFiducialId);
+        } 
+        Pose2d closestFiducialBlueRelative = closestFiducial.getPose2dfromBlue();
+        if (closestFiducialBlueRelative == null) {
             return;
         }
 
@@ -113,7 +126,7 @@ public class DrivetrainPathFollower extends Command {
             waypoints,
             constraints,
             idealStartingState,  
-            new GoalEndState(0.0, finalPose.getRotation())
+            new GoalEndState(this.endSpeed, finalPose.getRotation())
         );
 
         generatedPath.preventFlipping = true;

@@ -26,6 +26,7 @@ import frc.robot.commands.auto.AutoDrop;
 import frc.robot.commands.auto.DrivetrainPathFollower;
 import frc.robot.commands.balls.RollBalls;
 import frc.robot.commands.combo.AutoSequences;
+import frc.robot.commands.coralgripper.WaitForCoral;
 import frc.robot.commands.drivetrain.DriveSwerveCommand;
 import frc.robot.commands.winch.RollCageGripper;
 import frc.robot.commands.winch.RollWinchSpeed;
@@ -144,7 +145,7 @@ public class RobotContainer {
         //m_helperController.leftStick().onTrue(m_moveArmDirect);
         m_helperController.rightStick().whileTrue(m_rollWinchStick);
 
-        m_helperController.povLeft().onTrue(m_autoSequences.clampCoral());
+        m_helperController.povLeft().onTrue(m_autoSequences.waitAndClampCoral());
         m_helperController.povRight().onTrue(m_autoSequences.freeCoral());
         m_helperController.povDown().onTrue(m_autoSequences.dropCoral());
         m_helperController.povUp().onTrue(new InstantCommand(m_coralGripper::openSideGripper, m_arm));

@@ -41,6 +41,16 @@ public class AutoSequences {
         );
     }
 
+    public Command waitAndClampCoral() {
+        return new SequentialCommandGroup(
+                new WaitForCoral(m_robotContainer.m_coralGripper).withTimeout(Second.of(3)),
+                new OpenFrontGripper(m_robotContainer.m_coralGripper),
+                new ClosePusher(m_robotContainer.m_coralGripper),
+                new WaitCommand(0.5),
+                new CloseFrontGripper(m_robotContainer.m_coralGripper)
+        );
+    }
+
     public Command gripCoral() {
         return new SequentialCommandGroup(
                 new CloseFrontGripper(m_robotContainer.m_coralGripper),
@@ -60,11 +70,11 @@ public class AutoSequences {
         return new SequentialCommandGroup(
                 new OpenPusher(m_robotContainer.m_coralGripper),
                 new CloseSideGripper(m_robotContainer.m_coralGripper),
-                new WaitCommand(0.5),
+                new WaitCommand(0.35),
                 new OpenFrontGripper(m_robotContainer.m_coralGripper),
-                new WaitCommand(0.5),
+                new WaitCommand(0.4),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
-                new WaitCommand(0.25)
+                new WaitCommand(0.1)
         );
     }
 
@@ -72,11 +82,11 @@ public class AutoSequences {
         return new SequentialCommandGroup(
                 new OpenPusher(m_robotContainer.m_coralGripper),
                 new CloseSideGripper(m_robotContainer.m_coralGripper),
-                new WaitCommand(0.5),
+                new WaitCommand(0.35),
                 new OpenFrontGripper(m_robotContainer.m_coralGripper),
-                new WaitCommand(1.0),
+                new WaitCommand(0.6),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
-                new WaitCommand(0.25)
+                new WaitCommand(0.1)
         );
     }
 
@@ -203,11 +213,12 @@ public class AutoSequences {
         );
     }
 
-    public Command autoPickupCoralStation1() {
+    public Command autoPickupCoralStation1PP() {
         return new SequentialCommandGroup(
-            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+                new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kLowestPosition),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
+                new OpenPusher(m_robotContainer.m_coralGripper),
                 new OpenFrontGripper(m_robotContainer.m_coralGripper),
                 new FindTarget(m_robotContainer.limelightThree, m_robotContainer.drivetrain),
                 moveFiducialRelativePP(Position.STATION_1_APPROACH, Position.STATION_1, m_robotContainer.limelightThree),
@@ -220,12 +231,13 @@ public class AutoSequences {
         );
     }
 
-    public Command autoPickupCoralStation1PP() {
+    public Command autoPickupCoralStation1() {
         return new SequentialCommandGroup(
             new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kLowestPosition),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
                 new OpenFrontGripper(m_robotContainer.m_coralGripper),
+                new OpenPusher(m_robotContainer.m_coralGripper),
                 new FindTarget(m_robotContainer.limelightThree, m_robotContainer.drivetrain),
                 moveFiducialRelativeRough(Position.STATION_1_APPROACH, m_robotContainer.limelightThree),
                 moveFiducialRelativeRough(Position.STATION_1, m_robotContainer.limelightThree),
@@ -288,14 +300,13 @@ public class AutoSequences {
     }
 
     public Command moveFiducialRelativeRough(Position position, Limelight2025 limelight) {
-        final Pose2d posTolerance = new Pose2d(0.1, 0.1, Rotation2d.fromDegrees(3));
-        return new AutoAimPose(
-                m_robotContainer.drivetrain,
-                m_robotContainer.smartDashboardSettings,
-                limelight,
-                position.getPositionForTeam(m_robotContainer.m_alliance),
-                0,
-                posTolerance);
+        return new DrivetrainPathFollower.Builder()
+            .drivetrain(m_robotContainer.drivetrain)
+            .approachPose(null)
+            .targetPose(position.getPositionForTeam(Alliance.Blue))
+            .limelight(limelight)
+            .endSpeed(0.5)
+            .build();
     }
 
     public Command moveFiducialRelativePP(Position approach, Position target, Limelight2025 limelight) {
