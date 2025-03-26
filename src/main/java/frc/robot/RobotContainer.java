@@ -182,4 +182,8 @@ public class RobotContainer {
     public void autonomousInit() {
         setAlliance();
     }
+
+    public void robotPeriodic() {
+        SmartDashboardWrapper.putNumber("Match Time", DriverStation.getMatchTime());
+    }
 }
