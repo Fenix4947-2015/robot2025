@@ -1,6 +1,9 @@
 package frc.robot.commands.auto;
 
+import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveRequest.SwerveDriveBrake;
+import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.IdealStartingState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
@@ -28,19 +31,47 @@ public class DrivetrainPathFollower extends Command {
     private Command followPathCommand;
     private double MAX_RATIO = 0.5;
 
-    public DrivetrainPathFollower(
-        CommandSwerveDrivetrain drivetrain, 
-        Pose2d approachPose,
-        Pose2d targetPose,
-        Limelight2025 limelight) {
-        this.drivetrain = drivetrain;
-        this.approachPose = approachPose;
-        this.targetPose = targetPose;
-        this.limelight = limelight;
-        this.activeFiducialId = limelight.getActiveFiducialId();
-        this.followPathCommand = Commands.none();
-        addRequirements(drivetrain);
-    }
+        private DrivetrainPathFollower(Builder builder) {
+            this.drivetrain = builder.drivetrain;
+            this.approachPose = builder.approachPose;
+            this.targetPose = builder.targetPose;
+            this.limelight = builder.limelight;
+            this.activeFiducialId = this.limelight.getActiveFiducialId();
+            this.followPathCommand = Commands.none();
+            addRequirements(drivetrain);
+        }
+
+        public static class Builder {
+            private CommandSwerveDrivetrain drivetrain;
+            private Pose2d approachPose;
+            private Pose2d targetPose;
+            private Limelight2025 limelight;
+    
+            public Builder drivetrain(CommandSwerveDrivetrain drivetrain) {
+                this.drivetrain = drivetrain;
+                return this;
+            }
+    
+            public Builder approachPose(Pose2d approachPose) {
+                this.approachPose = approachPose;
+                return this;
+            }
+    
+            public Builder targetPose(Pose2d targetPose) {
+                this.targetPose = targetPose;
+                return this;
+            }
+    
+            public Builder limelight(Limelight2025 limelight) {
+                this.limelight = limelight;
+                return this;
+            }
+            
+            public DrivetrainPathFollower build() {
+                return new DrivetrainPathFollower(this);
+            }
+        }
+    
 
     @Override
     public void initialize() {
@@ -58,8 +89,10 @@ public class DrivetrainPathFollower extends Command {
 
         List<Pose2d> poses = new ArrayList<>();
         poses.add(currentPose);
-        poses.add(closestFiducialBlueRelative.plus(new Transform2d(new Pose2d(), approachPose)));
-        poses.add(closestFiducialBlueRelative.plus(new Transform2d(new Pose2d(), targetPose)));
+        if (approachPose != null) {
+            poses.add(closestFiducialBlueRelative.plus(new Transform2d(new Pose2d(), approachPose)));
+        }
+        poses.add(finalPose);
 
         List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(poses);
 
@@ -67,13 +100,19 @@ public class DrivetrainPathFollower extends Command {
             5.0 * MAX_RATIO, 
             8.5 * MAX_RATIO, 
             Degrees.of(550).in(Radians) * MAX_RATIO, 
-            Degrees.of(1000).in(Radians) * MAX_RATIO
-            );
+            Degrees.of(1000).in(Radians) * MAX_RATIO);
+
+        
+        SwerveDriveState startingState = drivetrain.getState();
+        double velocityMPS = Math.sqrt(
+            Math.pow(startingState.Speeds.vxMetersPerSecond,2) + 
+            Math.pow(startingState.Speeds.vyMetersPerSecond,2));
+        IdealStartingState idealStartingState = new IdealStartingState(velocityMPS, startingState.Pose.getRotation());
 
         PathPlannerPath generatedPath = new PathPlannerPath(
             waypoints,
             constraints,
-            null,  
+            idealStartingState,  
             new GoalEndState(0.0, finalPose.getRotation())
         );
 

@@ -96,6 +96,20 @@ public class AutoSequences {
         );
     }
 
+    public Command autoDropCoralL3RightPP() {
+        return new SequentialCommandGroup(
+            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+                new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L3),
+                new OpenSideGripper(m_robotContainer.m_coralGripper),
+                new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+                moveFiducialRelativePP(Position.L3_APPROACH_RIGHT, Position.CORAL_L3_RIGHT, m_robotContainer.limelightFour),
+                dropCoralSlow(),
+                moveFiducialRelativeRough(Position.L3_APPROACH_RIGHT, m_robotContainer.limelightFour),
+                new InstantCommand(() -> m_robotContainer.m_arm.extendExtender(), m_robotContainer.m_arm),
+                new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain)
+        );
+    }
+
     public Command autoDropCoralL4Right() {
         return new SequentialCommandGroup(
             new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
@@ -120,6 +134,20 @@ public class AutoSequences {
                 moveFiducialRelativeRough(Position.L3_APPROACH_LEFT, m_robotContainer.limelightFour),
                 new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 moveFiducialRelative(Position.CORAL_L3_LEFT, m_robotContainer.limelightFour),
+                dropCoralSlow(),
+                moveFiducialRelativeRough(Position.L3_APPROACH_LEFT, m_robotContainer.limelightFour),
+                new InstantCommand(() -> m_robotContainer.m_arm.extendExtender(), m_robotContainer.m_arm),
+                new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain)
+        );
+    }
+
+    public Command autoDropCoralL3LeftPP() {
+        return new SequentialCommandGroup(
+            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+                new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L3),
+                new OpenSideGripper(m_robotContainer.m_coralGripper),
+                new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+                moveFiducialRelativePP(Position.L3_APPROACH_LEFT, Position.CORAL_L3_LEFT, m_robotContainer.limelightFour),
                 dropCoralSlow(),
                 moveFiducialRelativeRough(Position.L3_APPROACH_LEFT, m_robotContainer.limelightFour),
                 new InstantCommand(() -> m_robotContainer.m_arm.extendExtender(), m_robotContainer.m_arm),
@@ -213,10 +241,9 @@ public class AutoSequences {
     public Command autoMoveCoralL4LeftPPTest() {
         return new SequentialCommandGroup(
             new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
-            new DrivetrainPathFollower(
-                m_robotContainer.drivetrain, 
-                Position.L4_APPROACH_LEFT.getPositionForTeam(Alliance.Blue), 
-                Position.CORAL_L4_LEFT.getPositionForTeam(Alliance.Blue), 
+            moveFiducialRelativePP( 
+                Position.L4_APPROACH_LEFT, 
+                Position.CORAL_L4_LEFT, 
                 m_robotContainer.limelightFour
                 )
         );
@@ -272,12 +299,12 @@ public class AutoSequences {
     }
 
     public Command moveFiducialRelativePP(Position approach, Position target, Limelight2025 limelight) {
-        return new DrivetrainPathFollower(
-            m_robotContainer.drivetrain, 
-            approach.getPositionForTeam(Alliance.Blue), 
-            target.getPositionForTeam(Alliance.Blue), 
-            limelight
-            );
+        return new DrivetrainPathFollower.Builder()
+            .drivetrain(m_robotContainer.drivetrain)
+            .approachPose(approach.getPositionForTeam(Alliance.Blue))
+            .targetPose(target.getPositionForTeam(Alliance.Blue))
+            .limelight(limelight)
+            .build();
     }
 
     // AUTOS

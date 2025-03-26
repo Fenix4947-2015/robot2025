@@ -77,7 +77,7 @@ public class RobotContainer {
     private final RollCageGripper m_stopCageGripper = new RollCageGripper(m_cageGripper, 0.0);
     private final Command autoDropCoralRight = new AutoDrop(new AutoSequences(this), m_arm, AutoDrop.Side.RIGHT);
     private final Command autoDropCoralLeft = new AutoDrop(new AutoSequences(this), m_arm, AutoDrop.Side.LEFT);
-    private final Command autoPickupCoralStation1 = new AutoSequences(this).autoPickupCoralStation1();
+    private final Command autoPickupCoralStation1 = new AutoSequences(this).autoPickupCoralStation1PP();
     private final Command gripCoral = new AutoSequences(this).gripCoral();
     private final Command autoPathPlanner = new AutoSequences(this).autoMoveCoralL4LeftPPTest();
 

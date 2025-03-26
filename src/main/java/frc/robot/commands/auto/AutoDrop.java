@@ -21,8 +21,8 @@ public class AutoDrop extends Command {
         this.arm = arm;
 
         autoDropCoralL3 = switch (side) {
-            case LEFT -> autoSequences.autoDropCoralL3Left();
-            case RIGHT -> autoSequences.autoDropCoralL3Right();
+            case LEFT -> autoSequences.autoDropCoralL3LeftPP();
+            case RIGHT -> autoSequences.autoDropCoralL3RightPP();
         };
         autoDropCoralL4 = switch (side) {
             case LEFT -> autoSequences.autoDropCoralL4LeftPP();
