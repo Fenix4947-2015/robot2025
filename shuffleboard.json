@@ -254,7 +254,7 @@
               1
             ],
             "content": {
-              "_type": "Network Table Tree",
+              "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Arm / Distance",
               "_title": "/SmartDashboard/Arm / Distance",
               "_glyph": 148,

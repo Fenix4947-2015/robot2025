@@ -23,6 +23,7 @@ import frc.robot.commands.limelight.ResetTarget;
 import frc.robot.limelight.Limelight2025;
 import frc.robot.subsystems.Arm;
 
+import static edu.wpi.first.units.Units.Milliseconds;
 import static edu.wpi.first.units.Units.Second;
 
 public class AutoSequences {
@@ -67,6 +68,14 @@ public class AutoSequences {
         );
     }
 
+    public Command findTargetOrStop(Limelight2025 limelight) {
+        return new SequentialCommandGroup(
+            new FindTarget(limelight, m_robotContainer.drivetrain).withTimeout(Milliseconds.of(100)),
+            new NoSpeedDriveSwerveCommand(m_robotContainer.drivetrain, limelight),
+            new FindTarget(limelight, m_robotContainer.drivetrain)
+        );
+    }
+
     public Command dropCoral() {
         return new SequentialCommandGroup(
                 new OpenPusher(m_robotContainer.m_coralGripper),
@@ -93,11 +102,10 @@ public class AutoSequences {
 
     public Command autoDropCoralL3Right() {
         return new SequentialCommandGroup(
-            new NoSpeedDriveSwerveCommand(m_robotContainer.drivetrain),
             new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L3),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
-                new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+                findTargetOrStop(m_robotContainer.limelightFour),
                 moveFiducialRelativeRough(Position.L3_APPROACH_RIGHT, m_robotContainer.limelightFour),
                 new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 moveFiducialRelative(Position.CORAL_L3_RIGHT, m_robotContainer.limelightFour),
@@ -110,11 +118,10 @@ public class AutoSequences {
 
     public Command autoDropCoralL3RightPP() {
         return new SequentialCommandGroup(
-            new NoSpeedDriveSwerveCommand(m_robotContainer.drivetrain),
             new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L3),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
-                new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+                findTargetOrStop(m_robotContainer.limelightFour),
                 moveFiducialRelativePP(Position.L3_APPROACH_RIGHT, Position.CORAL_L3_RIGHT, m_robotContainer.limelightFour),
                 dropCoralSlow(),
                 moveFiducialRelativeRough(Position.L3_APPROACH_RIGHT, m_robotContainer.limelightFour),
@@ -125,11 +132,10 @@ public class AutoSequences {
 
     public Command autoDropCoralL4Right() {
         return new SequentialCommandGroup(
-            new NoSpeedDriveSwerveCommand(m_robotContainer.drivetrain),
             new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L4),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
-                new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+                findTargetOrStop(m_robotContainer.limelightFour),
                 moveFiducialRelativeRough(Position.L4_APPROACH_RIGHT, m_robotContainer.limelightFour),
                 new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 moveFiducialRelative(Position.CORAL_L4_RIGHT, m_robotContainer.limelightFour),
@@ -141,11 +147,10 @@ public class AutoSequences {
 
     public Command autoDropCoralL3Left() {
         return new SequentialCommandGroup(
-                new NoSpeedDriveSwerveCommand(m_robotContainer.drivetrain),
                 new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L3),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
-                new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+                findTargetOrStop(m_robotContainer.limelightFour),
                 moveFiducialRelativeRough(Position.L3_APPROACH_LEFT, m_robotContainer.limelightFour),
                 new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 moveFiducialRelative(Position.CORAL_L3_LEFT, m_robotContainer.limelightFour),
@@ -158,11 +163,10 @@ public class AutoSequences {
 
     public Command autoDropCoralL3LeftPP() {
         return new SequentialCommandGroup(
-            new NoSpeedDriveSwerveCommand(m_robotContainer.drivetrain),
             new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L3),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
-                new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+                findTargetOrStop(m_robotContainer.limelightFour),
                 moveFiducialRelativePP(Position.L3_APPROACH_LEFT, Position.CORAL_L3_LEFT, m_robotContainer.limelightFour),
                 dropCoralSlow(),
                 moveFiducialRelativeRough(Position.L3_APPROACH_LEFT, m_robotContainer.limelightFour),
@@ -173,11 +177,10 @@ public class AutoSequences {
 
     public Command autoDropCoralL4Left() {
         return new SequentialCommandGroup(
-                new NoSpeedDriveSwerveCommand(m_robotContainer.drivetrain),
                 new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L4),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
-                new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+                findTargetOrStop(m_robotContainer.limelightFour),
                 moveFiducialRelativeRough(Position.L4_APPROACH_LEFT, m_robotContainer.limelightFour),
                 new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
                 moveFiducialRelative(Position.CORAL_L4_LEFT, m_robotContainer.limelightFour),
@@ -189,11 +192,10 @@ public class AutoSequences {
 
     public Command autoDropCoralL4LeftPP() {
         return new SequentialCommandGroup(
-            new NoSpeedDriveSwerveCommand(m_robotContainer.drivetrain),
             new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
             new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L4),
             new OpenSideGripper(m_robotContainer.m_coralGripper),
-            new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+            findTargetOrStop(m_robotContainer.limelightFour),
             moveFiducialRelativePP(Position.L4_APPROACH_LEFT, Position.CORAL_L4_LEFT, m_robotContainer.limelightFour),
             dropCoral(),
             moveFiducialRelativeRough(Position.L4_APPROACH_LEFT, m_robotContainer.limelightFour),
@@ -203,11 +205,10 @@ public class AutoSequences {
 
     public Command autoDropCoralL4RightPP() {
         return new SequentialCommandGroup(
-            new NoSpeedDriveSwerveCommand(m_robotContainer.drivetrain),
             new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
             new MoveArmDropPosition(m_robotContainer.m_arm, Arm.DropPosition.L4),
             new OpenSideGripper(m_robotContainer.m_coralGripper),
-            new FindTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+            findTargetOrStop(m_robotContainer.limelightFour),
             moveFiducialRelativePP(Position.L4_APPROACH_RIGHT, Position.CORAL_L4_RIGHT, m_robotContainer.limelightFour),
             dropCoral(),
             moveFiducialRelativeRough(Position.L4_APPROACH_RIGHT, m_robotContainer.limelightFour),
@@ -224,13 +225,12 @@ public class AutoSequences {
 
     public Command autoPickupCoralStation1PP() {
         return new SequentialCommandGroup(
-                new NoSpeedDriveSwerveCommand(m_robotContainer.drivetrain),
-                new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+                new ResetTarget(m_robotContainer.limelightThree, m_robotContainer.drivetrain),
                 new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kLowestPosition),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
                 new OpenPusher(m_robotContainer.m_coralGripper),
                 new OpenFrontGripper(m_robotContainer.m_coralGripper),
-                new FindTarget(m_robotContainer.limelightThree, m_robotContainer.drivetrain),
+                findTargetOrStop(m_robotContainer.limelightThree),
                 moveFiducialRelativePP(Position.STATION_1_APPROACH, Position.STATION_1, m_robotContainer.limelightThree),
                 new WaitForCoral(m_robotContainer.m_coralGripper).withTimeout(Second.of(3)),
                 new ParallelCommandGroup(
@@ -243,13 +243,12 @@ public class AutoSequences {
 
     public Command autoPickupCoralStation1() {
         return new SequentialCommandGroup(
-            new NoSpeedDriveSwerveCommand(m_robotContainer.drivetrain),
-            new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain),
+            new ResetTarget(m_robotContainer.limelightThree, m_robotContainer.drivetrain),
                 new MoveArmPosition(m_robotContainer.m_arm, Constants.Arm.kLowestPosition),
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
                 new OpenFrontGripper(m_robotContainer.m_coralGripper),
                 new OpenPusher(m_robotContainer.m_coralGripper),
-                new FindTarget(m_robotContainer.limelightThree, m_robotContainer.drivetrain),
+                findTargetOrStop(m_robotContainer.limelightThree),
                 moveFiducialRelativeRough(Position.STATION_1_APPROACH, m_robotContainer.limelightThree),
                 moveFiducialRelativeRough(Position.STATION_1, m_robotContainer.limelightThree),
                 new WaitForCoral(m_robotContainer.m_coralGripper).withTimeout(Second.of(3)),
