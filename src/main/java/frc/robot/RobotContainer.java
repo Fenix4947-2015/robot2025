@@ -128,6 +128,7 @@ public class RobotContainer {
         m_driverController.start().and(m_driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
         m_driverController.start().and(m_driverController.back()).onTrue(new InstantCommand(logger::stop));
 
+        /*
         m_driverController.rightBumper().whileTrue(autoDropCoralRight);
         m_driverController.leftBumper().whileTrue(autoDropCoralLeft);
         m_driverController.povLeft().whileTrue(autoPathPlanner);
@@ -158,6 +159,7 @@ public class RobotContainer {
         m_helperController.a().onTrue(new InstantCommand(m_coralGripper::toggleFrontGripper, m_coralGripper));
         m_helperController.b().onTrue(new InstantCommand(m_coralGripper::toggleSideGripper, m_coralGripper));
         m_helperController.y().onTrue(new InstantCommand(m_coralGripper::togglePusher, m_coralGripper));
+        */
     }
 
     public void configureDefaultCommands() {
