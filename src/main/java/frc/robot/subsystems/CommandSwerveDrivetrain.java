@@ -17,7 +17,9 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
@@ -53,6 +55,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private boolean m_hasAppliedOperatorPerspective = false;
     /** Swerve request to apply during robot-centric path following */
     private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
+    private final Matrix<N3, N1> defaultVisionMeasurements = MatBuilder.fill(Nat.N3(),Nat.N1(),0.5, 0.5, 0.1);
 
     /* Swerve requests to apply during SysId characterization */
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
@@ -414,19 +417,36 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
         
         PoseEstimate llMeasurement;
+        double[] visionStdev;
         if (this.limelightMegaTagType == LimelightMegaTagType.MEGA_TAG) {
             llMeasurement = getActiveLimelight().getPoseEstimate();
+            visionStdev = getActiveLimelight().getStdevMegaTag();
         } else {
             llMeasurement = getActiveLimelight().getPoseEstimateMegaTag2();
+            visionStdev = getActiveLimelight().getStdevMegaTag2();
         }
         
         if (llMeasurement != null && llMeasurement.tagCount > 0 && Math.abs(omegaRps) < 0.5) {
-            setPoseEstimate(llMeasurement);
+            setPoseEstimate(llMeasurement, visionStdev);
         }
     }
 
     public void setPoseEstimate(PoseEstimate llMeasurement) {
         this.addVisionMeasurement(llMeasurement.pose, llMeasurement.timestampSeconds);
+    }
+
+    public void setPoseEstimate(PoseEstimate llMeasurement, double[] visionStdev) {
+        
+        if (visionStdev == null) {
+            setPoseEstimate(llMeasurement);
+            return;
+        }
+        if (visionStdev.length < 6) {
+            setPoseEstimate(llMeasurement);
+            return;
+        }
+        this.addVisionMeasurement(llMeasurement.pose, llMeasurement.timestampSeconds, 
+            MatBuilder.fill(Nat.N3(), Nat.N1(), visionStdev[0], visionStdev[1], visionStdev[5] / 180 * 3.14));
     }
 
     public void setLimelightMegaTagType(LimelightMegaTagType limelightMegaTagType) {

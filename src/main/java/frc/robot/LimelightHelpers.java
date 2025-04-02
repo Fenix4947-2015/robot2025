@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -977,6 +978,19 @@ public class LimelightHelpers {
     public static double getTA(String limelightName) {
         return getLimelightNTDouble(limelightName, "ta");
     }
+
+    public static double[] getStdevMt1(String limelightName) {
+        double[] allStddevs = getLimelightNTDoubleArray(limelightName, "stddevs");
+        int len = allStddevs.length;
+        return Arrays.copyOfRange(allStddevs, 0, Math.min(6, len));
+    }
+    
+    public static double[] getStdevMt2(String limelightName) {
+        double[] allStddevs = getLimelightNTDoubleArray(limelightName, "stddevs");
+        int len = allStddevs.length;
+        return Arrays.copyOfRange(allStddevs, Math.max(0, len - 6), len);
+    }
+    
 
     /**
      * T2D is an array that contains several targeting metrcis
