@@ -74,4 +74,10 @@ public final class Constants {
         public static final double angleCamera = 60 - 15;
 
     }
+
+    public static class Drivetrain {
+        public static final double PATHPLANNER_TOLERANCE_X = 0.02;
+        public static final double PATHPLANNER_TOLERANCE_Y = 0.02;
+        public static final double PATHPLANNER_TOLERANCE_ANGLE = 0.02;
+    }
 }
