@@ -124,6 +124,7 @@ public class AutoSequences {
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
                 findTargetOrStop(m_robotContainer.limelightFour),
                 moveFiducialRelativePP(Position.L3_APPROACH_RIGHT, Position.CORAL_L3_RIGHT, m_robotContainer.limelightFour),
+                moveFiducialRelative(Position.CORAL_L3_RIGHT, m_robotContainer.limelightFour),
                 new ParallelDeadlineGroup(
                     dropCoralSlow(), 
                     moveFiducialRelative(Position.CORAL_L3_RIGHT, m_robotContainer.limelightFour)),
@@ -171,6 +172,7 @@ public class AutoSequences {
                 new OpenSideGripper(m_robotContainer.m_coralGripper),
                 findTargetOrStop(m_robotContainer.limelightFour),
                 moveFiducialRelativePP(Position.L3_APPROACH_LEFT, Position.CORAL_L3_LEFT, m_robotContainer.limelightFour),
+                moveFiducialRelative(Position.CORAL_L3_LEFT, m_robotContainer.limelightFour),
                 dropCoralSlow(),
                 moveFiducialRelativeRough(Position.L3_APPROACH_LEFT, m_robotContainer.limelightFour),
                 new InstantCommand(() -> m_robotContainer.m_arm.extendExtender(), m_robotContainer.m_arm),
@@ -200,6 +202,7 @@ public class AutoSequences {
             new OpenSideGripper(m_robotContainer.m_coralGripper),
             findTargetOrStop(m_robotContainer.limelightFour),
             moveFiducialRelativePP(Position.L4_APPROACH_LEFT, Position.CORAL_L4_LEFT, m_robotContainer.limelightFour),
+            moveFiducialRelative(Position.CORAL_L4_LEFT, m_robotContainer.limelightFour),
             dropCoral(),
             moveFiducialRelativeRough(Position.L4_APPROACH_LEFT, m_robotContainer.limelightFour),
             new ResetTarget(m_robotContainer.limelightFour, m_robotContainer.drivetrain)
@@ -213,6 +216,7 @@ public class AutoSequences {
             new OpenSideGripper(m_robotContainer.m_coralGripper),
             findTargetOrStop(m_robotContainer.limelightFour),
             moveFiducialRelativePP(Position.L4_APPROACH_RIGHT, Position.CORAL_L4_RIGHT, m_robotContainer.limelightFour),
+            moveFiducialRelative(Position.CORAL_L4_RIGHT, m_robotContainer.limelightFour),
             new ParallelDeadlineGroup(
                 dropCoral(), 
                 moveFiducialRelative(Position.CORAL_L4_RIGHT, m_robotContainer.limelightFour)),
