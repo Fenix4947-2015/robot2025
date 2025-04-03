@@ -26,7 +26,26 @@
         {
           "type": "named",
           "data": {
-            "name": "auto dunk coral right"
+            "name": "auto dunk coral left"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "bleu_millieu_retour"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Lowest"
+                }
+              }
+            ]
           }
         }
       ]

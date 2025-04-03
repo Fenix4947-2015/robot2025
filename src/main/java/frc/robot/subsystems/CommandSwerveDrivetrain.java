@@ -14,6 +14,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.MatBuilder;
@@ -245,14 +246,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                         .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())
                         .withDriveRequestType(DriveRequestType.Velocity)
                 ),
-                new PPHolonomicDriveControllerWithTolerance(
+                new PPHolonomicDriveController(
                     // PID constants for translation
                     new PIDConstants(10, 0, 0),
                     // PID constants for rotation
-                    new PIDConstants(7, 0, 0),
-                    Constants.Drivetrain.PATHPLANNER_TOLERANCE_X,
-                    Constants.Drivetrain.PATHPLANNER_TOLERANCE_Y,
-                    Constants.Drivetrain.PATHPLANNER_TOLERANCE_ANGLE
+                    new PIDConstants(7, 0, 0)
                 ),
                 config,
                 // Assume the path needs to be flipped for Red vs Blue, this is normally the case
@@ -282,14 +280,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                         .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
                         .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())
                 ),
-                new PPHolonomicDriveControllerWithTolerance(
+                new PPHolonomicDriveController(
                     // PID constants for translation
                     new PIDConstants(5, 0, 0),
                     // PID constants for rotation
-                    new PIDConstants(5, 0, 0),
-                    Constants.Drivetrain.PATHPLANNER_TOLERANCE_X,
-                    Constants.Drivetrain.PATHPLANNER_TOLERANCE_Y,
-                    Constants.Drivetrain.PATHPLANNER_TOLERANCE_ANGLE
+                    new PIDConstants(5, 0, 0)
                 ),
                 config, // The robot configuration
                 () -> {

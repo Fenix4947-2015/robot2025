@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.085,
-        "y": 1.273821721311475
+        "x": 7.132684426229508,
+        "y": 2.1249487704918035
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.742110655737705,
-        "y": 1.207889344262296
+        "x": 6.785040983606557,
+        "y": 2.0290471311475415
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 2.1249487704918035
       },
       "prevControl": {
-        "x": 6.821004098360655,
-        "y": 1.2558401639344268
+        "x": 5.885963114754098,
+        "y": 1.573514344262295
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,10 +45,10 @@
     "rotation": 119.99999999999999
   },
   "reversed": false,
-  "folder": "Auto 2 corail",
+  "folder": "Opt bleu",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

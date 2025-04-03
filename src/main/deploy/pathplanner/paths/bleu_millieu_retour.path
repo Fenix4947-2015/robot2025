@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.085,
-        "y": 1.273821721311475
+        "x": 6.521311475409835,
+        "y": 3.8272028688524586
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.742110655737705,
-        "y": 1.207889344262296
+        "x": 7.521311475409835,
+        "y": 3.8272028688524586
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.478381147540984,
-        "y": 2.1249487704918035
+        "x": 7.1566598360655735,
+        "y": 3.8272028688524586
       },
       "prevControl": {
-        "x": 6.821004098360655,
-        "y": 1.2558401639344268
+        "x": 6.1566598360655735,
+        "y": 3.8272028688524586
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "end_corail_1"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Auto 2 corail",
+  "folder": "milleu",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
