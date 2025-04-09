@@ -46,8 +46,8 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": -130.0
+    "velocity": 0.0,
+    "rotation": -142.75521710734054
   },
   "reversed": false,
   "folder": "Auto 2 corail",
