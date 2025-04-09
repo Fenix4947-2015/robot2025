@@ -1,5 +1,8 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Match Time" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="21" y="240"/>
+	</widget>
 	<widget field="FrontGripperOpen" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
 		<location x="16" y="408"/>
 		<width>125</width>

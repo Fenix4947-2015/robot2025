@@ -110,6 +110,12 @@
               }
             ]
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "auto get coral station 1"
+          }
         }
       ]
     }
