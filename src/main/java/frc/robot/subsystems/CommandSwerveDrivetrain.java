@@ -427,7 +427,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
         
         if (llMeasurement != null && llMeasurement.tagCount > 0 && Math.abs(omegaRps) < 0.5) {
-            setPoseEstimate(llMeasurement, visionStdev);
+            setPoseEstimate(llMeasurement);
+            //setPoseEstimate(llMeasurement, visionStdev);
         }
     }
 
