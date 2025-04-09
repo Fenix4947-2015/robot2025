@@ -30,6 +30,7 @@ import frc.robot.commands.combo.AutoSequences;
 import frc.robot.commands.coralgripper.WaitForCoral;
 import frc.robot.commands.drivetrain.DriveSwerveCommand;
 import frc.robot.commands.limelight.SetMegaTag;
+import frc.robot.commands.limelight.SetNoCamera;
 import frc.robot.commands.winch.RollCageGripper;
 import frc.robot.commands.winch.RollWinchSpeed;
 import frc.robot.commands.winch.RollWinchStick;
@@ -109,6 +110,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Grip Coral",gripCoral);
         NamedCommands.registerCommand("Auto Delay",new WaitSmartDashBoard(smartDashboardSettings));
         NamedCommands.registerCommand("Set Mega Tag",new SetMegaTag(limelightFour, drivetrain));
+        NamedCommands.registerCommand("Set No Camera",new SetNoCamera(limelightFour, drivetrain));
         autoChooser = AutoBuilder.buildAutoChooser("auto_path");
         SmartDashboard.putData("Auto Mode", autoChooser);
         SmartDashboard.putNumber("Auto Delay", auto_delay);

@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Set No Camera"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
