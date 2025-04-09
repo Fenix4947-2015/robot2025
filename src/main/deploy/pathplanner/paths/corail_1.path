@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.742110655737705,
-        "y": 1.207889344262296
+        "x": 5.130737704918032,
+        "y": 1.141956967213115
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.2606557377049183,
-        "y": 1.9691086065573769
+        "x": 3.44047131147541,
+        "y": 2.005071721311474
       },
       "prevControl": {
-        "x": 4.60327868852459,
-        "y": 1.1
+        "x": 2.853073770491804,
+        "y": 1.141956967213114
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 58.5069321996469
+    "rotation": 57.03059609653788
   },
   "reversed": false,
   "folder": "Auto 2 corail",

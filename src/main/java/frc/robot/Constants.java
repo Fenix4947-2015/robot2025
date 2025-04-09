@@ -58,7 +58,7 @@ public final class Constants {
         public static final double applyDownwardStabilizingPosition = 0.25;
         public static final double kHighestPosition = 1.25;
         public static final double kCoralL4Position = 1.09;
-        public static final double kCoralL3Position = 0.775;
+        public static final double kCoralL3Position = 0.755;
         public static final double kCoralL2Position = 0.650;
         public static final double lowestRetractedPosition = 0.640;
         public static final double gripperDangerZonePosition = 0.3;
@@ -73,5 +73,11 @@ public final class Constants {
         public static final double offsetZ = 0.43;
         public static final double angleCamera = 60 - 15;
 
+    }
+
+    public static class Drivetrain {
+        public static final double PATHPLANNER_TOLERANCE_X = 0.02;
+        public static final double PATHPLANNER_TOLERANCE_Y = 0.02;
+        public static final double PATHPLANNER_TOLERANCE_ANGLE = 0.02;
     }
 }

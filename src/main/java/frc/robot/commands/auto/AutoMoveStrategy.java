@@ -56,7 +56,7 @@ public class AutoMoveStrategy extends Command {
     private final long _setpointDelayMs;
     public static final long DEFAULT_SETPOINT_DELAY_MS = 100;
     private final Pose2d _posTolerance;
-    public static final Pose2d DEFAULT_POS_TOLERANCE = new Pose2d(0.05, 0.05, Rotation2d.fromDegrees(1));
+    public static final Pose2d DEFAULT_POS_TOLERANCE = new Pose2d(0.025, 0.05, Rotation2d.fromDegrees(1));
      private final double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private final double RobotRadius = Math.sqrt(TunerConstants.BackLeft.LocationX * TunerConstants.BackLeft.LocationX +
             TunerConstants.BackLeft.LocationY * TunerConstants.BackLeft.LocationY); // Distance from center of rotation to wheel

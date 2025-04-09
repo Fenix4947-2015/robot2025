@@ -7,7 +7,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Grip Coral"
+            "name": "Set Mega Tag"
           }
         },
         {
@@ -36,57 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "corail_1"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "auto dunk coral right"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "retour_1"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Arm Lowest"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "auto get coral station 1"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "corail_2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Arm L4"
+                  "pathName": "opt_corail_1"
                 }
               }
             ]
@@ -105,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "retour_1"
+                  "pathName": "opt_retour_1"
                 }
               },
               {
@@ -121,6 +71,50 @@
           "type": "named",
           "data": {
             "name": "auto get coral station 1"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "opt_corail_2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm L4"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "auto dunk coral right"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "opt_retour_2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Lowest"
+                }
+              }
+            ]
           }
         }
       ]

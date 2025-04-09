@@ -5,9 +5,10 @@
   "pathFolders": [
     "Auto 2 corail",
     "New Folder",
-    "rouge_milleu",
+    "Opt bleu",
     "autre_bord",
-    "autre_bord_red"
+    "autre_bord_red",
+    "milleu"
   ],
   "autoFolders": [],
   "defaultMaxVel": 2.5,

@@ -45,6 +45,14 @@ public class Limelight2025 extends Limelight {
     return LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(identifier);
   }
 
+  public double[] getStdevMegaTag() {
+    return LimelightHelpers.getStdevMt1(identifier);
+  }
+
+  public double[] getStdevMegaTag2() {
+    return LimelightHelpers.getStdevMt2(identifier);
+  }
+
   public double getLatency() {
     LimelightResults results = getLimelightResults();
     return (results.latency_capture + results.latency_jsonParse + results.latency_pipeline) / 1000;
