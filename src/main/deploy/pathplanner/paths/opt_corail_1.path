@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 5.478381147540984,
+        "x": 5.286577868852459,
         "y": 2.1249487704918035
       },
       "prevControl": {
-        "x": 5.885963114754098,
+        "x": 5.694159836065572,
         "y": 1.573514344262295
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "end_corail_1"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 122.7995312726192
   },
   "reversed": false,
   "folder": "Opt bleu",
