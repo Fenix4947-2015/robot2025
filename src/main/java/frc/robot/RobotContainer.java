@@ -143,9 +143,7 @@ public class RobotContainer {
         m_driverController.a().whileTrue(m_moveArmLow);
         m_driverController.x().whileTrue(m_moveArmL3);
         m_driverController.b().whileTrue(m_moveArmL4);
-        m_driverController.start().onTrue(new InstantCommand(() -> SmartDashboardWrapper.putBooleanImportant("driverStartPushed", true)));
-        m_driverController.start().onFalse(new InstantCommand(() -> SmartDashboardWrapper.putBooleanImportant("driverStartPushed", false)));
-        
+
         // reset the field-centric heading on left bumper press
         m_driverController.back().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
         //m_driverController.rightTrigger().onChange(m_moveArmDirect);
